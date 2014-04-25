@@ -1,0 +1,110 @@
+#reddCoinPopupContainer {
+    opacity: 0.7;
+    z-index: 2147483648;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    background-color: #fff;
+    width: 100%;
+    display:none;
+}
+
+#reddTipUser{
+    margin-bottom:10px;
+}
+#reddCoinPopup{
+    background-color: #FCFCFC;
+    z-index: 2147483649;
+    margin: auto;
+    position: fixed;
+    opacity: 1;
+    min-height:320px;
+    border: 1px solid #999;
+    display:none;
+}
+
+#reddCoinPopup .error{
+    border: 2px solid #F00;
+    transition: 2s;
+}
+
+
+#reddCoinPopupHeader{
+    border-bottom: 1px solid #3F3F3F;
+    height: 58px;
+    background-color: #444;
+}
+
+#reddCoinPopupImage{
+    padding-left: 20px;
+}
+
+#reddCoinPopupBody{
+    position: relative;
+}
+#reddCoinButtonContainer{
+    position: absolute;
+    bottom:0px;
+    width: 100%;
+    height: 65px;
+    background-color: #eee;
+    border-top: 1px solid #ccc;
+    text-align: right;
+}
+
+#reddCoinButtonContainer button{
+    font-family: "Arial Black", Gadget, sans-serif;
+    background-color: #444;
+    border: 1px solid #4c4c4c;
+    color:#EEE !important;
+    width:80px;
+    border-radius: 2px;
+    padding:5px;
+    margin-top:15px;
+    margin-right:15px;
+    text-transform: uppercase;
+    cursor: pointer;
+
+}
+
+#reddCoinButtonContainer button:hover{
+    background-color: #555;
+
+    -webkit-transition:background .6s;
+    transition:background .6s;
+}
+
+#reddCoinInputContainer{
+    padding:20px;
+}
+#reddCoinQuickTips{
+    margin-bottom: 65px;
+    padding: 0px 20px 10px 20px;
+}
+
+#reddCoinInputContainer input{
+    width:97%;
+    font-size:20px;
+    padding:4px;
+}
+
+#reddCoinQuickTips h4{
+    font-size:17px;
+}
+
+.rddQuickTip:hover{
+    color:#fff;
+    text-decoration: underline;
+}
+.rddQuickTip{
+    text-align: center;
+    padding:3px;
+    font-size:16;
+    width:82px;
+    display: block;
+    float:left;
+    margin:7px;
+    background-color: #444;
+    color:#EEE;
+    border-radius: 10px;
+}

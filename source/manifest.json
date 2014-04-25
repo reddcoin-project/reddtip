@@ -1,0 +1,22 @@
+{
+    "name": "Reddcoin Tip Platform",
+    "version": "1.1.2",
+    "manifest_version": 2,
+    "description": "Adds a tip button to reddit, twitch, and twitter.",
+    "web_accessible_resources" : [
+        "*.html",
+        "*.png"
+    ],
+    "content_scripts": [
+    {
+      "matches": [
+        "http://www.reddit.com/r/*/comments/*",
+        "http://www.twitch.tv/*",
+        "https://twitter.com/*",
+        "http://twitter.com/*"
+      ],
+      "css": ["styles.css"],
+      "js": ["jquery.js", "content.js"]
+    }
+    ]
+}
