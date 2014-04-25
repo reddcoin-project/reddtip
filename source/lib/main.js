@@ -1,13 +1,8 @@
 var pageMod = require("sdk/page-mod");
-var self = require("sdk/self");
+var self    = require("sdk/self");
 var Request = require("sdk/request").Request;
 
-console.log("starting...");
-
 var startContentScript = function(popupHtml){
-
-    console.log("popup url requested");
-    console.log(popupHtml);
 
     pageMod.PageMod({
         //for whatever reason, the array of includes didn't seem to be working. Ultra-escaped cryptic regex to the rescue.
@@ -30,7 +25,6 @@ var startContentScript = function(popupHtml){
 
 var popup = Request({
     url: self.data.url("popup.html"),
-//    onComplete: startContentScript
     onComplete: function(data){
 
         startContentScript(data.text)

@@ -14,7 +14,6 @@ function dbg(variable)
     console.log(variable);
 }
 
-dbg("starting...");
 
 var RDD = {
 
@@ -156,10 +155,7 @@ RDD.modal = (function(){
 
     pub.initialize = function(){
 
-        dbg("inside initialize modal!!!!");
-
         RDD.helpers.getPopupHtml(function(html){
-            dbg("popup loaded: " + html);
             var win = {
                 height : $(window).height(),
                 width  : $(window).width()
@@ -184,7 +180,6 @@ RDD.modal = (function(){
             pri.addQuickButtons();
             pri.bindMainButtons();
         });
-        dbg("initialize finished");
     }
 
     //return the public object to expose global functions.
@@ -194,43 +189,37 @@ RDD.modal = (function(){
 RDD.helpers = {
 
     isChrome: function(){
-        dbg("checking chrome ----------------");
         try {
             if(chrome) {
                 return true;
             }
         } catch(e) {}
 
-        dbg("NOT   chrome !!!!!!!");
         return false;
     },
 
     getPopupHtml: function(callback){
-        dbg(self.options);
 
         if(RDD.helpers.isChrome()){
-            $.get(RDD.helpers.url('/popup.html'), function(html){
+            $.get(RDD.helpers.url('popup.html'), function(html){
                 callback(html);
             });
             return;
         }
 
         callback(self.options.popupHtml)
-        dbg(self.options.popupHtml)
     },
 
     url: function(path){
 
         if(RDD.helpers.isChrome()){
-            return chrome.extension.getURL(path);
+            return chrome.extension.getURL('data/' + path);
         }
 
         var str = self.options.baseUrl;
         str = str.substring(0, str.length - 1)
         return str + path;
 
-//        return require("sdk/self").data.url(path);
-//
     },
 
     getCommand: function(command, amount, user){
@@ -441,11 +430,9 @@ RDD.sites.twitch = {
     }
 };
 
-dbg("we made it this far...");
 
 $(function(){
 
-    dbg("actually in the document ready function?!?!");
     var site = RDD.helpers.getCurrentSite();
 
     //early exit. The site wasn't resolved correctly.
@@ -454,15 +441,12 @@ $(function(){
         return;
     }
 
-    dbg("setting site...");
     //set the current site
     RDD.site = RDD.sites[site];
 
-    dbg("initializing modal");
     //initialiaze the modal dialogue
     RDD.modal.initialize();
 
-    dbg("initializing site");
     //initialize the current site.
     RDD.site.initialize();
 
