@@ -95,8 +95,23 @@ RDD.modal = (function(){
 
     pri.bindMainButtons = function(){
 
+        //close on escape press
+        $(document).keydown(function(e) {
+            if (e.keyCode == 27) pub.close();
+        });
+
+        //close on cancel/container click
+        $("#reddCoinPopupContainer").click(pub.close);
         $("#reddTipCancel").click(pub.close);
 
+        //tip on enter press
+        $(document).keydown(function(e) {
+            if(e.keyCode == 13 && ($('#reddTipUser').is(':focus') || $('#reddTipAmount').is(':focus'))){
+                pri.doTip();
+            }
+        });
+
+        //tip on tip click
         $("#reddTipButton").click(function(){
             pri.doTip();
         });
@@ -143,14 +158,22 @@ RDD.modal = (function(){
             if(RDD.site.hookTipOpen != undefined) {
                 RDD.site.hookTipOpen();
             }
+            
+            //focus input
+            $("#reddTipAmount").focus();
+
+            if(showUser){
+                $("#reddTipUser").focus();
+            }
         });
         pri.vars.popup.css('top', '60px');
     };
 
     pub.close = function(){
         pri.vars.overlay.fadeOut('slow');
-        pri.vars.popup.fadeOut('fast');
-        $("#reddTipAmount").val("");
+        pri.vars.popup.fadeOut('fast', function(){  
+            $("#reddTipAmount").val("");
+        });
     };
 
     pub.initialize = function(){
