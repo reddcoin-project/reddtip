@@ -95,8 +95,23 @@ RDD.modal = (function(){
 
     pri.bindMainButtons = function(){
 
+        //close on escape press
+        $(document).keydown(function(e) {
+            if (e.keyCode == 27) pub.close();
+        });
+
+        //close on cancel/container click
+        $("#reddCoinPopupContainer").click(pub.close);
         $("#reddTipCancel").click(pub.close);
 
+        //tip on enter press
+        $(document).keydown(function(e) {
+            if(e.keyCode == 13 && ($('#reddTipUser').is(':focus') || $('#reddTipAmount').is(':focus'))){
+                pri.doTip();
+            }
+        });
+
+        //tip on tip click
         $("#reddTipButton").click(function(){
             pri.doTip();
         });
@@ -143,6 +158,13 @@ RDD.modal = (function(){
             if(RDD.site.hookTipOpen != undefined) {
                 RDD.site.hookTipOpen();
             }
+            
+            //focus input
+            $("#reddTipAmount").focus();
+
+            if(showUser){
+                $("#reddTipUser").focus();
+            }
         });
         pri.vars.popup.css('top', '60px');
     };
@@ -155,6 +177,9 @@ RDD.modal = (function(){
         if(RDD.site.hookTipClose != undefined) {
             RDD.site.hookTipClose();
         }
+//        pri.vars.popup.fadeOut('fast', function(){  
+//            $("#reddTipAmount").val("");
+//        });
     };
 
     pub.initialize = function(){
@@ -378,6 +403,9 @@ RDD.sites.twitter = {
             requireUser = true;
         }
 
+        // This is super hacky but I couldn't figure out a better way. Essentially, is the user hasn't entered any text
+        // when they click tip, twitter will change the textarea to a placeholder mode and not recognize it as having
+        // any actual content. For now we add a period and remove it later. Better solution needed for sure.
         if(initialText === "" || matches){
             textArea.text(". ");
             textArea.trigger("keyup");
