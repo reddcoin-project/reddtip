@@ -171,15 +171,14 @@ RDD.modal = (function(){
 
     pub.close = function(){
         pri.vars.overlay.fadeOut('slow');
-        pri.vars.popup.fadeOut('fast');
-        $("#reddTipAmount").val("");
+        pri.vars.popup.fadeOut('fast', function(){
+            $("#reddTipAmount").val("");
+        });
 
         if(RDD.site.hookTipClose != undefined) {
             RDD.site.hookTipClose();
         }
-//        pri.vars.popup.fadeOut('fast', function(){  
-//            $("#reddTipAmount").val("");
-//        });
+
     };
 
     pub.initialize = function(){
@@ -390,7 +389,7 @@ RDD.sites.twitter = {
             textArea = button.closest('form').find('.tweet-box'),
             showUser = false,
             initialText = $.trim(textArea.text()),
-            usernameRegex = /@[-a-zA-Z0-9_]+/,
+            usernameRegex = /^\s*@[-a-zA-Z0-9_]+\s*$/,
             matches = usernameRegex.exec(initialText),
             requireUser = false;
 
