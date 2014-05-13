@@ -151,6 +151,10 @@ RDD.modal = (function(){
         pri.vars.overlay.fadeOut('slow');
         pri.vars.popup.fadeOut('fast');
         $("#reddTipAmount").val("");
+
+        if(RDD.site.hookTipClose != undefined) {
+            RDD.site.hookTipClose();
+        }
     };
 
     pub.initialize = function(){
@@ -331,10 +335,26 @@ RDD.sites.twitter = {
 </button>',
     command    : ' @tipreddcoin +tip {RECIPIENT} {AMOUNT} RDD',
     commandMsg : '+tip  {AMOUNT} RDD',
+    currentUser : false,
+    lastTextArea : false,
+
+    hookTipClose: function(){
+        if(RDD.site.lastTextArea !== false){
+            var text = RDD.site.lastTextArea.text();
+
+            RDD.site.lastTextArea.text(text.replace(/^\.\s*/, ""));
+        }
+    },
 
     hookTipOpen : function(){
         var currentUser = $(".profile-card-inner").attr("data-screen-name");
+
+        if(RDD.site.currentUser !== false){
+            currentUser = RDD.site.currentUser;
+        }
+
         if(currentUser){
+            currentUser = currentUser.replace("@", "");
             $("#reddTipUser").val("@" + currentUser);
         }
     },
@@ -344,15 +364,31 @@ RDD.sites.twitter = {
             isMessage = button.closest('.tweet-button').find('.tweet-btn').find('.messaging-text').is(':visible'),
             textArea = button.closest('form').find('.tweet-box'),
             showUser = false,
+            initialText = $.trim(textArea.text()),
+            usernameRegex = /@[-a-zA-Z0-9_]+/,
+            matches = usernameRegex.exec(initialText),
             requireUser = false;
+
+        //reset the global-ish current user
+        RDD.site.currentUser = false;
+        RDD.site.lastTextArea = textArea;
 
         if(!isMessage) {
             showUser = true;
             requireUser = true;
         }
 
+        if(initialText === "" || matches){
+            textArea.text(". ");
+            textArea.trigger("keyup");
+        }
+
+        if(matches){
+            RDD.site.currentUser = matches[0];
+        }
+
         RDD.modal.open(function(tipAmount, tipUser){
-            var text = textArea.text()
+            var text = textArea.text();
 
             if(isMessage) {
                 text += RDD.helpers.getCommand(RDD.site.commandMsg, tipAmount, tipUser)
@@ -361,7 +397,11 @@ RDD.sites.twitter = {
                 text += RDD.helpers.getCommand(RDD.site.command, tipAmount, tipUser);
             }
 
+            text = text.replace(/^\.\s*@tipreddcoin/, "@tipreddcoin");
+            text = text.replace(/^\.\s*\+tip/, "+tip");
+
             textArea.text( text );
+            textArea.trigger("keyup");
         }, showUser, requireUser);
     },
 
