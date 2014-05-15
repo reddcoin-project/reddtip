@@ -345,6 +345,16 @@ RDD.sites.reddit = {
 
         //bind to body click, filter for .tip buttons
         $("body").on("click", ".tip", RDD.site.tipClicked);
+        
+        //hide Reddtipbot messages
+        var hideUsers = new Array ('reddtipbot', 'ReddcoinRewards');
+        $(".author").each(function(){
+            if($.inArray($(this).text(), hideUsers) !== -1){
+                var parent = $(this).parents().eq(4);
+                parent.find('.noncollapsed:first, .midcol:first, .child:first').hide();
+                parent.find('.collapsed:first').show();
+            }
+        })
     }
 };
 
