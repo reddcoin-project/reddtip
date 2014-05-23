@@ -35,7 +35,37 @@ var RDD = {
         25000,
         50000,
         100000,
-        500000
+        500000,
+        
+        'beer',
+        'champagne',
+        'coffee',
+        'all'
+    ],
+    
+    tipKeywords: [
+        'all',
+        
+        'upvote',
+        'highfive',
+        'coffee',
+        'cookie',
+        'gum',
+        'burger',
+        'donut',
+        'sushi',
+        'pizza',
+        'souffle',
+        'caviar',
+        'beer',
+        'nicebeer',
+        'coke',
+        'champagne',
+        'wine',
+        'hug',
+        'kiss',
+        'pi',
+        'e'
     ],
 
     currentTextArea : false
@@ -59,7 +89,7 @@ RDD.modal = (function(){
             tipUser = $.trim($("#reddTipUser").val()),
             float = parseFloat(tipAmount);
 
-        if(isNaN(float)){
+        if(isNaN(float) && $.inArray(tipAmount, RDD.tipKeywords) === -1){dbg(1);
             $("#reddTipAmount").addClass("error");
             return;
         }
@@ -309,6 +339,8 @@ RDD.sites.reddit = {
             value += RDD.helpers.getCommand(RDD.site.command, tipAmount)
 
             input.val(value);
+            
+            input.focus();
         });
     },
 
