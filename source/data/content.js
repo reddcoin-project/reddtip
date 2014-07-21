@@ -18,6 +18,7 @@ function dbg(variable)
 var RDD = {
 
     vars : {
+        tipBotUser : 'reddtipbot',
         modalWidth: 450
     },
 
@@ -36,16 +37,16 @@ var RDD = {
         50000,
         100000,
         500000,
-        
+
         'beer',
         'champagne',
         'coffee',
         'all'
     ],
-    
+
     tipKeywords: [
         'all',
-        
+
         'upvote',
         'highfive',
         'coffee',
@@ -69,7 +70,420 @@ var RDD = {
     ],
 
     currentTextArea : false
-}
+};
+
+(function(exports){
+    var pri = {
+            iden: false,
+            currentIntent : false
+        },
+        pub = {};
+
+    pri.getHtml = function(){
+        var extraText = "";
+        if(pri.currentIntent !== false){
+            extraText = ': ' + pri.currentIntent;
+        }
+        pri.currentIntent = false;
+
+        var html = '<div id="rddCaptcha">' +
+            '<h4>Robot Test' + extraText + '</h4>' +
+            '<p>' +
+            'Unfortunately you need to solve a captcha for us to communicate with the tipbot. ' +
+            '</p>' +
+            '<p>' +
+            'Alternatively, you can submit something to earn enough karma to skip these.' +
+            '</p>' +
+            '<img src="/captcha/'+pri.iden+'"> <br>' +
+            '<input type="text" id="rddCapchaAnswer" placeholder="captcha solution">  <br>' +
+            '<div class="rddCaptchaButton">'+
+            '<button id="rddCaptchaCancel">Cancel</button> ' +
+            '<button id="rddCaptchaDone">Done</button>' +
+            '</div>'+
+            '</div>';
+
+        return html;
+    };
+
+    pri.matchMainPopup = function(){
+        var $main = $("#reddCoinPopup"),
+            $captcha = $("#rddCaptcha"),
+            mainPos = $main.offset(),
+            offset = 60;
+
+        if(mainPos.left < 100){
+            mainPos.left = ($(window).width() / 2) - 410
+        }
+
+        $captcha.offset({
+            top  : mainPos.top + offset,
+            left : mainPos.left
+        });
+        $captcha.height($main.height() - offset);
+        $captcha.width($main.width() - 40);
+    };
+
+    pub.setIntent = function(intent){
+        pri.currentIntent = intent;
+    };
+
+    pub.show = function(iden, completeCallback){
+        pri.iden = iden;
+        $("body").append(pri.getHtml());
+        $("#reddCoinPopupContainer").show();
+        pri.matchMainPopup();
+
+        $("#rddCaptchaDone").click(function(){
+            var answer = $("#rddCapchaAnswer").val();
+
+            $("#rddCaptcha").remove();
+
+            if(!$("#reddCoinPopup").is(":visible")){
+                $("#reddCoinPopupContainer").hide();
+            }
+
+            completeCallback(answer);
+        });
+
+        $("#rddCaptchaCancel").click(function(){
+            if(!$("#reddCoinPopup").is(":visible")){
+                $("#reddCoinPopupContainer").hide();
+            }
+
+            $("#rddCaptcha").remove();
+        });
+    };
+
+    exports.captcha = pub;
+})(RDD);
+
+/**
+ * RDD.operations
+ */
+(function(exports){
+    var pri = {},
+        pub = {};
+
+    pri.modHash = false;
+
+    pri.requireModHash = function(callback){
+        var extraData = {},
+
+            getModHash = function(){
+                $.getJSON('/api/me.json', function(response){
+                    extraData.uh = response.data.modhash;
+                    callback(extraData);
+                });
+            },
+
+            showCaptcha = function(iden){
+                exports.captcha.show(iden, function(userAnswer){
+                    extraData.captcha = userAnswer;
+                    getModHash();
+                })
+            },
+
+            getCaptcha = function(){
+                $.post('/api/new_captcha', {api_type:"json"}, function(response){
+                    extraData.iden = response.json.data.iden;
+                    showCaptcha(response.json.data.iden);
+                })
+            };
+
+        $.get('/api/needs_captcha.json', function(response){
+            if(response === true){
+                getCaptcha();
+            }
+            else {
+                getModHash();
+            }
+        });
+    };
+
+    pri.sendRedditMessage = function(subject, body, callback, to){
+        var to = to || exports.vars.tipBotUser,
+            callback = callback || function(){},
+            data = {
+                to      : to,
+                subject : subject,
+                text    : body
+            };
+
+        pri.requireModHash(function(extraData){
+            data = $.extend({}, data, extraData);
+            $.post('/api/compose', data, callback);
+        });
+
+    };
+
+    pri.tryOperation = function(operation, callback){
+        var list = exports.site.accountData.operationList,
+            inProgress = list[operation] === true;
+
+        dbg("Attempting operation: " + operation);
+
+        if(inProgress){
+            dbg("Aborting operation: " + operation);
+            return;
+        }
+
+        callback();
+    }
+
+    pri.notifyOperationStarted = function(operation){
+        var operationNotification = {
+            method: "operationStarted",
+            operation: operation
+        };
+        exports.helpers.message(operationNotification, function(operationList){
+            exports.site.accountData.operationList = operationList;
+
+        });
+    };
+
+    pub.updateBalance = function(){
+        var operation = "updateBalance";
+
+        RDD.captcha.setIntent("Check TipBot Balance");
+
+        pri.tryOperation(operation, function(){
+
+            $("#rddUpdateBalanceButton").hide();
+            pri.notifyOperationStarted(operation);
+            pri.sendRedditMessage("info", "+info");
+        });
+    };
+
+    pub.register = function(){
+        var operation = "registering";
+
+        RDD.captcha.setIntent("Register with TipBot");
+
+        pri.tryOperation(operation, function(){
+
+            pri.notifyOperationStarted(operation);
+            pri.sendRedditMessage("register", "+register", function(){
+                exports.settingsGui.renderOperationProgress();
+            });
+        });
+    };
+
+    pub.updateHistory = function(){
+        var operation = "updateHistory";
+
+        RDD.captcha.setIntent("Update Transaction History");
+
+        pri.tryOperation(operation, function(){
+
+            $("#rddUpdateTransactionsButton").hide();
+            pri.notifyOperationStarted(operation);
+            pri.sendRedditMessage("history", "+history", function(){
+                exports.settingsGui.renderOperationProgress();
+            });
+
+        });
+    };
+
+    pub.withdraw = function(toAddress, amount){
+        var command = '+withdraw ' + toAddress + ' ' + amount + ' RDD';
+
+        pri.sendRedditMessage("withdraw", command, function(){
+            RDD.helpers.message({
+                method : "withdrawalSent",
+                address : toAddress,
+                amount : amount
+            });
+        });
+    };
+
+    pub.withdrawGui = function(){
+        var $address       = $("#reddWithdrawalAddress"),
+            $amount        = $("#reddWithdrawalAmount"),
+            toAddress      = $.trim($address.val()),
+            amount         = $.trim($amount.val()),
+            addressIsValid = /^[Rr][a-zA-Z0-9]{26,34}$/.test(toAddress),
+            amountIsValid  = !isNaN(parseFloat(amount));
+
+        if(!addressIsValid){
+            $address.addClass("error");
+        }
+        else {
+            $address.removeClass("error");
+        }
+
+        if(!amountIsValid){
+            $amount.addClass("error");
+        }
+        else {
+            $amount.removeClass("error");
+        }
+
+        if(!amountIsValid || !addressIsValid){
+            return;
+        }
+
+        $("#rddDoWithdrawalButton").hide();
+        $(".withdrawalInProgress").show();
+        $("#reddWithdrawalAmount").val("");
+
+        pub.withdraw(toAddress, amount);
+    }
+
+    //publish this module.
+    exports.operations = pub;
+})(RDD);
+
+/*************************************************
+ * RDD.settingsGUI
+ *************************************************/
+(function(exports){
+    var pri = {
+        transactionsRendered : false
+        },
+        pub = {};
+
+
+    pri.setState = function(newState){
+        $(".reddState").hide();
+        $(".redd"+newState+"State").show();
+    };
+
+    pri.getTransactionHeader = function(){
+        return '<table class="transactionTable"> ' +
+            '<tr>' +
+            '<th>Info</th>'+
+            '<th>User</th>'+
+            '<th>Amount</th>'+
+            '<th>USD</th>'+
+            '<th>Date</th>'+
+            '</tr>';
+    };
+
+    pri.getAddressLink = function(address, length){
+        var length = length || 12,
+            shortened = address.substr(0,length) + '[...]',
+            link = 'http://bitinfocharts.com/reddcoin/address/'+address;
+        return '<a target="_blank" title="RDD Address: '+address+'" href="'+link+'">'+
+            shortened
+            +'</a>';
+    }
+
+    pri.getTransactionRow = function(transaction){
+        var info,
+            clss = "green",
+            user = transaction.from,
+            date = RDD.helpers.formatDay(new Date(transaction.time * 1000));
+
+        switch(transaction.type){
+            case "sent_tip":
+                info = "Tip Sent To: ";
+                user = transaction.to;
+                break;
+            case "received_tip":
+                info = "Tip From: ";
+                break;
+            case "withdrawal":
+                info = "Withdrawal to:";
+                user = pri.getAddressLink(transaction.address);
+                break;
+        }
+
+        if(transaction.amount < 0){
+            clss = 'red';
+        }
+
+        return '<tr>' +
+            '<td>' + info + '</td>'+
+            '<td>' + user + '</td>'+
+            '<td class="'+clss+'">' + transaction.amount + '</td>'+
+            '<td>' + transaction.usd+ '</td>'+
+            '<td>' + date + '</th>'+
+            '</tr>';
+    };
+
+    pri.renderTransactions = function(){
+        var request = {
+            method    : "getDataAttribute",
+            attribute : "recordedTransactions"
+        };
+
+        RDD.helpers.message(request, function(transactions){
+            var html = pri.getTransactionHeader();
+
+            $.each(transactions, function(i, transaction){
+                html += pri.getTransactionRow(transaction);
+            });
+
+            html += '</table>'
+
+            $("#rddTransactionsTable").html(html);
+        });
+    };
+
+    pri.openTab = function($tabLink){
+        var tab = $tabLink.attr("data-tab"),
+            $tab = $("#reddTab_" + tab);
+
+        if(tab === 'transactions' && ! pri.transactionsRendered){
+            pri.renderTransactions();
+            pri.transactionsRendered = true;
+        }
+
+        //hide others
+        $(".reddSettingsTab").hide();
+        $(".reddSettingsTabLink").removeClass("selected");
+
+        $tab.show();
+        $tabLink.addClass("selected")
+    };
+
+    pri.renderOperation = function(operationName, buttonId, messageId){
+        var operationList = exports.site.accountData.operationList;
+
+        //operationList[operationName] = true;
+        if(operationList[operationName] === undefined){
+            return;
+        }
+
+        if(operationList[operationName] === true){
+            $(buttonId).hide();
+            $(messageId).show();
+        }
+        else {
+            $(buttonId).show();
+            $(messageId).hide();
+        }
+    };
+
+    pub.renderOperationProgress = function(){
+
+        pri.renderOperation("updateBalance", "#rddUpdateBalanceButton",      ".balanceUpdateInProgress");
+        pri.renderOperation("updateHistory", "#rddUpdateTransactionsButton", ".historyUpdateInProgress");
+    };
+
+    pub.bind = function(){
+        $("#reddCoinBalanceLink").click(function(){
+            pri.setState("Settings");
+        });
+
+        $("#reddSettingsBackButton").click(function(){
+            pri.setState("Main");
+        });
+
+        $(".reddSettingsTabLink").click(function(){
+            var $tabLink = $(this);
+            pri.openTab($tabLink);
+        });
+
+        $(".reddSettingsTabLink:first").trigger("click");
+
+        $("#rddUpdateBalanceButton").click(RDD.operations.updateBalance);
+        $("#rddUpdateTransactionsButton").click(RDD.operations.updateHistory);
+        $("#rddDoWithdrawalButton").click(RDD.operations.withdrawGui);
+    };
+
+    exports.settingsGui = pub;
+})(RDD);
 
 
 RDD.modal = (function(){
@@ -89,7 +503,7 @@ RDD.modal = (function(){
             tipUser = $.trim($("#reddTipUser").val()),
             float = parseFloat(tipAmount);
 
-        if(isNaN(float) && $.inArray(tipAmount, RDD.tipKeywords) === -1){dbg(1);
+        if(isNaN(float) && $.inArray(tipAmount, RDD.tipKeywords) === -1){
             $("#reddTipAmount").addClass("error");
             return;
         }
@@ -120,7 +534,7 @@ RDD.modal = (function(){
         var headerSrc = RDD.helpers.url('/reddcoin_header_logo.png'),
             imgHtml = '<img id="reddCoinPopupImage" src="'+headerSrc+'">';
 
-        $("#reddCoinPopupHeader").html(imgHtml);
+        $("#reddCoinPopupHeader").append(imgHtml);
     };
 
     pri.bindMainButtons = function(){
@@ -188,7 +602,7 @@ RDD.modal = (function(){
             if(RDD.site.hookTipOpen != undefined) {
                 RDD.site.hookTipOpen();
             }
-            
+
             //focus input
             $("#reddTipAmount").focus();
 
@@ -209,6 +623,13 @@ RDD.modal = (function(){
             RDD.site.hookTipClose();
         }
 
+    };
+
+    pub.setInitialState = function(){
+        $(".reddMainState").hide();
+        $(".reddInitialState").show();
+        $("#reddTipCancel").show();
+        $("#reddCoinBalanceLink").hide();
     };
 
     pub.initialize = function(){
@@ -237,6 +658,8 @@ RDD.modal = (function(){
             pri.buildModalHeader();
             pri.addQuickButtons();
             pri.bindMainButtons();
+            RDD.settingsGui.bind();
+
         });
     }
 
@@ -256,6 +679,24 @@ RDD.helpers = {
         return false;
     },
 
+    formatDay: function(d){
+        var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oc", "Nov", "Dec");
+
+        var curr_date = d.getDate();
+        var curr_month = d.getMonth();
+        return m_names[curr_month] + " " + curr_date;
+    },
+
+    message: function(data, callback){
+        //ensure every request has the site and user available
+        data.user = RDD.site.user;
+        data.site = RDD.site.name;
+
+        //if(RDD.helpers.isChrome()){
+            chrome.runtime.sendMessage(data, callback);
+        //}
+    },
+
     getPopupHtml: function(callback){
 
         if(RDD.helpers.isChrome()){
@@ -266,6 +707,30 @@ RDD.helpers = {
         }
 
         callback(self.options.popupHtml)
+    },
+
+    numberWithCommas: function(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+
+    formatBalance: function(balance){
+        balance = Math.floor(balance);
+        balance = this.numberWithCommas(balance);
+        return balance;
+    },
+
+    setPopupBalance: function(currentBalance){
+        var initialBalance = currentBalance;
+        if(currentBalance === false){
+            currentBalance = "N/A";
+            initialBalance = currentBalance;
+        }
+        else{
+            currentBalance = this.formatBalance(currentBalance) + " RDD";
+        }
+
+        $("#rddFullBalance").html(initialBalance);
+        $("#reddCoinBalanceLink").html(currentBalance);
     },
 
     url: function(path){
@@ -308,6 +773,18 @@ RDD.helpers = {
         }
 
         return false;
+    },
+
+    //copied from reddit source.
+    redditSource: {
+        hidecomment: function(e){
+            var t=$(e).thing();
+            return t.hide().find(".noncollapsed:first, .midcol:first").hide().end().show().find(".entry:first .collapsed").show(),t.hasClass("message")?$.request("collapse_message",{id:$(t).thing_id()}):t.find(".child:first").hide(),!1
+        },
+        showcomment: function (e){
+            var t=$(e).thing();
+            return t.find(".entry:first .collapsed").hide().end().find(".noncollapsed:first, .midcol:first").show().end().show(),t.hasClass("message")?$.request("uncollapse_message",{id:$(t).thing_id()}):t.find(".child:first").show(),!1
+        }
     }
 }
 
@@ -325,6 +802,16 @@ RDD.sites = {};
 
 RDD.sites.reddit = {
 
+    name: "reddit",
+    user: "",
+
+    accountData : {
+        currentBalance        : false,
+        depositAddress        : false,
+        lastWithdrawalAddress : false,
+        operationList         : {}
+    },
+
     buttonHtml : '<button class="tip" type="button">tip</button>',
     command    : '+/u/reddtipbot {AMOUNT} RDD',
 
@@ -339,7 +826,7 @@ RDD.sites.reddit = {
             value += RDD.helpers.getCommand(RDD.site.command, tipAmount)
 
             input.val(value);
-            
+
             input.focus();
         });
     },
@@ -361,6 +848,85 @@ RDD.sites.reddit = {
         });
     },
 
+    minimizeBots: function(){
+        //hide Reddtipbot messages
+        var hideUsers = [
+            'reddtipbot',
+            'ReddcoinRewards'
+        ];
+
+        $(".noncollapsed .author").each(function(){
+            //we only want to lookup $(this) once, for better performance.
+            // Also, labeling it helps with readability
+            var $userLink      = $(this),
+                userName       = $userLink.text(),
+                $parent;
+
+            if($.inArray(userName, hideUsers) !== -1){
+
+                $parent = $userLink.parents().eq(3);
+
+                //only minimize visible bot comments, so that DOM updates are reduced a bit
+                if($parent.find('.noncollapsed:first').is(':visible')) {
+
+                    $parent.find('.noncollapsed:first, .midcol:first, .child:first').hide();
+                    $parent.find('.collapsed:first').show();
+                }
+            }
+        });
+    },
+
+    checkMessages: function(){
+
+        $.getJSON('/message/inbox.json', function(response){
+            RDD.helpers.message({ "method": "parseMessages", "response" : response }, function(){
+                RDD.site.getAccountData();
+            });
+        });
+    },
+
+    initializeMessaging: function(){
+        RDD.site.user = $("#header-bottom-right span.user:first a").html();
+
+
+        RDD.helpers.message({ "method": "messageCheckNeeded" }, function(checkNeeded){
+            if(checkNeeded){
+                RDD.site.checkMessages();
+            }
+            else {
+                RDD.site.getAccountData();
+            }
+        });
+    },
+
+    getAccountData: function(){
+        RDD.helpers.message({ "method": "getAccountData" }, function(data){
+            RDD.site.accountData = data;
+            RDD.helpers.setPopupBalance(data.currentBalance);
+            $("#reddDepositAddress").val(data.depositAddress);
+
+            if(data.lastWithdrawalAddress !== false) {
+                $("#reddWithdrawalAddress").val(data.lastWithdrawalAddress);
+            }
+
+            if(data.operationList.initialProbe === true && data.operationList.updateBalance === false){
+                RDD.operations.updateBalance();
+            }
+
+            if(data.operationList.initialProbe || data.operationList.needsRegister){
+                RDD.modal.setInitialState();
+            }
+
+            if(data.operationList.needsRegister === true && data.operationList.registering === false){
+                RDD.modal.setInitialState();
+                RDD.operations.register();
+            }
+
+            RDD.settingsGui.renderOperationProgress();
+
+        });
+    },
+
     initialize: function(){
 
         //add initial buttons
@@ -377,16 +943,11 @@ RDD.sites.reddit = {
 
         //bind to body click, filter for .tip buttons
         $("body").on("click", ".tip", RDD.site.tipClicked);
-        
-        //hide Reddtipbot messages
-        var hideUsers = new Array ('reddtipbot', 'ReddcoinRewards');
-        $(".author").each(function(){
-            if($.inArray($(this).text(), hideUsers) !== -1){
-                var parent = $(this).parents().eq(4);
-                parent.find('.noncollapsed:first, .midcol:first, .child:first').hide();
-                parent.find('.collapsed:first').show();
-            }
-        })
+
+        //minimize comments from bots.
+        RDD.site.minimizeBots();
+
+        RDD.site.initializeMessaging();
     }
 };
 
@@ -444,7 +1005,7 @@ RDD.sites.twitter = {
             requireUser = true;
         }
 
-        // This is super hacky but I couldn't figure out a better way. Essentially, is the user hasn't entered any text
+        // This is super hacky but I couldn't figure out a better way. Essentially, if the user hasn't entered any text
         // when they click tip, twitter will change the textarea to a placeholder mode and not recognize it as having
         // any actual content. For now we add a period and remove it later. Better solution needed for sure.
         if(initialText === "" || matches){

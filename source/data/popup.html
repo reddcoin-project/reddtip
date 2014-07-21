@@ -10,26 +10,130 @@
     <div id="reddCoinPopupHeader">
 
 
+        <div id="reddCoinBalanceContainer">
+            <a id="reddCoinBalanceLink" href="javascript:void(0);" title="Estimated Current Balance. Click for more options.">
+
+            </a>
+        </div>
 
     </div>
     <div id="reddCoinPopupBody">
 
-        <div id="reddCoinInputContainer">
-            <input type="text" id="reddTipUser" placeholder="@PersonToTip">
-            <input type="text" id="reddTipAmount" placeholder="Tip Amount...">
+        <div class="reddInitialState reddState reddHide">
+            <h4>Sit Tight!</h4>
+            <p>We're currently talking to the tipbot to make sure your registered and to figure out your balance.</p>
+            <p>Reddcoin Tip Platform will be ready shortly.</p>
+            <h4>Keep Refreshing!</h4>
         </div>
-        <div id="reddCoinQuickTips">
-            <h4>Quick Tips</h4>
-            <div id="reddCoinTipContainer">
+
+        <div class="reddMainState reddState">
+
+            <div id="reddCoinInputContainer">
+                <input type="text" id="reddTipUser" placeholder="@PersonToTip">
+                <input type="text" id="reddTipAmount" placeholder="Tip Amount...">
+            </div>
+
+            <div id="reddCoinQuickTips">
+                <h4>Quick Tips</h4>
+                <div id="reddCoinTipContainer">
+
+                </div>
+                <br style="clear:both;">
+            </div>
+
+            <br style="clear:both;">
+
+        </div>
+
+        <div class="reddSettingsState reddState reddHide">
+            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="balance">
+                Balance
+            </a>
+
+            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="transactions">
+                History
+            </a>
+
+            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="withdrawal">
+                Withdraw
+            </a>
+
+            <div class="reddSettingsTab" id="reddTab_balance">
+                <p>
+                    Your current estimated balance is: <span id="rddFullBalance"></span> RDD.
+                </p>
+                <p>
+                    Balances are provided as a convenience and may not always be accurate. To update your balance with
+                    the newest data, use the button below.
+                </p>
+                <p>
+                    You can deposit Reddcoins by sending them to the following address:
+                </p>
+
+                <input type="text" id="reddDepositAddress" class="rddInput" placeholder="...">
+
+                <button id="rddUpdateBalanceButton">Update Balance</button>
+
+                <p class="balanceUpdateInProgress reddHide">
+                    Request to update balance has been sent.
+                    <br>
+                    Once the bot replies we'll get it updated for you.
+                </p>
+            </div>
+
+
+            <div class="reddSettingsTab" id="reddTab_transactions">
+
+                <button id="rddUpdateTransactionsButton">Update History</button>
+
+                <h4>
+                    Transaction History
+                </h4>
+
+                <p class="historyUpdateInProgress reddHide">
+                    Request to update history has been sent.
+                    <br>
+                    Once the bot replies we'll get it updated for you.
+                </p>
+
+                <div id="rddTransactionsTable">
+                    <p>
+                        Loading Transactions....
+                    </p>
+                </div>
 
             </div>
-            <br style="clear:both;">
+
+
+            <div class="reddSettingsTab" id="reddTab_withdrawal">
+                <p>
+                    To withdraw your coins, enter the amount to withdraw and the address to send them to.
+                </p>
+                <input type="text" id="reddWithdrawalAddress" class="rddInput" placeholder="Widthraw Address">
+                <input type="text" id="reddWithdrawalAmount" class="rddInput" placeholder="Amount RDD">
+
+                <p class="withdrawalInProgress reddHide">
+                    Request to withdraw RDD sent.
+                    <br>
+                    Once the bot replies we'll update your balance.
+                </p>
+
+                <button id="rddDoWithdrawalButton">Process Withdrawal</button>
+            </div>
         </div>
-        <br style="clear:both;">
+
+
         <div id="reddCoinButtonContainer">
 
-            <button id="reddTipCancel">Cancel</button>
-            <button id="reddTipButton">Tip</button>
+            <button id="reddTipCancel" class="reddMainState reddState">
+                Cancel
+            </button>
+            <button id="reddTipButton" class="reddMainState reddState">
+                Tip
+            </button>
+            <button id="reddSettingsBackButton" class="reddSettingsState reddState reddHide">
+                Back
+            </button>
         </div>
 
     </div>

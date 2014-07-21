@@ -12,6 +12,9 @@
         "*.html",
         "*.png"
     ],
+    "background": {
+        "scripts": [ "data/jquery.js", "data/background.js" ]
+    },
     "content_scripts": [
     {
       "matches": [
