@@ -7,7 +7,7 @@ function dbg(variable)
 
 RDD =  {
     settings : {
-        minutesToCheckData: 0.2,
+        minutesToCheckData: 3.5,
         messageType : {
             ACCOUNT_INFO : 1,
             TIP_SENT : 2,
