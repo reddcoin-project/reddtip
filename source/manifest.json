@@ -13,7 +13,14 @@
         "*.png"
     ],
     "background": {
-        "scripts": [ "data/jquery.js", "data/background.js" ]
+        "scripts": [
+            "data/jquery.js",
+            "lib/initialize.js",
+            "lib/background/data.js",
+            "lib/background/messages.js",
+            "lib/background/background.js",
+            "data/background.js"
+        ]
     },
     "content_scripts": [
     {
