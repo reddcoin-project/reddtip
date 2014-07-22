@@ -19,7 +19,7 @@ var RDD = {
 
     vars : {
         tipBotUser : 'reddtipbot',
-        modalWidth: 450
+        modalWidth : 490
     },
 
     tipList: [
