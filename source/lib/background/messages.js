@@ -4,6 +4,31 @@ RDD.messages = (function(){
         pri = {},
         messageType = RDD.settings.messageType;
 
+    pri.parseReceivedTip = function(message){
+        var amountMatch = /(\d+(?:\.\d+)?)\s*Reddcoin/.exec(message.body)        || ["?", "?"],
+            fromMatch   = /(\/u\/[^\s]+)./.exec(message.body)                        || ["?", "?"],
+            toMatch     = /Hey\s*([^\s]+),/.exec(message.body)     || ["?", "?"],
+            usdMatch    = /\(\$(\d+(?:\.\d+)?)\)/.exec(message.body)                  || ["?", "?"],
+            balance     = RDD.data.get("currentBalance"),
+            transaction = {
+                type   : "received_tip",
+                from   : fromMatch[1],
+                to     : toMatch[1],
+                time   : message.created_utc,
+                amount : amountMatch[1] * 1,
+                usd    : usdMatch[1]
+            };
+
+        //if the current balance is unknown (boolean false), then we won't try to adjust it with this transaction
+        if(!isNaN(parseFloat(balance))){
+            balance =  parseFloat(balance) + transaction.amount;
+        }
+
+        RDD.data.addTransaction(transaction);
+        RDD.data.setAttribute("currentBalance", balance);
+        RDD.data.messageParsed(message);
+    };
+
     pri.parseSentTip= function(message){
         var amountMatch = /\^(\d+(?:\.\d+)?)\s*\^Reddcoins/.exec(message.body)        || ["?", "?"],
             fromMatch   = /\^(\/u\/[^\s]+)/.exec(message.body)                        || ["?", "?"],
@@ -185,6 +210,10 @@ RDD.messages = (function(){
             return messageType.REGISTERED;
         }
 
+        if(body.indexOf("you have received a") > 0){
+            return messageType.TIP_RECEIVED;
+        }
+
         if(message.was_comment === true){
             return messageType.TIP_SENT;
         }
@@ -210,6 +239,10 @@ RDD.messages = (function(){
                 break;
             case messageType.TIP_SENT:
                 pri.parseSentTip(message);
+                return 1;
+                break;
+            case messageType.TIP_RECEIVED:
+                pri.parseReceivedTip(message);
                 return 1;
                 break;
             case messageType.TRANSACTION_HISTORY:
