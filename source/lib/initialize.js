@@ -14,8 +14,74 @@ function dbg(variable)
     console.log(variable);
 }
 
+function inherit(base, instance){
+    return $.extend({}, base, instance);
+}
+
+function err(message, type){
+    var err = new Error(),
+        type = type || 'Standard';
+    err.name = 'ReddTip ' + type + ' Error';
+    err.message = message;
+    throw(err);
+}
+
 
 RDD =  {};
+
+RDD.vars = {
+    tipBotUser : 'reddtipbot',
+    modalWidth : 490
+};
+
+RDD.tipList = [
+    50,
+    100,
+    200,
+    500,
+
+    1000,
+    2000,
+    5000,
+    10000,
+
+    25000,
+    50000,
+    100000,
+    500000,
+
+    'beer',
+    'champagne',
+    'coffee',
+    'all'
+];
+
+RDD.tipKeywords= [
+    'all',
+
+    'upvote',
+    'highfive',
+    'coffee',
+    'cookie',
+    'gum',
+    'burger',
+    'donut',
+    'sushi',
+    'pizza',
+    'souffle',
+    'caviar',
+    'beer',
+    'nicebeer',
+    'coke',
+    'champagne',
+    'wine',
+    'hug',
+    'kiss',
+    'pi',
+    'e'
+];
+
+RDD.currentTextArea = false;
 
 RDD.settings = {
 
@@ -32,3 +98,15 @@ RDD.settings = {
     }
 
 };
+
+/**
+ * List of all sites
+ * @type {{}}
+ */
+RDD.sites = {};
+
+/**
+ * Current Site
+ * @type {{}}
+ */
+RDD.site = {};

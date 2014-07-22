@@ -31,7 +31,20 @@
         "http://twitter.com/*"
       ],
       "css": ["data/styles.css"],
-      "js": ["data/jquery.js", "data/content.js"]
+      "js": [
+          "data/jquery.js",
+          "lib/initialize.js",
+          "lib/helpers.js",
+          "lib/content/captcha.js",
+          "lib/content/modal.js",
+          "lib/content/operations.js",
+          "lib/content/settingsGui.js",
+          "lib/content/sites/interface.js",
+          "lib/content/sites/reddit.js",
+          "lib/content/sites/twitch.js",
+          "lib/content/sites/twitter.js",
+          "data/content.js"
+      ]
     }
     ]
 }
