@@ -129,10 +129,10 @@
     text-align: center;
     padding:3px;
     font-size:16;
-    width:82px;
+    width:88px;
     display: block;
     float:left;
-    margin:7px;
+    margin:8px;
     background-color: #444;
     color:#EEE;
     border-radius: 10px;
@@ -199,7 +199,7 @@ a.reddSettingsTabLink.selected,
 }
 #rddTransactionsTable{
     overflow: auto;
-    max-height: 440px;
+    max-height: 400px;
 }
 
 .transactionTable{
