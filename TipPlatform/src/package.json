@@ -1,0 +1,9 @@
+{
+  "name": "reddcoin-tip-platform",
+  "title": "Reddcpom Tip Platform",
+  "id": "jid1-Zs5C5Uq5YmWBaw",
+  "description": "Adds a tip button to reddit, twitch, and twitter.",
+  "author": "Andy Groff",
+  "license": "MPL 2.0",
+  "version": "1.1.3"
+}

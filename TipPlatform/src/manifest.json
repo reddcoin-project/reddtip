@@ -1,0 +1,58 @@
+{
+    "name": "Reddcoin Actual Tip Platform",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "Adds a tip button everywhere.",
+    "permissions": [
+        "https://api.reddapi.com/*",
+        "http://noproject.com/*"
+    ],
+    "icons": {
+        "16": "data/img/icon16.png",
+        "48": "data/img/icon48.png",
+        "128": "data/img/icon128.png"
+    },
+    "web_accessible_resources": [
+        "*.html",
+        "*.png",
+        "*.css"
+    ],
+    "background": {
+        "scripts": [
+            "data/jquery.js",
+            "lib/initialize.js",
+            "lib/helpers.js",
+            "lib/background/data.js",
+            "lib/background/messages.js",
+            "lib/background/background.js",
+            "data/background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://www.reddit.com/r/*/comments/*",
+                "http://www.twitch.tv/*",
+                "https://twitter.com/*",
+                "https://www.youtube.com/watch?*",
+                "http://www.youtube.com/watch?*",
+                "https://apis.google.com/*",
+                "http://twitter.com/*"
+            ],
+            "all_frames": true,
+            "js": [
+                "data/jquery.js",
+                "lib/initialize.js",
+                "lib/helpers.js",
+                "lib/content/tipInterface.js",
+                "lib/content/sites/interface.js",
+                "lib/content/sites/reddit.js",
+                "lib/content/sites/twitch.js",
+                "lib/content/sites/twitter.js",
+                "lib/content/sites/youtube.js",
+                "lib/content/sites/googleComments.js",
+                "data/content.js"
+            ]
+        }
+    ]
+}
