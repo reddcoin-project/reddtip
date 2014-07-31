@@ -10,8 +10,7 @@
 
 
     pri.setState = function(newState){
-        $(".reddState").hide();
-        $(".redd"+newState+"State").show();
+        exports.modal.setState(newState);
     };
 
     pri.getTransactionHeader = function(){
@@ -95,6 +94,13 @@
             pri.transactionsRendered = true;
         }
 
+        if(tab === 'tip'){
+            $("#reddTipButton").show();
+        }
+        else {
+            $("#reddTipButton").hide();
+        }
+
         //hide others
         $(".reddSettingsTab").hide();
         $(".reddSettingsTabLink").removeClass("selected");
@@ -128,20 +134,13 @@
     };
 
     pub.bind = function(){
-        $("#reddCoinBalanceLink").click(function(){
-            pri.setState("Settings");
-        });
-
-        $("#reddSettingsBackButton").click(function(){
-            pri.setState("Main");
-        });
 
         $(".reddSettingsTabLink").click(function(){
             var $tabLink = $(this);
             pri.openTab($tabLink);
         });
 
-        $(".reddSettingsTabLink:first").trigger("click");
+        $(".reddSettingsTabLink:last").trigger("click");
 
         $("#rddUpdateBalanceButton").click(RDD.operations.updateBalance);
         $("#rddUpdateTransactionsButton").click(RDD.operations.updateHistory);

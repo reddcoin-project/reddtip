@@ -10,7 +10,14 @@
         depositAddress        : false,
         lastWithdrawalAddress : false,
         operationList         : {}
-    },
+    };
+
+    pub.tabs = [
+        "tip",
+        "transactions",
+        "balance",
+        "withdrawal"
+    ];
 
     pub.buttonHtml = '<button class="tip" type="button">tip</button>';
     pub.command    = '+/u/reddtipbot {AMOUNT} RDD';

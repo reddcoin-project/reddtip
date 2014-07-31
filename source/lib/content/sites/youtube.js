@@ -2,9 +2,40 @@
     var pri = {},
         pub = {};
 
+    pub.name = "youtube";
+    pub.user = "";
 
-    pub.buttonHtml = '<button class="button primary tip" style="margin-right: 10px;width: 22%;">Tip</button>';
-    pub.command    = '@tipreddcoin +tip {RECIPIENT} {AMOUNT} RDD';
+    pub.accountData = {
+        currentBalance        : false,
+        depositAddress        : false,
+        lastWithdrawalAddress : false,
+        apiUser               : {},
+        operationList         : {}
+    };
+
+    pub.buttonHtml = '<span>' +
+        '<button class="tip yt-uix-button yt-uix-button-size-default yt-uix-button-text action-panel-trigger yt-uix-tooltip yt-uix-button-toggled" type="button" onclick=";return false;" title="" >' +
+        '<span class="yt-uix-button-content">Tip</span>' +
+        '</button>' +
+        '</span>';
+    pub.command    = '';
+
+    pri.tryAddButton = function(response){
+        if(response.issue){
+            return;
+        }
+
+        $("#watch7-secondary-actions").append(pub.buttonHtml);
+    }
+
+    pri.loadUser = function(){
+        var message = {
+            method : "initiateApi"
+        };
+        exports.helpers.message(message, function(){
+
+        });
+    };
 
     pub.tipClicked = function(){
         var textArea = $(this).closest('.chat-interface').find('textarea');
@@ -15,9 +46,12 @@
             text += RDD.helpers.getCommand(RDD.site.command, tipAmount, tipUser);
 
             textArea.val( text );
-        }, true, false);
+        });
     };
 
+    pub.hookTipOpen = function(){
+        $("#reddCoinPopup").css("position", "fixed");
+    };
     pub.addButtons = function(){
         // Add a button to the Twitch chat
         $('.send-chat-button').append(RDD.site.buttonHtml);
@@ -46,11 +80,29 @@
     };
 
     pub.initialize = function(){
-        if ($('.chat-option-buttons').length != 0)
-        {
-            RDD.site.checkWidth(16);
-        }
+        var userLink = $(".yt-user-info:first").html(),
+            style = exports.helpers.url("styles.css"),
+            id = /"\/channel\/([^"]+)/.exec(userLink) || ["?", "?"],
+            stylsheet = '<link rel="stylesheet" type="text/css" href="'+style+'">';
+
+        $('head').append(stylsheet);
+
+        $("body").on("click", ".tip", RDD.site.tipClicked);
+
+        pri.loadUser();
+
+        //return;
+        var url = RDD.vars.addressApi,
+            request = {
+                method    : "getUserAddress",
+                channelId : id[1]
+            };
+
+        $.getJSON(url, request, pri.tryAddButton);
+
+        return;
+
     };
 
-    exports.sites.twitch = inherit(exports.sites.interface, pub);
+    exports.sites.youtube = inherit(exports.sites.interface, pub);
 })(RDD);

@@ -40,7 +40,7 @@ RDD.modal = (function(){
         }
 
         pri.vars.callback(tipAmount, tipUser);
-        RDD.modal.close();
+        RDD.site.tipDone();
     }
 
     pri.buildModalHeader = function(){
@@ -74,8 +74,29 @@ RDD.modal = (function(){
         });
     };
 
+    pri.displayTabs = function(){
+        var tabs = RDD.site.tabs,
+            $allTabs = $(".reddSettingsTabLink");
+
+        $allTabs.hide();
+
+        if(tabs.length === 1){
+            return;
+        }
+
+        $.each($allTabs, function(i, item){
+            var item = $(item),
+                tab = item.attr("data-tab");
+            if($.inArray(tab, tabs) > -1){
+                item.show();
+            }
+        });
+    };
+
     pri.addQuickButtons = function(){
-        var tipHtml = '';
+        var tipHtml = '',
+            extraHtml = '',
+            count = 0;
 
         $.each(RDD.tipList, function(i, tipAmount){
 
@@ -84,8 +105,17 @@ RDD.modal = (function(){
                 + tipAmount.toLocaleString()
                 + '</a>';
 
-            tipHtml += a
+            if(count >= 20){
+                extraHtml += a;
+            }
+            else {
+                tipHtml += a
+            }
+
+            count++;
         });
+
+        tipHtml = tipHtml + "<div class=\"extraQuickTips\">"+extraHtml+"</div>";
 
         $("#reddCoinTipContainer").html(tipHtml);
 
@@ -94,6 +124,19 @@ RDD.modal = (function(){
             $("#reddTipAmount").val(val);
             pri.doTip();
         });
+
+        $(".toggleQuickTipsButton").click(function(){
+            var $button = $(this),
+                $container = $(".extraQuickTips");
+            if($container.height() > 10){
+                $container.animate({height:0});
+                $button.html("Show More");
+            }
+            else {
+                $container.animate({height:104});
+                $button.html("Show Less");
+            }
+        })
     };
 
     pub.open = function(callback, showUser, requireUser){
@@ -145,6 +188,11 @@ RDD.modal = (function(){
         $("#reddCoinBalanceLink").hide();
     };
 
+    pub.setState = function(newState){
+        $(".reddState").hide();
+        $(".redd"+newState+"State").show();
+    };
+
     pub.initialize = function(){
 
         RDD.helpers.getPopupHtml(function(html){
@@ -171,6 +219,8 @@ RDD.modal = (function(){
             pri.buildModalHeader();
             pri.addQuickButtons();
             pri.bindMainButtons();
+            pri.displayTabs();
+            //pub.setState("Settings");
             RDD.settingsGui.bind();
 
         });

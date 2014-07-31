@@ -26,12 +26,18 @@ function err(message, type){
     throw(err);
 }
 
-
-RDD =  {};
+exports = {};
+RDD =  exports;
 
 RDD.vars = {
     tipBotUser : 'reddtipbot',
+    addressApi : 'http://noproject.com/reddtip/json.php',
     modalWidth : 490
+};
+
+RDD.keys = {
+    reddApiGet  : '968NXJ8A3XPmzKZ09v07xGNSp2HgwPFDsg0oW2F0Rou4pkYmV2bdAkK3tQ64A3Np',
+    reddApiPost : 'RK3UjjEHqyrKVRaFe6X4lbCH7H3F5l9wcEogqDCjx5vK2AGeoZwfFSEnHuwbo8MF'
 };
 
 RDD.tipList = [
@@ -50,10 +56,35 @@ RDD.tipList = [
     100000,
     500000,
 
-    'beer',
+/*    'beer',
     'champagne',
     'coffee',
-    'all'
+    'all'*/
+
+    'upvote',
+    'highfive',
+    'cookie',
+    'pizza',
+
+    'coffee',
+    'beer',
+    'champagne',
+    'wine',
+
+    'gum',
+    'burger',
+    'donut',
+    'sushi',
+
+    'souffle',
+    'caviar',
+    'nicebeer',
+    'coke',
+
+    'hug',
+    'kiss',
+    'pi',
+    'e'
 ];
 
 RDD.tipKeywords= [
@@ -77,8 +108,7 @@ RDD.tipKeywords= [
     'wine',
     'hug',
     'kiss',
-    'pi',
-    'e'
+    'pie'
 ];
 
 RDD.currentTextArea = false;

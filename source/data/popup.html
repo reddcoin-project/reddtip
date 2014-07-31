@@ -26,42 +26,54 @@
             <h4>Keep Refreshing!</h4>
         </div>
 
-        <div class="reddMainState reddState">
+        <div class="reddMainState reddState reddHide">
 
-            <div id="reddCoinInputContainer">
-                <input type="text" id="reddTipUser" placeholder="@PersonToTip">
-                <input type="text" id="reddTipAmount" placeholder="Tip Amount...">
-            </div>
 
-            <div id="reddCoinQuickTips">
-                <h4>Quick Tips</h4>
-                <div id="reddCoinTipContainer">
-
-                </div>
-                <br style="clear:both;">
-            </div>
-
-            <br style="clear:both;">
 
         </div>
 
-        <div class="reddSettingsState reddState reddHide">
-            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="balance">
-                Balance
+        <div class="reddSettingsState reddState">
+
+
+            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="withdrawal">
+                Withdraw
             </a>
 
             <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="transactions">
                 History
             </a>
 
-            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="withdrawal">
-                Withdraw
+            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="balance">
+                Balance
             </a>
 
+            <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="tip">
+                Tip
+            </a>
+
+            <div class="reddSettingsTab" id="reddTab_tip">
+                <div id="reddCoinInputContainer">
+                    <input type="text" id="reddTipUser" placeholder="@PersonToTip">
+                    <input type="text" id="reddTipAmount" placeholder="Tip Amount...">
+                </div>
+
+                <div id="reddCoinQuickTips">
+                    <h4>Quick Tips</h4>
+                    <div id="reddCoinTipContainer">
+
+                    </div>
+                    <a href="javascript:void(0);" class="toggleQuickTipsButton">
+                        Show More
+                    </a>
+                    <br style="clear:both;">
+                </div>
+
+                <br style="clear:both;">
+            </div>
             <div class="reddSettingsTab" id="reddTab_balance">
-                <p>
-                    Your current estimated balance is: <span id="rddFullBalance"></span> RDD.
-                </p>
+                <h4>
+                    Estimated Balance: <span id="rddFullBalance"></span> <small>RDD</small>.
+                </h4>
                 <p>
                     Balances are provided as a convenience and may not always be accurate. To update your balance with
                     the newest data, use the button below.
@@ -106,8 +118,11 @@
 
 
             <div class="reddSettingsTab" id="reddTab_withdrawal">
+                <h4>
+                    Withdraw Coins
+                </h4>
                 <p>
-                    To withdraw your coins, enter the amount to withdraw and the address to send them to.
+                    Enter the amount to withdraw and the address to send them to.
                 </p>
                 <input type="text" id="reddWithdrawalAddress" class="rddInput" placeholder="Widthraw Address">
                 <input type="text" id="reddWithdrawalAmount" class="rddInput" placeholder="Amount RDD">
