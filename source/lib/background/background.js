@@ -185,7 +185,8 @@ RDD.bg = (function(){
             "currentBalance"        : RDD.data.get("currentBalance"),
             "depositAddress"        : RDD.data.get("depositAddress"),
             "operationList"         : RDD.data.get("operationList"),
-            "lastWithdrawalAddress" : RDD.data.get("lastWithdrawalAddress")
+            "lastWithdrawalAddress" : RDD.data.get("lastWithdrawalAddress"),
+            "settings"              : RDD.data.get("settings")
         }
     };
 
@@ -206,6 +207,11 @@ RDD.bg = (function(){
 
         dbg(res);
     }
+
+    pub.updateSettings = function(data){
+        RDD.data.setAttribute("settings", data.settings);
+        RDD.data.save();
+    };
 
     pub.checkYoutubeUser = function(data){
         var url = 'http://noproject.com/reddtip/json.php',

@@ -74,8 +74,8 @@ RDD.modal = (function(){
         });
     };
 
-    pri.displayTabs = function(){
-        var tabs = RDD.site.tabs,
+    pri.displayTabs = function(tabs){
+        var tabs = tabs || RDD.site.tabs,
             $allTabs = $(".reddSettingsTabLink");
 
         $allTabs.hide();
@@ -139,7 +139,7 @@ RDD.modal = (function(){
         })
     };
 
-    pub.open = function(callback, showUser, requireUser){
+    pub.open = function(callback, showUser, requireUser, tabs){
         var $userInput = $("#reddTipUser");
 
         pri.vars.callback = callback;
@@ -151,6 +151,8 @@ RDD.modal = (function(){
         else {
             $userInput.hide();
         }
+
+        pri.displayTabs(tabs);
 
         pri.vars.overlay.fadeIn('fast');
         pri.vars.popup.fadeIn('slow', function(){
@@ -166,6 +168,9 @@ RDD.modal = (function(){
                 $("#reddTipUser").focus();
             }
         });
+
+        RDD.settingsGui.openTab($(".reddSettingsTabLink:visible:last"));
+
         pri.vars.popup.css('top', '60px');
     };
 
@@ -182,9 +187,10 @@ RDD.modal = (function(){
     };
 
     pub.setInitialState = function(){
-        $(".reddMainState").hide();
-        $(".reddInitialState").show();
-        $("#reddTipCancel").show();
+        this.setState("Initial");
+//        $(".reddMainState").hide();
+//        $(".reddInitialState").show();
+//        $("#reddTipCancel").show();
         $("#reddCoinBalanceLink").hide();
     };
 

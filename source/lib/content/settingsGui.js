@@ -4,7 +4,8 @@
  *************************************************/
 (function(exports){
     var pri = {
-            transactionsRendered : false
+            transactionsRendered : false,
+            currentSettings : {}
         },
         pub = {};
 
@@ -85,7 +86,7 @@
         });
     };
 
-    pri.openTab = function($tabLink){
+    pub.openTab = function($tabLink){
         var tab = $tabLink.attr("data-tab"),
             $tab = $("#reddTab_" + tab);
 
@@ -109,9 +110,41 @@
         $tabLink.addClass("selected")
     };
 
+    pri.started = function(){
+        function checkMessagesCallback(){
+            var list = RDD.site.accountData.operationList;
+            if(list.initialProbe || list.needsRegister){
+                setTimeout(function(){
+                    RDD.site.checkMessages(checkMessagesCallback);
+                }, 6000);
+            }
+            else{
+                $("#getStartedThree").hide();
+                $("#getStartedFour").show();
+            }
+        };
+        $("#getStartedTwo").hide();
+        $("#getStartedThree").show();
+
+        RDD.site.checkMessages(checkMessagesCallback);
+    };
+
+    pri.getStarted = function(){
+        $("#getStartedOne").hide();
+        $("#getStartedTwo").show();
+        RDD.operations.register(function(){
+            setTimeout(function(){
+                RDD.operations.updateBalance(pri.started);
+            }, 2000)
+
+        });
+
+    };
+
     pri.renderOperation = function(operationName, buttonId, messageId){
         var operationList = exports.site.accountData.operationList;
 
+        dbg(operationList);
         //operationList[operationName] = true;
         if(operationList[operationName] === undefined){
             return;
@@ -127,6 +160,32 @@
         }
     };
 
+    pri.saveSettings = function(){
+        var message = {
+            method: "updateSettings"
+        };
+
+        if($("#hideCommentsSetting").is(':checked')){
+            pri.currentSettings.hideBotComments = true;
+        }
+        else {
+            pri.currentSettings.hideBotComments = false;
+        }
+
+        message.settings = pri.currentSettings
+        exports.helpers.message(message);
+    };
+
+    pub.renderSettings = function(settings){
+        pri.currentSettings = settings;
+
+        $("#hideCommentsSetting").prop('checked', settings.hideBotComments);
+    };
+
+    pri.bindSettings = function(){
+        $("#hideCommentsSetting").change(pri.saveSettings);
+    };
+
     pub.renderOperationProgress = function(){
 
         pri.renderOperation("updateBalance", "#rddUpdateBalanceButton",      ".balanceUpdateInProgress");
@@ -137,7 +196,7 @@
 
         $(".reddSettingsTabLink").click(function(){
             var $tabLink = $(this);
-            pri.openTab($tabLink);
+            pub.openTab($tabLink);
         });
 
         $(".reddSettingsTabLink:last").trigger("click");
@@ -145,6 +204,10 @@
         $("#rddUpdateBalanceButton").click(RDD.operations.updateBalance);
         $("#rddUpdateTransactionsButton").click(RDD.operations.updateHistory);
         $("#rddDoWithdrawalButton").click(RDD.operations.withdrawGui);
+
+        $("#rddGetStartedButton").click(pri.getStarted);
+
+        pri.bindSettings();
     };
 
     exports.settingsGui = pub;

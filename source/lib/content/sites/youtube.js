@@ -80,6 +80,7 @@
     };
 
     pub.initialize = function(){
+        return;
         var userLink = $(".yt-user-info:first").html(),
             style = exports.helpers.url("styles.css"),
             id = /"\/channel\/([^"]+)/.exec(userLink) || ["?", "?"],

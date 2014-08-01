@@ -72,6 +72,7 @@
     text-align: right;
 }
 
+.reddInitialState button,
 .reddSettingsTabLink,
 .reddSettingsTab button,
 #reddCoinButtonContainer button{
@@ -89,7 +90,7 @@
     font-weight:normal;
 
 }
-
+.reddInitialState button:hover,
 .reddSettingsTab button:hover,
 #reddCoinButtonContainer button:hover{
     background-color: #555;
@@ -163,16 +164,29 @@ div.reddSettingsState{
 .reddSettingsTabLink{
     display: block;
     float: right;
-    width: auto;
     padding: 2px 14px;
     text-align: center;
     margin-top:0px;
     margin-right:10px;
-    width:16%;
+    width:14%;
     margin-bottom:0px;
     background-color: #666;
     border-color:#666;
     border-radius:10px;
+}
+.pointer{
+    cursor: pointer;
+}
+#settingsTab{
+    width: 17px;
+    display: block;
+    font-size: 17px;
+    padding: 3px 2px;
+    line-height: 12px;
+}
+#reddTab_settings label{
+    font-size:14px;
+    font-weight:bold;
 }
 a.reddSettingsTabLink.selected,
 .reddSettingsTabLink.selected{
@@ -201,6 +215,7 @@ a.reddSettingsTabLink.selected,
     font-size:13px;
     margin:10px 0px;
 }
+.reddInitialState button,
 .reddSettingsTab button{
     width:auto;
 }
@@ -300,6 +315,7 @@ div.reddInitialState{
     width: 474px;
     margin-left: -20px;
 }
+
 #rddCaptcha button:hover,
 #rddCaptcha button{
     cursor: pointer;

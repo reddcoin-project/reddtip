@@ -43,7 +43,8 @@
     };
 
     pri.sendRedditMessage = function(subject, body, callback, to){
-        var to = to || exports.vars.tipBotUser,
+        var that = this,
+            to = to || exports.vars.tipBotUser,
             callback = callback || function(){},
             data = {
                 to      : to,
@@ -53,7 +54,23 @@
 
         pri.requireModHash(function(extraData){
             data = $.extend({}, data, extraData);
-            $.post('/api/compose', data, callback);
+
+            $.post('/api/compose', data, function(response){
+                var isError = false;
+                $.each(response.jquery, function(i, item){
+                    var str = item[3][0] || " ";
+                    if(str.indexOf("BAD_CAPTCHA") > 0){
+                        isError = true;
+                    }
+                });
+
+                if(isError){
+                    that.sendRedditMessage(subject, body, callback, to);
+                }
+                else{
+                    callback();
+                }
+            });
         });
 
     };
@@ -72,40 +89,60 @@
         callback();
     }
 
-    pri.notifyOperationStarted = function(operation){
+    pri.notifyOperationStarted = function(operation, callback){
         var operationNotification = {
-            method: "operationStarted",
-            operation: operation
-        };
+                method: "operationStarted",
+                operation: operation
+            },
+            callback = callback || function(){};
+
         exports.helpers.message(operationNotification, function(operationList){
             exports.site.accountData.operationList = operationList;
-
+            exports.settingsGui.renderOperationProgress();
+            callback();
         });
     };
 
-    pub.updateBalance = function(){
+    pub.updateBalance = function(callback){
         var operation = "updateBalance";
+
+        if(!$.isFunction(callback)){
+            callback = function(){};
+        }
 
         RDD.captcha.setIntent("Check TipBot Balance");
 
         pri.tryOperation(operation, function(){
 
             $("#rddUpdateBalanceButton").hide();
-            pri.notifyOperationStarted(operation);
-            pri.sendRedditMessage("info", "+info");
+
+            pri.sendRedditMessage("info", "+info", function(){
+
+                pri.notifyOperationStarted(operation, function(){
+                    callback();
+                });
+
+            });
         });
     };
 
-    pub.register = function(){
+    pub.register = function(callback){
         var operation = "registering";
+
+        if(!$.isFunction(callback)){
+            callback = function(){};
+        }
 
         RDD.captcha.setIntent("Register with TipBot");
 
         pri.tryOperation(operation, function(){
 
-            pri.notifyOperationStarted(operation);
             pri.sendRedditMessage("register", "+register", function(){
-                exports.settingsGui.renderOperationProgress();
+
+                pri.notifyOperationStarted(operation, function(){
+                    callback();
+                });
+
             });
         });
     };
@@ -118,9 +155,9 @@
         pri.tryOperation(operation, function(){
 
             $("#rddUpdateTransactionsButton").hide();
-            pri.notifyOperationStarted(operation);
+
             pri.sendRedditMessage("history", "+history", function(){
-                exports.settingsGui.renderOperationProgress();
+                pri.notifyOperationStarted(operation);
             });
 
         });

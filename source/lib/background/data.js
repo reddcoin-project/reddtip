@@ -28,6 +28,9 @@ RDD.data = (function(){
                 "updateBalance" : false,
                 "updateHistory" : false
             },
+            settings : {
+                "hideBotComments" : true
+            },
             recordedTransactions: []
         }
     };
@@ -37,6 +40,7 @@ RDD.data = (function(){
      */
     pri.ensureDataLoaded = function(){
         var userKey = RDD.bg.getUser(),
+            defaultData,
             data;
 
         //return early, data is loaded
@@ -47,18 +51,26 @@ RDD.data = (function(){
         dbg("Loading Tip Platform Data");
 
         //get data
-        data = localStorage.getItem(userKey);
+        data        = localStorage.getItem(userKey);
+        defaultData = pri.getDefaultData();
 
         //if null, create new data
         if (data === null) {
             dbg("No data found for `"+userKey+"`. Using default data.");
             dbg("LocalStorage: ");
             dbg(localStorage);
-            data = pri.getDefaultData();
+            data = defaultData
         }
         //data is stored as a JSON string. Make it an object
         else {
             data = JSON.parse(data);
+        }
+
+        if(!data.settings){
+            data.settings = defaultData.settings;
+        }
+        if(!data.operationList){
+            data.operationList = defaultData.operationList;
         }
 
         pri.mainData = data;

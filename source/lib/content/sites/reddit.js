@@ -16,7 +16,8 @@
         "tip",
         "transactions",
         "balance",
-        "withdrawal"
+        "withdrawal",
+        "settings"
     ];
 
     pub.buttonHtml = '<button class="tip" type="button">tip</button>';
@@ -83,21 +84,24 @@
         });
     };
 
-    pub.checkMessages = function(){
+    pub.checkMessages = function(callback){
+        var callback = callback || function(){};
 
         $.getJSON('/message/inbox.json', function(response){
             RDD.helpers.message({ "method": "parseMessages", "response" : response }, function(){
                 RDD.site.getAccountData();
+                callback();
             });
         });
     };
 
-    pub.initializeMessaging = function(){
+    pub.initializeMessaging = function(canCheck){
+        var canCheck = canCheck || true;
         RDD.site.user = $("#header-bottom-right span.user:first a").html();
 
 
         RDD.helpers.message({ "method": "messageCheckNeeded" }, function(checkNeeded){
-            if(checkNeeded){
+            if(checkNeeded && canCheck){
                 RDD.site.checkMessages();
             }
             else {
@@ -117,7 +121,7 @@
             }
 
             if(data.operationList.initialProbe === true && data.operationList.updateBalance === false){
-                RDD.operations.updateBalance();
+                //RDD.operations.updateBalance();
             }
 
             if(data.operationList.initialProbe || data.operationList.needsRegister){
@@ -126,15 +130,41 @@
 
             if(data.operationList.needsRegister === true && data.operationList.registering === false){
                 RDD.modal.setInitialState();
-                RDD.operations.register();
+                //RDD.operations.register();
             }
 
             RDD.settingsGui.renderOperationProgress();
+            RDD.settingsGui.renderSettings(data.settings);
 
+            if(data.settings.hideBotComments === true){
+
+                //minimize comments from bots.
+                RDD.site.minimizeBots();
+            }
         });
     };
 
+    pub.bindHotKey = function(){
+        var tabs = $.extend([], RDD.site.tabs);
+        tabs.shift();
+        document.onkeydown = function (evt){
+            if (!evt) evt = event;
+            if (evt.altKey && evt.keyCode === 84){ //CTRL+ALT+F4
+
+                RDD.modal.open(function(){}, false, false, tabs);
+            }
+        }
+    };
+
     pub.initialize = function(){
+        var isComments = /reddit.com.+\/comments\//.test(document.URL);
+
+        RDD.site.bindHotKey();
+
+        if(!isComments){
+            RDD.site.initializeMessaging(false);
+            return;
+        }
 
         //add initial buttons
         RDD.site.addButtons();
@@ -150,9 +180,6 @@
 
         //bind to body click, filter for .tip buttons
         $("body").on("click", ".tip", RDD.site.tipClicked);
-
-        //minimize comments from bots.
-        RDD.site.minimizeBots();
 
         RDD.site.initializeMessaging();
     };

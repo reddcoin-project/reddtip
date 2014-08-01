@@ -20,10 +20,30 @@
     <div id="reddCoinPopupBody">
 
         <div class="reddInitialState reddState reddHide">
-            <h4>Sit Tight!</h4>
-            <p>We're currently talking to the tipbot to make sure your registered and to figure out your balance.</p>
-            <p>Reddcoin Tip Platform will be ready shortly.</p>
-            <h4>Keep Refreshing!</h4>
+            <div id="getStartedOne">
+                <h4>Welcome!</h4>
+                <p>Before we get started, we need to talk to the tipbot for you.</p>
+                <p>Don't worry. It's easy. Just press the button below:</p>
+                <button id="rddGetStartedButton">Get Started!</button>
+            </div>
+
+            <div id="getStartedTwo" class="reddHide">
+                <h4>We're talking!</h4>
+                <p>We're sending some messages to the bot now.</p>
+            </div>
+
+            <div id="getStartedThree" class="reddHide">
+                <h4>Now we wait!</h4>
+                <p>The bot should respond any second now. Hang in there.</p>
+            </div>
+
+            <div id="getStartedFour" class="reddHide">
+                <h4>All done!</h4>
+                <p>The bot finally responded and you're all good to go. Just reload this page and be on your way.</p>
+                <button id="rddFinishedRegisteringButton" onclick="location.reload()">Reload Page!</button>
+            </div>
+
+
         </div>
 
         <div class="reddMainState reddState reddHide">
@@ -34,6 +54,10 @@
 
         <div class="reddSettingsState reddState">
 
+
+            <a href="javascript:void(0);" class="reddSettingsTabLink" id="settingsTab" data-tab="settings" title="Settings">
+                &#9881;
+            </a>
 
             <a href="javascript:void(0);" class="reddSettingsTabLink" data-tab="withdrawal">
                 Withdraw
@@ -135,12 +159,33 @@
 
                 <button id="rddDoWithdrawalButton">Process Withdrawal</button>
             </div>
+
+
+            <div class="reddSettingsTab" id="reddTab_settings">
+                <h4>
+                    Settings
+                </h4>
+
+                <p>
+                    Here you can adjust the extension settings. They'll save automatically and take effect on the next
+                    page load.
+                </p>
+
+                <label class="pointer">
+                    <input type="checkbox" id="hideCommentsSetting">
+                    &nbsp;
+                    &nbsp;
+                    <span>
+                        Hide Bot Comments on Reddit
+                    </span>
+                </label>
+             </div>
         </div>
 
 
         <div id="reddCoinButtonContainer">
 
-            <button id="reddTipCancel" class="reddMainState reddState">
+            <button id="reddTipCancel" class="reddMainState reddInitialState reddState">
                 Cancel
             </button>
             <button id="reddTipButton" class="reddMainState reddState">
