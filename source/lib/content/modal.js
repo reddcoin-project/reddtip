@@ -169,7 +169,13 @@ RDD.modal = (function(){
             }
         });
 
-        RDD.settingsGui.openTab($(".reddSettingsTabLink:visible:last"));
+        var $tab = $(".reddSettingsTabLink:visible:last");
+
+        if($tab.length === 0){
+            $tab = $("#reddCoinTipTab");
+        }
+
+        RDD.settingsGui.openTab($tab);
 
         pri.vars.popup.css('top', '60px');
     };

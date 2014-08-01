@@ -1,12 +1,10 @@
 {
     "name": "Reddcoin Tip Platform",
-    "version": "1.1.5",
+    "version": "1.1.7",
     "manifest_version": 2,
     "description": "Adds a tip button to reddit, twitch, and twitter.",
     "permissions": [
-        "identity",
-        "https://api.reddapi.com/*",
-        "http://noproject.com/*"
+        "identity"
     ],
     "icons": {
         "16": "data/icon16.png",
