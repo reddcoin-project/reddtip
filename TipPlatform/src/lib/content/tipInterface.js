@@ -3,7 +3,8 @@
  */
 (function(exports){
     var pri = {
-            $tipUi: false
+            $tipUi: false,
+            bindingsDone: false
         },
         pub = {};
 
@@ -28,16 +29,42 @@
         $button.html("Show Less");
     };
 
+    pri.isValidTip = function(value){
+        if(RDD.tipKeywords[value] !== undefined){
+            value = RDD.tipKeywords[value];
+        }
+
+        if(!isNaN(parseFloat(value))){
+            return true;
+        }
+        return false;
+    };
+
     pri.bind = function($tipUi){
+        if(pri.bindingsDone === true){
+            return true;
+        }
         $("body").on("click", ".rddQuickTip", pri.doQuickTip);
 
         $("body").on("click", ".toggleQuickTipsButton", pri.toggleQuickTips);
 
 
-        $("body").on("click", ".tip", exports.site.showTipUi);
-        $("body").on("click", "#reddTipButton", function(){
-            exports.site.doTip();
+        $("body").on("click", "#reddTipButton", function(e){
+            e.preventDefault();
+            var value = pub.getValue();
+
+            $("#reddTipAmount").removeClass("error");
+
+            if(pri.isValidTip(value)){
+                exports.site.doTip();
+                return;
+            }
+
+            $("#reddTipAmount").addClass("error");
+
         });
+
+        pri.bindingsDone = true;
     };
 
 

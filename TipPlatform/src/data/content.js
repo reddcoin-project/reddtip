@@ -16,6 +16,14 @@ $(function(){
         return;
     }
 
+    dbg("Attempting to load site: " + site);
+
+    if(site !== 'apis' && window != window.top){
+        dbg("Stopping iframe loads for this site.");
+        return;
+    }
+
+
     //set the current site
     RDD.site = RDD.sites[site];
 

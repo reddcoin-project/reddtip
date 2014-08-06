@@ -87,9 +87,12 @@
     };
 
     pri.renderAccountData = function(data){
+        var balance = Math.round(data.currentBalance);
+            balance = exports.helpers.numberWithCommas(balance);
+
         $("#reddDepositAddress").val(data.depositAddress);
         $("#reddWithdrawalAddress").val(data.lastWithdrawalAddress);
-        $("#reddCoinBalanceLink").html(data.currentBalance + " RDD");
+        $("#reddCoinBalanceLink").html(balance + " RDD");
         $("#rddFullBalance").html(data.currentBalance);
     };
 
@@ -120,6 +123,8 @@
     pub.bind = function(){
         var tabSelector = ".reddSettingsTabLink";
 
+        $("#reddCoinPopupImage").attr("src", exports.helpers.url('img/reddcoin_header_logo.png'));
+
         $(tabSelector).click(function(){
             pri.openTab($(this));
         });
@@ -129,6 +134,9 @@
         pri.bindDev();
 
         $("#rddDoWithdrawalButton").click(pri.withdrawGui);
+        $("#reddTipCancel").click(function(){
+            window.close();
+        });
 
         exports.messenger.getAccountData(pri.accountDataLoaded);
     };

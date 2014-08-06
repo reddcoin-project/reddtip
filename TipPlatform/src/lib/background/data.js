@@ -143,6 +143,8 @@ RDD.data = (function(){
                 from    : "?",
                 to      : "?",
                 address : "",
+                site    : "?",
+                label   : "",
                 time    : new Date().getTime() / 1000,
                 amount  : "?",
                 usd     : "?"

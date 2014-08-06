@@ -11,6 +11,7 @@
  */
 function dbg(variable)
 {
+    return;
     console.log(variable);
 }
 
@@ -87,29 +88,28 @@ RDD.tipList = [
     'e'
 ];
 
-RDD.tipKeywords= [
-    'all',
-
-    'upvote',
-    'highfive',
-    'coffee',
-    'cookie',
-    'gum',
-    'burger',
-    'donut',
-    'sushi',
-    'pizza',
-    'souffle',
-    'caviar',
-    'beer',
-    'nicebeer',
-    'coke',
-    'champagne',
-    'wine',
-    'hug',
-    'kiss',
-    'pie'
-];
+RDD.tipKeywords= {
+    'upvote' : 100,
+    'highfive' : 250,
+    'coffee' : 1000,
+    'cookie' : 330,
+    'gum' : 150,
+    'burger' : 2000,
+    'donut' : 400,
+    'sushi' : 3000,
+    'pizza' : 3000,
+    'souffle' : 50000,
+    'caviar' : 100000,
+    'beer' : 1000,
+    'nicebeer' : 2000,
+    'coke' : 300,
+    'champagne' : 10000,
+    'wine' : 6000,
+    'hug' : 500,
+    'kiss' : 1000,
+    'pi' : 3141.59,
+    'e' : 2718.28
+};
 
 RDD.currentTextArea = false;
 

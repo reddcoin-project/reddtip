@@ -30,6 +30,8 @@
         var info,
             clss = "green",
             user = transaction.from,
+            title = "",
+            amountTitle = "",
             date = RDD.helpers.formatDay(new Date(transaction.time * 1000));
 
         switch(transaction.type){
@@ -49,15 +51,22 @@
                 user = pri.getAddressLink(transaction.address);
                 break;
         }
+        dbg(transaction);
 
+        if(transaction.site != "?"){
+            title = ' title="' + transaction.site + '" ';
+        }
+        if(transaction.label != ""){
+            amountTitle = ' title="' + transaction.label + '" ';
+        }
         if(transaction.amount < 0){
             clss = 'red';
         }
 
         return '<tr>' +
             '<td>' + info + '</td>'+
-            '<td>' + user + '</td>'+
-            '<td class="'+clss+'">' + transaction.amount + '</td>'+
+            '<td '+title+'>' + user + '</td>'+
+            '<td '+amountTitle+' class="'+clss+'">' + transaction.amount + '</td>'+
             '<td>' + transaction.usd+ '</td>'+
             '<td>' + date + '</th>'+
             '</tr>';

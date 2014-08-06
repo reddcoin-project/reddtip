@@ -24,7 +24,7 @@
             <a id="reddCoinBalanceLink" href="javascript:void(0);" title="Your Current Balance."> </a>
         </div>
 
-        <img id="reddCoinPopupImage" src="chrome-extension://lcoponfclppkdadbglnkhedjonbfegic/data//reddcoin_header_logo.png">
+        <img id="reddCoinPopupImage" src="chrome-extension://lcoponfclppkdadbglnkhedjonbfegic/data/img/reddcoin_header_logo.png">
 
     </div>
     <div id="reddCoinPopupBody">
@@ -62,7 +62,7 @@
 
                 <input type="text" id="reddDepositAddress" class="rddInput" placeholder="...">
 
-                <button id="rddUpdateBalanceButton">Update Balance</button>
+                <button id="rddUpdateBalanceButton" class="reddHide">Update Balance</button>
 
                 <p class="balanceUpdateInProgress reddHide">
                     Request to update balance has been sent.
@@ -74,7 +74,7 @@
 
             <div class="reddSettingsTab" id="reddTab_transactions">
 
-                <button id="rddUpdateTransactionsButton">Update History</button>
+                <button id="rddUpdateTransactionsButton" class="reddHide">Update History</button>
 
                 <h4>
                     Transaction History
@@ -124,11 +124,10 @@
             </button>
 
 
-            <a style="float:left" id="devDeposit" href="#">
+            <a id="devDeposit" href="#">
                 Deposit 5,000
             </a>
-            <br>
-            <a style="float:left" id="clearData" href="#">
+            <a id="clearData" href="#">
                 Clear Data
             </a>
         </div>

@@ -22,6 +22,14 @@ a{
     border: 1px solid #999;
 }
 
+#clearData,
+#devDeposit{
+    float:left;
+    display:block;
+    margin: 5px 10px;
+    clear: both;
+}
+
 #reddCoinPopupHeader{
     border-bottom: 1px solid #3F3F3F;
     height: 58px;
@@ -129,7 +137,7 @@ a.reddSettingsTabLink.selected,
     padding: 12px 8px 0px;
     margin-top:5px;
     font-size:12px;
-    margin-bottom: 70px;
+    margin-bottom: 56px;
 }
 #rddFullBalance{
     font-weight: bold;

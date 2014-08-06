@@ -88,9 +88,27 @@
             type   : "sent_tip",
             to     : user,
             usd    : "0.00",
+            label  : '',
+            site   : window.location.hostname,
             amount : amount
         };
+
+
+        if(RDD.tipKeywords[amount] !== undefined){
+            transaction.label = amount;
+            transaction.amount = RDD.tipKeywords[amount];
+        }
+
+        //ensure negative transaction
+        if(transaction.amount > 0){
+            transaction.amount = transaction.amount * -1;
+        }
+
         pri.addTransaction(transaction, callback);
+    };
+
+    pub.setYoutubeComment = function(message){
+        pri.message("updateYoutubeComment", {message : message});
     };
 
     pub.withdrawalSent = function(address){

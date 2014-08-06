@@ -21,10 +21,7 @@
     };
 
     pri.prepareComment = function(message){
-        exports.helpers.message({
-            method : "updateYoutubeComment",
-            message : message
-        });
+        exports.messenger.setYoutubeComment(message);
     };
 
     pub.getTippedUser = function(){
@@ -82,6 +79,7 @@
 
         $("#action-panel-tip").hide();
 
+        $("body").on("click", ".tip", this.showTipUi);
         this.addTipUi($container);
     };
 

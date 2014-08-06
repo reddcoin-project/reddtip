@@ -75,6 +75,7 @@
 
     //should get hoisted
     function undefinedError(method){
+        return;
         err("`" + method + "` must be defined.", "Interface");
     }
 

@@ -9,14 +9,14 @@
 
         setTimeout(function(){
             var $div = $(".editable:first");
+
             $div.html(message);
-        }, 300)
+        }, 700)
     };
 
     pub.initialize = function(){
 
         chrome.runtime.onMessage.addListener(function(request) {
-            dbg(request);
             if (request.action == "updateGoogleComment") {
                 pub.updateMessage(request.message);
             }
