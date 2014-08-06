@@ -54,3 +54,124 @@
 
     exports.sites.twitch = inherit(exports.sites.interface, pub);
 })(RDD);
+
+
+
+var exports = {};
+var RDD = exports;
+
+(function (exports) {
+    var pri = {
+        $results: false,
+        $calculateButton: false,
+        $initialRdd: false,
+        $errorMessage: false,
+        resultRowTemplate: '',
+        validNumberCallback: function () {}
+},
+    pub = {};
+
+pri.loadDomObjects = function () {
+    pri.$results = $("#results");
+    pri.$calculateButton = $("#calculateButton");
+    pri.$initialRdd = $("#initialRdd");
+    pri.$errorMessage = $("#errorMessage");
+    pri.resultRowTemplate = $("#resultRowTemplate").html();
+};
+
+pri.calculateClicked = function () {
+    var initialRedd = parseFloat(pri.$initialRdd.val());
+
+    pri.$errorMessage.hide();
+
+    if (isNaN(initialRedd)) {
+        pri.$errorMessage.show("slow");
+        return;
+    }
+    pri.validNumberCallback(initialRedd);
+};
+
+pub.setValidNumberCallback = function (callback) {
+    pri.validNumberCallback = callback;
+};
+
+pub.clear = function () {
+    pri.$results.empty();
+};
+
+pub.renderResultRow = function (label, amount) {
+    var template = pri.resultRowTemplate,
+        html = template.replace('${label}', label).replace('${amount}', amount);
+    pri.$results.append(html);
+};
+
+pub.bind = function () {
+    pri.loadDomObjects();
+    pri.$calculateButton.click(pri.calculateClicked);
+};
+
+exports.View = pub;
+}(exports));
+
+
+(function (exports) {
+    var pri = {
+            initialRedd: 0,
+            annualGain: 0
+        },
+        pub = {};
+
+    pub.calculate = function (initialRedd) {
+        //according to hoppi
+        //total = currentRDD * (1+(0.06/1095)) ** 1095
+        var totalMints = 365 * 3,
+            total = initialRedd * Math.pow((1 + (0.06 / totalMints)), totalMints);
+
+        pri.initialRedd = initialRedd;
+        pri.annualGain = total - initialRedd;
+    };
+
+    pub.getAnnual = function () {
+        return pri.annualGain.toLocaleString();
+    };
+
+    pub.getWeekly = function () {
+        return (pri.annualGain / 52).toLocaleString();
+    };
+
+    pub.getDaily = function () {
+        return (pri.annualGain / 365).toLocaleString();
+    };
+
+    exports.Calculator = pub;
+}(exports));
+
+$(function () {
+
+    RDD.View.bind();
+    RDD.View.setValidNumberCallback(function (initialRedd) {
+        var annual, weekly, daily;
+
+        RDD.Calculator.calculate(initialRedd);
+
+        annual = RDD.Calculator.getAnnual();
+        weekly = RDD.Calculator.getWeekly();
+        daily = RDD.Calculator.getDaily();
+
+        RDD.View.clear();
+
+        RDD.View.renderResultRow("Annual", annual);
+        RDD.View.renderResultRow("Weekly", weekly);
+        RDD.View.renderResultRow("Daily", daily);
+    });
+});
+
+
+
+
+
+
+
+
+
+//testing

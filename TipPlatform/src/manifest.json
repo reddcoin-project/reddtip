@@ -12,6 +12,10 @@
         "48": "data/img/icon48.png",
         "128": "data/img/icon128.png"
     },
+    "browser_action": {
+        "default_icon": "data/img/icon48.png",
+        "default_popup": "data/html/popup.html"
+    },
     "web_accessible_resources": [
         "*.html",
         "*.png",
@@ -44,11 +48,9 @@
                 "data/jquery.js",
                 "lib/initialize.js",
                 "lib/helpers.js",
+                "lib/messenger.js",
                 "lib/content/tipInterface.js",
                 "lib/content/sites/interface.js",
-                "lib/content/sites/reddit.js",
-                "lib/content/sites/twitch.js",
-                "lib/content/sites/twitter.js",
                 "lib/content/sites/youtube.js",
                 "lib/content/sites/googleComments.js",
                 "data/content.js"

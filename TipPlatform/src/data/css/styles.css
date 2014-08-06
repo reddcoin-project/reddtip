@@ -2,37 +2,25 @@
     display:none;
 }
 
-#reddCoinPopupContainer {
-    opacity: 0.7;
-    z-index: 2147483648;
-    left: 0px;
-    top: 0px;
-    position: fixed;
-    background-color: #fff;
-    width: 100%;
-    height: 100%;
-    display:none;
+body{
+    width:500px;
+    height:380px;
+    margin:0px;
+    padding: 0px;
+    color: #3b3b3b;
+    font-family: arial,sans-serif;
+}
+a{
+    color: #ed1c24;
 }
 
-#reddTipUser{
-    margin-bottom:10px;
-}
 #reddCoinPopup{
     background-color: #FCFCFC;
     z-index: 2147483649;
-    margin: auto;
-    position: fixed;
-    opacity: 1;
+    margin: 0;
     min-height:320px;
     border: 1px solid #999;
-    display:none;
 }
-
-#reddCoinPopup .error{
-    border: 2px solid #F00;
-    transition: 2s;
-}
-
 
 #reddCoinPopupHeader{
     border-bottom: 1px solid #3F3F3F;
@@ -40,9 +28,6 @@
     background-color: #444;
 }
 
-#reddCoinPopupImage{
-    padding-left: 20px;
-}
 
 #reddCoinBalanceContainer{
     font-family: 'Arial Black', Gadget, sans-serif;
@@ -54,22 +39,12 @@
     letter-spacing: 1px;
     text-align: right;
 }
+#reddCoinBalanceContainer a:focus,
 #reddCoinBalanceContainer a{
     color: #FFF;
     font-size:15px;
-}
-
-#reddCoinPopupBody{
-    position: relative;
-}
-#reddCoinButtonContainer{
-    position: absolute;
-    bottom:0px;
-    width: 100%;
-    height: 65px;
-    background-color: #eee;
-    border-top: 1px solid #ccc;
-    text-align: right;
+    text-decoration: none;
+    outline: none;
 }
 
 .reddSettingsTabLink,
@@ -87,7 +62,6 @@
     text-transform: uppercase;
     cursor: pointer;
     font-weight:normal;
-
 }
 
 .reddSettingsTab button:hover,
@@ -100,26 +74,32 @@
     color: #EEE!important;
 }
 
-#reddCoinInputContainer{
-    padding:0px;
+.reddSettingsTabLink{
+    display: block;
+    text-decoration: none;
+    font-size: 10px;
+    float: right;
+    padding: 2px 14px;
+    text-align: center;
+    margin-top:0px;
+    margin-right:10px;
+    width:24%;
+    margin-bottom:0px;
+    background-color: #666;
+    border-color:#666;
+    border-radius:10px;
 }
-#reddCoinQuickTips{
-    margin: 15px 5px 0px 0px;
-    padding: 0px;
+.reddSettingsTabLink:hover{
+    text-decoration: underline;
 }
 
-.rddInput,
-.rddInput.error,
-#reddCoinInputContainer input{
-    width:97%;
-    font-size:20px;
-    padding:4px;
-    margin:2px 0px;
+
+div.reddSettingsState{
+    min-height: 300px;
+    padding:10px;
 }
 
-#reddCoinQuickTips h4{
-    font-size:17px;
-}
+
 #reddCoinBalanceLink{
     cursor: text;
 }
@@ -131,49 +111,10 @@
     color:#fff;
     text-decoration: underline;
 }
-.toggleQuickTipsButton,
-.rddQuickTip{
-    text-align: center;
-    padding:3px;
-    font-size:16;
-    width:88px;
-    display: block;
-    float:left;
-    margin:6px 9px;
-    background-color: #444;
-    color:#EEE;
-    border-radius: 10px;
-}
-.extraQuickTips{
-    clear:both;
-    height:0;
-    overflow:hidden;
-}
-.toggleQuickTipsButton{
-    margin-top: 14px;
-    width:94%;
-}
-div.reddSettingsState{
-    min-height: 270px;
-    padding:10px;
-}
 .reddSettingsTabLink:first-child{
     margin-right: 10px;
 }
-.reddSettingsTabLink{
-    display: block;
-    float: right;
-    width: auto;
-    padding: 2px 14px;
-    text-align: center;
-    margin-top:0px;
-    margin-right:10px;
-    width:16%;
-    margin-bottom:0px;
-    background-color: #666;
-    border-color:#666;
-    border-radius:10px;
-}
+
 a.reddSettingsTabLink.selected,
 .reddSettingsTabLink.selected{
     background-color: #ed1c24;
@@ -194,8 +135,9 @@ a.reddSettingsTabLink.selected,
     font-weight: bold;
 }
 .reddSettingsTab h4{
-    marnig:4px;
+    margin:4px;
     font-size:17px;
+    margin-left:0;
 }
 .reddSettingsTab p{
     font-size:13px;
@@ -245,6 +187,54 @@ a.reddSettingsTabLink.selected,
     border-bottom:1px solid #f6f6f6;
 }
 
+/************************************************************
+ * END NEW STYLES
+ ************************************************************/
+
+#reddTipUser{
+    margin-bottom:10px;
+}
+
+
+#reddCoinPopup .error{
+    border: 2px solid #F00;
+    transition: 2s;
+}
+
+
+
+
+#reddCoinPopupImage{
+    padding-left: 20px;
+}
+
+
+#reddCoinButtonContainer{
+    position: absolute;
+    bottom:0px;
+    width: 100%;
+    height: 65px;
+    background-color: #eee;
+    border-top: 1px solid #ccc;
+    text-align: right;
+}
+
+
+
+#reddCoinInputContainer{
+    padding:0px;
+}
+
+.rddInput,
+.rddInput.error,
+#reddCoinInputContainer input{
+    width:97%;
+    font-size:20px;
+    padding:4px;
+    margin:2px 0px;
+}
+
+
 .withdrawalInProgress,
 .balanceUpdateInProgress,
 .historyUpdateInProgress{
@@ -253,69 +243,4 @@ a.reddSettingsTabLink.selected,
     background-color: #ffefd5;
     border-radius: 5px;
     padding:5px;
-}
-
-
-div.reddInitialState p{
-    font-size:14px;
-    margin:10px 0px;
-}
-
-div.reddInitialState{
-    min-height:300px;
-    font-size:17px;
-    padding:20px;
-
-}
-
-#rddCaptcha{
-    border:1px solid #444;
-    font-size:15px;
-    position: fixed;
-    top: 100px;
-    left: 30%;
-    width: 30%;
-    background-color: #fff;
-    padding: 20px;
-    z-index: 6000000000;
-}
-#rddCaptcha img{
-    margin-top:10px;
-}
-#rddCaptcha input{
-    marnig-top:10px;
-    width: 110px;
-    height: 20px;
-    font-size: 15px;
-    padding: 4px;
-}
-#rddCaptcha .rddCaptchaButton{
-    clear:both;
-    position: absolute;
-    bottom: 0px;
-    text-align: right;
-    border-top: 1px solid #ccc;
-    background-color: #F8F3F3;
-    padding: 8px;
-    width: 474px;
-    margin-left: -20px;
-}
-#rddCaptcha button:hover,
-#rddCaptcha button{
-    cursor: pointer;
-    clear:both;
-    padding: 10px 40px;
-    margin-top: 10px;
-    border-bottom-width: 1px;
-    background-color: #CCC !important;
-    color:#444 !important;
-}
-#rddCaptcha button:last-child{
-    background-color: #444 !important;
-    color:#CCC !important;
-}
-#rddCaptcha p{
-    width: 60%;
-    float:right;
-    margin:8px 0px;
 }

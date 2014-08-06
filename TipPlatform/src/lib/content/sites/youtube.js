@@ -27,11 +27,14 @@
         });
     };
 
-    pri.getChannelName = function(){
+    pub.getTippedUser = function(){
         //This is for grabbing the current channel name. Saving it here in case its useful later.
-        var  userLink = $(".yt-user-info:first").html(),
-             id = /"\/channel\/([^"]+)/.exec(userLink) || ["?", "?"];
-        return id[1];
+//        var  userLink = $(".yt-user-info:first").html(),
+//             id = /"\/channel\/([^"]+)/.exec(userLink) || ["?", "?"];
+
+        var  userLink = $(".yt-user-info:first a").html();
+
+        return userLink;
     };
 
     pub.hookTipDone = function(value){

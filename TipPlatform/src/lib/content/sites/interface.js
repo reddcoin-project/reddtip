@@ -16,14 +16,20 @@
          */
         doTip : function(){
             var that = this,
-                value = exports.tipInterface.getValue();
-            //for now we're just mocking the tip.
+                value = exports.tipInterface.getValue(),
+                user = this.getTippedUser();
+
+            dbg("Doing Tip...");
+            dbg(user);
+            dbg(value);
+
             exports.tipInterface.setState("working");
 
-            setTimeout(function(){
+            exports.messenger.sendTip(value, user, function(){
                 exports.tipInterface.setState("alert");
                 that.hookTipDone(value);
-            }, 1000);
+            });
+
         },
 
         /**

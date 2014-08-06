@@ -11,7 +11,7 @@ RDD.data = (function(){
      * Provides the initial state for plugin data
      * @returns {{currentBalance: boolean, depositAddress: boolean, lastWithdrawalAddress: boolean, lastChecked: number, parsedMessages: Array, operationList: {initialProbe: boolean, needsRegister: boolean, registering: boolean, updateBalance: boolean, updateHistory: boolean}, recordedTransactions: Array}}
      */
-    pri.getDefaultData = function(){
+    pri.getDefaultDataOld = function(){
         return {
             currentBalance : false,
             depositAddress : false,
@@ -28,6 +28,20 @@ RDD.data = (function(){
                 "updateBalance" : false,
                 "updateHistory" : false
             },
+            recordedTransactions: []
+        }
+    };
+
+    pri.getDefaultData = function(){
+        return {
+            currentBalance : 0,
+            depositAddress : 'RcC5pzVeTukBCeWHuSEp1znq7qXio561vv',
+            lastWithdrawalAddress : '',
+            lastChecked : 0,
+            /**
+             * The operation list contains all the operations. Value will be true if they are currently in progress.
+             */
+            operationList : {},
             recordedTransactions: []
         }
     };
@@ -69,19 +83,32 @@ RDD.data = (function(){
      * @returns {boolean}
      */
     pub.save = function(){
-        var userKey = RDD.bg.getUser();
+        var userKey = RDD.bg.getUser(),
+            popupWindow = chrome.extension.getViews({type:'popup'})[0];
+
         localStorage.setItem(userKey, JSON.stringify(pri.mainData));
+
+        if(popupWindow){
+            popupWindow.RDD.popup.dataSaved(pri.mainData);
+        }
+
         dbg("Current data state saved for `"+userKey+"` ");
         return true;
     };
 
     /**
-     * WARNING: Clears lall data for this user.
+     * WARNING: Clears all data for this user.
      */
     pub.clear = function(){
-        var userKey = RDD.bg.getUser();
+        var userKey = RDD.bg.getUser(),
+            popupWindow = chrome.extension.getViews({type:'popup'})[0];
+
         dbg("Clearing all data for `userKey` ");
+
         pri.mainData = pri.getDefaultData();
+
+        popupWindow.RDD.popup.dataSaved(pri.mainData);
+
         localStorage.removeItem(userKey);
     };
 
@@ -121,6 +148,13 @@ RDD.data = (function(){
                 usd     : "?"
             },
             transaction = $.extend(defaultTransaction, transaction);
+
+        pri.ensureDataLoaded();
+
+        dbg(pri.mainData);
+        pri.mainData.currentBalance += parseFloat(transaction.amount);
+        dbg(transaction);
+        dbg(pri.mainData.currentBalance);
 
         pri.mainData.recordedTransactions.unshift(transaction);
     };

@@ -7,9 +7,6 @@ chrome.runtime.onMessage.addListener(
         //console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
         RDD.bg.setUser(request);
 
-        delete request.site;
-        delete request.user;
-
         $.each(request, function(key, value){
 
             if(key !== 'method'){
