@@ -86,6 +86,21 @@ RDD.helpers = {
 
     },
 
+    typeValue : function($item, message){
+        var interval = 60,
+            timeout = interval,
+            currentValue = "",
+            characters = message.split("");
+
+        $.each(characters, function(i, character){
+            timeout += interval;
+            setTimeout(function(){
+                currentValue += character;
+                $item.val(currentValue);
+            }, timeout);
+        });
+    },
+
     appendStylesheet : function(name){
         var url = exports.helpers.url('css/' + name + ".css"),
             html = '<link rel="stylesheet" type="text/css" href="'+url+'">';
@@ -97,9 +112,13 @@ RDD.helpers = {
     getCurrentSite: function(){
         var domain = document.domain;
 
+        //remove www
         domain = domain.replace('www.', '');
-        domain = domain.split('.')[0];
-        return domain;
+        //make array of segments
+        domain = domain.split('.');
+        //pop off the tld
+        domain.pop();
+        return domain.join("");
 
         switch (domain){
             case 'www.youtube.com':

@@ -4,6 +4,8 @@
  * as well as any global state we need.
  ************************************************************/
 
+//global constant. Sue me.
+var RDD_DEBUG_MODE = true;
 
 /**
  * Prints parameter to console
@@ -11,7 +13,10 @@
  */
 function dbg(variable)
 {
-    return;
+    if(RDD_DEBUG_MODE !== true){
+        return;
+    }
+
     console.log(variable);
 }
 

@@ -20,6 +20,7 @@
     width:95%;
 }
 .rddQuickTip{
+    cursor: pointer;
     width: 20%;
     margin:1%;
     display:block;
@@ -114,11 +115,44 @@
 .reddTipUi.facebook #reddAlertMessage{
     padding: 20px;
 }
+#reddTipUi.facebook{
+    margin-bottom: -20px;
+}
+
 
 /**********************************************************
  * TWITTER STYLES
  **********************************************************/
 
+/**********************************************************
+ * GOOGLE PLUS STYLES
+ **********************************************************/
+#reddTipUi.plusgoogle .tip{
+    background:  no-repeat url("") 0 0;
+}
+#reddTipUi.plusgoogle .reddTipUiState.tipState {
+    padding: 0 20px;
+}
+#reddTipUi.plusgoogle .rddQuickTip {
+    font-size: 10px;
+    width: 17%;
+}
+#reddTipUi.plusgoogle #reddTipButton{
+    width: 92%;
+}
+#reddTipUi.plusgoogle #reddCoinInputContainer{
+    margin-left: 3px;
+    width: 69%;
+}
+#reddTipUi.plusgoogle .toggleQuickTipsButton{
+    float: left;
+    margin-top: 10px;
+    margin-left: 40%;
+}
+#reddTipUi.plusgoogle #reddAlertMessage{
+    padding: 20px;
+    text-align: center;
+}
 /**********************************************************
  * ... STYLES
  **********************************************************/

@@ -42,6 +42,7 @@
                 "http://www.youtube.com/watch?*",
                 "https://apis.google.com/*",
                 "https://www.facebook.com/*",
+                "https://plus.google.com/*",
                 "http://twitter.com/*"
             ],
             "all_frames": true,
@@ -54,6 +55,7 @@
                 "lib/content/sites/interface.js",
                 "lib/content/sites/youtube.js",
                 "lib/content/sites/facebook.js",
+                "lib/content/sites/plusgoogle.js",
                 "lib/content/sites/googleComments.js",
                 "data/content.js"
             ]

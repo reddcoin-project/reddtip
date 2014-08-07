@@ -102,8 +102,8 @@
     };
 
     pub.setState = function(stateName){
-        $('.reddTipUiState').hide();
-        $('.'+stateName+'State').show();
+        $('.reddTipUiState').hide("fast");
+        $('.'+stateName+'State').show("fast");
     };
 
     pub.fetch = function(callback){

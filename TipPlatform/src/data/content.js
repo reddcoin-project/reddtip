@@ -23,6 +23,10 @@ $(function(){
         return;
     }
 
+    if(RDD.sites[site] === undefined){
+        dbg("Site `" + site + "` was not located. ");
+        return;
+    }
 
     //set the current site
     RDD.site = RDD.sites[site];

@@ -34,17 +34,8 @@
         return userLink;
     };
 
-    pub.hookTipDone = function(value){
-        var message = "I just tipped you ";
-
-        if(!isNaN(parseFloat(value))){
-            return pri.prepareComment(message + value + " Reddcoins");
-        }
-
-        if($.inArray(value, exports.tipList) > -1){
-            message = message + exports.helpers.prependArticle(value) + " with Reddcoins";
-            return pri.prepareComment(message);
-        }
+    pub.hookTipDone = function(value, message){
+        return pri.prepareComment(message);
     };
 
     pub.showTipUi = function(){

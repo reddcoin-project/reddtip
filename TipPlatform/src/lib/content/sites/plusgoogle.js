@@ -11,67 +11,73 @@
         },
         pub = {};
 
-    pub.name = 'facebook';
+    pri.buttonHtml = '';
+
+    pub.name = 'plusgoogle';
 
 
     pub.hookTipDone = function(value, message){
-        var $commentBox;
-        pri.lastTipLink.siblings(".comment_link").click();
-        $commentBox =  $(":focus");
+        var $commentBox,
+            $commentContainer = pri.lastTipLink.parent().parent();
+        $(".Dt.wu", $commentContainer).click();
 
-        dbg(message);
-        exports.helpers.typeValue($commentBox, message);
-//        $commentBox.val(message);
-        $commentBox.removeClass('DOMControl_placeholder');
-
+        setTimeout(function(){
+            $commentBox =  $(".editable", $commentContainer);
+            $commentBox.html(message);
+            $commentBox.trigger("keyup");
+            $commentBox.trigger("keydown");
+            $commentBox.trigger("keypress");
+            //exports.helpers.typeValue($commentBox, message);
+        }, 600);
     };
 
     pub.showTipUi  = function($tipLink){
-        var $parent = $tipLink.parent().parent(),
-            $container = $("<div></div>"),
-            $fullItemContainer = $parent.closest('.userContentWrapper'),
-            $nameLink = $('span.fwb a', $fullItemContainer);
+        var $parent = $tipLink.parent(),
+            $container = $("<div class=\"Cx fr\"></div>"),
+            $fullItemContainer = $parent.parent(),
+            $nameLink = $('header h3 a', $fullItemContainer);
 
         pri.lastTipLink = $tipLink;
 
         pri.tippedUser = $nameLink.html();
 
-        $("#reddTipUi").empty().remove();
+        $("#reddTipUi").parent().empty().remove();
 
         $parent.after($container);
+
 
         $container.hide();
 
         this.addTipUi($container, function(){
+            $container.prepend('<div class="Ar vt"></div>');
             $("#reddTipUi").addClass('uiUfi UFIContainer _5pc9 _5vsj _5v9k');
             $container.show('fast');
         });
     };
 
     pub.adjustTipUi = function($tipUi){
-        var secondaryButton = '_42ft _4jy0 layerCancel  uiOverlayButton _4jy3 _517h',
-            button          = '_42ft _4jy0 uiOverlayButton _4jy3 _4jy1 selected',
-            input           = 'textInput mentionsTextarea',
-            container       = 'uiUfi UFIContainer _5pc9 _5vsj _5v9k';
+        var secondaryButton = 'd-k-l b-c b-c-R b-c-da-ja',
+            button          = 'd-k-l b-c b-c-Ba b-c-da-ja',
+            input           = 'wu';
 
         //UFIRow UFILikeSentence UFIFirstComponent
         $("#reddTipAmount", $tipUi).addClass(input);
         $("#reddTipButton", $tipUi).addClass(button);
-        $(".tipState", $tipUi).addClass('UFIRow UFILikeSentence UFIFirstComponent');
+        $(".toggleQuickTipsButton", $tipUi).addClass('d-s vy');
         $(".rddQuickTip", $tipUi).addClass(secondaryButton);
 
         return $tipUi;
     };
 
     pub.addButtons = function(){
-        $('.comment_link').each(function(){
-            var $commentLink = $(this);
+        $('div.Dg.Ut').each(function(){
+            var $shareLink = $(this);
 
-            if($commentLink.siblings(".tip").length > 0){
+            if($shareLink.siblings(".tip").length > 0){
                 return;
             }
 
-            $commentLink.after(' · <a class="tip">Tip</a>');
+            $shareLink.after(pri.buttonHtml);
         });
 
     };
@@ -98,21 +104,20 @@
         var that = this;
         exports.helpers.appendStylesheet('standard-tip-ui');
 
-        pri.contentArea = $("#contentArea");
+        pri.contentArea = $("#contentPane");
 
         pri.contentArea.on("click", ".tip", function(){
             that.showTipUi($(this));
         });
 
-        pub.pollHeightChanges();
-
-        //was trying to resolve some weird bug. hopefully this is never needed.
-//        window.onerror = function(){
-//            return false;
-//        }
+        exports.helpers.loadMultiHtml("plusgoogle/button", function(response){
+            var bgimg = exports.helpers.url("img/bw_icon16.png")
+            pri.buttonHtml = response["plusgoogle/button"].replace('{bgimg}', bgimg);
+            pub.pollHeightChanges();
+        });
 
     };
 
     //publish this module.
-    exports.sites.facebook = inherit(exports.sites.interface, pub);
+    exports.sites.plusgoogle = inherit(exports.sites.interface, pub);
 })(exports);

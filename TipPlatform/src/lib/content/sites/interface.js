@@ -11,6 +11,19 @@
 
         initialize        : function(){  undefinedError("initialize");        },
 
+        getMessage : function(value){
+            var message = "I just tipped you ";
+
+            if(!isNaN(parseFloat(value))){
+                return message + value + " Reddcoins!";
+            }
+
+            if($.inArray(value, exports.tipList) > -1){
+                message = message + exports.helpers.prependArticle(value) + " with Reddcoins!";
+                return message
+            }
+        },
+
         /**
          * Handles the actual tip processing.
          */
@@ -19,15 +32,12 @@
                 value = exports.tipInterface.getValue(),
                 user = this.getTippedUser();
 
-            dbg("Doing Tip...");
-            dbg(user);
-            dbg(value);
-
             exports.tipInterface.setState("working");
 
             exports.messenger.sendTip(value, user, function(){
+                var message = that.getMessage(value);
                 exports.tipInterface.setState("alert");
-                that.hookTipDone(value);
+                that.hookTipDone(value, message);
             });
 
         },
@@ -70,7 +80,7 @@
         /**
          * The site can hook in here to do stuff after the tip is done.
          */
-        hookTipDone: function(value){ /* nothing to see here... */ }
+        hookTipDone: function(value, message){ /* nothing to see here... */ }
     };
 
     //should get hoisted
