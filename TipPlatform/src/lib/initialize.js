@@ -32,6 +32,32 @@ function err(message, type){
     throw(err);
 }
 
+// here we're gonna overwrite jQuery's default hide and show methods to use slide down if
+// an animation is requested, otherwise, use the original versions.
+// Kinda weird I just like it that way.
+(function(){
+    var originalShow = jQuery.fn.show;
+    var originalHide = jQuery.fn.hide;
+
+    jQuery.fn.show = function(speed){
+        if(speed === "fast" || speed === "slow"){
+            jQuery.fn.slideDown.apply(this, arguments);
+        }
+        else {
+            originalShow.apply(this, arguments);
+        }
+    }
+
+    jQuery.fn.hide = function(speed){
+        if(speed === "fast" || speed === "slow"){
+            jQuery.fn.slideUp.apply(this, arguments);
+        }
+        else {
+            originalHide.apply(this, arguments);
+        }
+    }
+})();
+
 exports = {};
 RDD =  exports;
 

@@ -8,17 +8,23 @@
 
 $(function(){
 
-    var site = RDD.helpers.getCurrentSite();
+    var site = RDD.helpers.getCurrentSite(),
+        isIframe = RDD.helpers.isIframe(),
+        allowIframes = [
+            'apisgoogle',
+            'steamcommunity'
+        ],
+        iFramesAllowed = $.inArray(site, allowIframes) !== -1;
 
     //early exit. The site wasn't resolved correctly.
     if(site === false) {
-        dbg("site not found");
+        dbg("site not found Exiting.");
         return;
     }
 
     dbg("Attempting to load site: " + site);
 
-    if(site !== 'apis' && window != window.top){
+    if(!iFramesAllowed && isIframe){
         dbg("Stopping iframe loads for this site.");
         return;
     }
@@ -28,13 +34,12 @@ $(function(){
         return;
     }
 
+    dbg("Success");
+
     //set the current site
     RDD.site = RDD.sites[site];
 
-    //initialiaze the modal dialogue
-    //RDD.modal.initialize();
-
     //initialize the current site.
-    RDD.site.initialize();
+    RDD.site.bootstrap();
 
 });

@@ -43,6 +43,7 @@
                 "https://apis.google.com/*",
                 "https://www.facebook.com/*",
                 "https://plus.google.com/*",
+                "http://steamcommunity.com/*",
                 "http://twitter.com/*"
             ],
             "all_frames": true,
@@ -52,11 +53,13 @@
                 "lib/helpers.js",
                 "lib/messenger.js",
                 "lib/content/tipInterface.js",
+                "lib/content/ajaxListener.js",
                 "lib/content/sites/interface.js",
                 "lib/content/sites/youtube.js",
                 "lib/content/sites/facebook.js",
                 "lib/content/sites/plusgoogle.js",
-                "lib/content/sites/googleComments.js",
+                "lib/content/sites/steamcommunity.js",
+                "lib/content/sites/apisgoogle.js",
                 "data/content.js"
             ]
         }

@@ -9,7 +9,7 @@
     width:30%;
 }
 #reddCoinInputContainer{
-    width:50%;
+    width:68%;
 }
 #reddCoinQuickTips{
     clear: both;
@@ -56,6 +56,7 @@
 /**********************************************************
  * YOUTUBE STYLES
  **********************************************************/
+
 .reddTipUi.youtube #reddCoinQuickTips{
     width:90%;
 }
@@ -154,8 +155,45 @@
     text-align: center;
 }
 /**********************************************************
- * ... STYLES
+ * STEAM STYLES
  **********************************************************/
+.viewport .general_btn.voteDown.tip,
+.viewport .general_btn.voteDown.tip:hover,
+.general_btn.voteDown.tip:hover,
+.general_btn.voteDown.tip{
+    background-position: 8px 7px;
+}
+#reddTipUi.steamcommunity{
+    margin-top:7px;
+}
+#reddTipUi.steamcommunity #reddCoinTipContainer {
+    margin: 5px -1%;
+}
+#reddTipUi.steamcommunity .rddQuickTip {
+    font-size: 10px;
+    width: 17.7%;
+}
+.reddTipUi.steamcommunity  #reddCoinInputContainer {
+    width: 60%;
+}
+.reddTipUi.steamcommunity  #reddTipButtonContainer {
+    float: right;
+    width: 30%;
+}
+.reddTipUi.steamcommunity  #reddTipAmount {
+    margin-top: -5px;
+    border: none;
+}
+.reddTipUi.steamcommunity  #reddTipButton:focus,
+.reddTipUi.steamcommunity  #reddTipButton{
+    height: 32px;
+    border: none;
+    width:100%;
+}
+.reddTipUi.steamcommunity  #reddTipButton:hover{
+    background-color: #97C0E3;
+    color: #3C3D3E;
+}
 
 /**********************************************************
  * STYLES

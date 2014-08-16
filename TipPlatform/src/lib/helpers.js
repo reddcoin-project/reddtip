@@ -108,6 +108,10 @@ RDD.helpers = {
         $('head').append(html);
     },
 
+    isIframe : function(){
+        return window != window.top;
+    },
+
 
     getCurrentSite: function(){
         var domain = document.domain;

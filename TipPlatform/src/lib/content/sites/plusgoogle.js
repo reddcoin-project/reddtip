@@ -14,6 +14,7 @@
     pri.buttonHtml = '';
 
     pub.name = 'plusgoogle';
+    pub.requiredHtmlSnippets = ["plusgoogle/button"];
 
 
     pub.hookTipDone = function(value, message){
@@ -24,10 +25,11 @@
         setTimeout(function(){
             $commentBox =  $(".editable", $commentContainer);
             $commentBox.html(message);
-            $commentBox.trigger("keyup");
-            $commentBox.trigger("keydown");
-            $commentBox.trigger("keypress");
-            //exports.helpers.typeValue($commentBox, message);
+
+            var $button = $(".d-k-l.b-c.b-c-Ba.b-c-da-ja", $commentContainer);
+            $button.attr("aria-disabled", false);
+            $button.attr("tab-index", "0");
+            $button.removeClass("b-c-I");
         }, 600);
     };
 
@@ -35,13 +37,17 @@
         var $parent = $tipLink.parent(),
             $container = $("<div class=\"Cx fr\"></div>"),
             $fullItemContainer = $parent.parent(),
-            $nameLink = $('header h3 a', $fullItemContainer);
+            $nameLink = $('header h3 a', $fullItemContainer),
+            $tipUi = $("#reddTipUi").parent();
 
         pri.lastTipLink = $tipLink;
 
         pri.tippedUser = $nameLink.html();
 
-        $("#reddTipUi").parent().empty().remove();
+        $tipUi.hide("fast", function(){
+            $tipUi.empty().remove();
+        });
+
 
         $parent.after($container);
 
@@ -100,9 +106,11 @@
         }, 2000);
     };
 
-    pub.initialize = function(){
-        var that = this;
-        exports.helpers.appendStylesheet('standard-tip-ui');
+    pub.initialize = function(snippets){
+        var that = this,
+            bgimg = exports.helpers.url("img/bw_icon16.png");
+
+        pri.buttonHtml = snippets["plusgoogle/button"].replace('{bgimg}', bgimg);
 
         pri.contentArea = $("#contentPane");
 
@@ -110,12 +118,7 @@
             that.showTipUi($(this));
         });
 
-        exports.helpers.loadMultiHtml("plusgoogle/button", function(response){
-            var bgimg = exports.helpers.url("img/bw_icon16.png")
-            pri.buttonHtml = response["plusgoogle/button"].replace('{bgimg}', bgimg);
-            pub.pollHeightChanges();
-        });
-
+        pub.pollHeightChanges();
     };
 
     //publish this module.

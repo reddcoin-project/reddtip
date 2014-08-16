@@ -4,31 +4,22 @@
 
     pub.name = "youtube";
 
+    pub.requiredHtmlSnippets = [
+        "button",
+        "panel",
+        "alertIcon"
+    ];
+
     pri.buttonHtml = '';
     pri.panelHtml = '';
     pri.alertIconHtml = '';
 
-    pri.loadHtmlSnippets = function(callback){
-        var loaded = function(response){
-            pri.buttonHtml    = response["youtube/button"];
-            pri.panelHtml     = response["youtube/panel"];
-            pri.alertIconHtml = response["youtube/alertIcon"];
-
-            callback();
-        };
-
-        exports.helpers.loadMultiHtml("youtube/alertIcon", "youtube/button", "youtube/panel", loaded);
-    };
 
     pri.prepareComment = function(message){
         exports.messenger.setYoutubeComment(message);
     };
 
     pub.getTippedUser = function(){
-        //This is for grabbing the current channel name. Saving it here in case its useful later.
-//        var  userLink = $(".yt-user-info:first").html(),
-//             id = /"\/channel\/([^"]+)/.exec(userLink) || ["?", "?"];
-
         var  userLink = $(".yt-user-info:first a").html();
 
         return userLink;
@@ -74,13 +65,12 @@
         this.addTipUi($container);
     };
 
-    pub.initialize = function(){
-        var that = this;
-        exports.helpers.appendStylesheet('standard-tip-ui');
+    pub.initialize = function(snippets){
+        pri.buttonHtml    = snippets["button"];
+        pri.panelHtml     = snippets["panel"];
+        pri.alertIconHtml = snippets["alertIcon"];
 
-        pri.loadHtmlSnippets(function(){
-            that.addButtons();
-        });
+        this.addButtons();
     };
 
     exports.sites.youtube = inherit(exports.sites.interface, pub);

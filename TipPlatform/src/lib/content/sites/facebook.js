@@ -19,32 +19,32 @@
         pri.lastTipLink.siblings(".comment_link").click();
         $commentBox =  $(":focus");
 
-        dbg(message);
         exports.helpers.typeValue($commentBox, message);
-//        $commentBox.val(message);
         $commentBox.removeClass('DOMControl_placeholder');
-
     };
 
     pub.showTipUi  = function($tipLink){
         var $parent = $tipLink.parent().parent(),
             $container = $("<div></div>"),
             $fullItemContainer = $parent.closest('.userContentWrapper'),
-            $nameLink = $('span.fwb a', $fullItemContainer);
+            $nameLink = $('span.fwb a', $fullItemContainer),
+            $existingTipUi = $("#reddTipUi");
 
         pri.lastTipLink = $tipLink;
 
         pri.tippedUser = $nameLink.html();
 
-        $("#reddTipUi").empty().remove();
-
-        $parent.after($container);
+        $existingTipUi.hide("slow", function(){
+            $existingTipUi.empty().remove();
+        });
 
         $container.hide();
 
+        $parent.after($container);
+
         this.addTipUi($container, function(){
             $("#reddTipUi").addClass('uiUfi UFIContainer _5pc9 _5vsj _5v9k');
-            $container.show('fast');
+            $container.show('slow');
         });
     };
 
@@ -96,7 +96,6 @@
 
     pub.initialize = function(){
         var that = this;
-        exports.helpers.appendStylesheet('standard-tip-ui');
 
         pri.contentArea = $("#contentArea");
 
@@ -105,12 +104,6 @@
         });
 
         pub.pollHeightChanges();
-
-        //was trying to resolve some weird bug. hopefully this is never needed.
-//        window.onerror = function(){
-//            return false;
-//        }
-
     };
 
     //publish this module.
