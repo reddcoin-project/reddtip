@@ -1,7 +1,7 @@
 Targets
 ====================================
 
-| Site                 | Importance     | Status                    | [] |
+| Site                 | Importance     | Status                    | .. |
 | -------------------- | -------------- | ------------------------- | -- |
 | Reddit               | 174            | Legacy Code               | /  |
 | Facebook             | 169            | Implemented               | +  |
