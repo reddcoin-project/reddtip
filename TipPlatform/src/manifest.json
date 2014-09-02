@@ -44,6 +44,7 @@
                 "https://www.facebook.com/*",
                 "https://plus.google.com/*",
                 "http://steamcommunity.com/*",
+                "http://stackoverflow.com/questions/*",
                 "http://twitter.com/*"
             ],
             "all_frames": true,
@@ -60,6 +61,15 @@
                 "lib/content/sites/plusgoogle.js",
                 "lib/content/sites/steamcommunity.js",
                 "lib/content/sites/apisgoogle.js",
+                "lib/content/sites/disqus.js",
+                "lib/content/sites/flickr.js",
+                "lib/content/sites/instagram.js",
+                "lib/content/sites/pinterest.js",
+                "lib/content/sites/reddit.js",
+                "lib/content/sites/stackoverflow.js",
+                "lib/content/sites/tumblr.js",
+                "lib/content/sites/twitch.js",
+                "lib/content/sites/twitter.js",
                 "data/content.js"
             ]
         }

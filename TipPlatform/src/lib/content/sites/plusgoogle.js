@@ -14,7 +14,7 @@
     pri.buttonHtml = '';
 
     pub.name = 'plusgoogle';
-    pub.requiredHtmlSnippets = ["plusgoogle/button"];
+    pub.requiredHtmlSnippets = ["button"];
 
 
     pub.hookTipDone = function(value, message){
@@ -110,7 +110,7 @@
         var that = this,
             bgimg = exports.helpers.url("img/bw_icon16.png");
 
-        pri.buttonHtml = snippets["plusgoogle/button"].replace('{bgimg}', bgimg);
+        pri.buttonHtml = snippets["button"].replace('{bgimg}', bgimg);
 
         pri.contentArea = $("#contentPane");
 
