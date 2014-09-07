@@ -12,7 +12,7 @@ Targets
 | Instagram            | 74             | No Progress               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/minus-2x.png)|
 | Twitch.tv, Justin.tv | 71             | Legacy Code               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/link-broken-2x.png)|
 | Pinterest            | 46             | No Progress               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/minus-2x.png)|
-| Tumblr               | 41             | No Progress               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/minus-2x.png)|
+| Tumblr               | 41             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |
 | StackOverFlow        | 40             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |
 | Disqus               | 33             | No Progress               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/minus-2x.png)|
 | Flickr               | 32             | No Progress               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/minus-2x.png) |

@@ -8,16 +8,19 @@
         },
         pub = {};
 
-    pri.doQuickTip = function(){
+    pri.doQuickTip = function(e){
+        e.preventDefault();
         var val = $(this).attr("data-tipValue");
         $("#reddTipAmount").val(val);
     };
 
-    pri.toggleQuickTips = function(){
+    pri.toggleQuickTips = function(e){
         var $button     = $(this),
             $container  = $(".extraQuickTips"),
             outerHeight = $(".rddQuickTip").first().outerHeight(true),
             finalHeight = outerHeight * 3;
+
+        e.preventDefault();
 
         if($container.height() > 10){
             $container.animate({height : 0});

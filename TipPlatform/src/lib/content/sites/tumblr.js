@@ -13,46 +13,62 @@
     ];
 
     pri.buttonHtml = '';
-
-    pri.prepareComment = function (message) {
-
-    };
+    pri.userName = '';
 
     pub.getTippedUser = function () {
-        var userLink = $(".yt-user-info:first a").html();
-
-        return userLink;
+        return pri.userName;
     };
 
-    pub.hookTipDone = function (value, message) {
-        return pri.prepareComment(message);
-    };
+    pub.showTipUi = function ($tipLink) {
+        var $container = $('<div></div>'),
+            $containerSibling = $tipLink.closest(".post_footer");
 
-    pub.showTipUi = function () {
-        var $container = $('<div></div>');
-        this.addTipUi($container);
+        this.closeIfExists("slow", function(){ });
+
+        if($("#reddTipUi", $containerSibling.parent()).length > 0){
+            return;
+        }
+
+        $containerSibling.before($container);
+        $container.hide();
+
+        pri.userName = $(".post_info_link:first", $containerSibling.closest(".post_wrapper")).text();
+        pri.userName = $.trim(pri.userName);
+
+        this.addTipUi($container,function(){
+            $container.show("slow");
+        });
     };
 
     pub.adjustTipUi = function ($tipUi) {
-        $("#reddTipAmount", $tipUi).addClass();
-        $("#reddTipButton", $tipUi).addClass();
-        $(".toggleQuickTipsButton", $tipUi).addClass();
-        $(".rddQuickTip", $tipUi).addClass();
+        $("#reddTipButton", $tipUi).addClass("chrome blue");
+        $(".toggleQuickTipsButton", $tipUi).addClass("post_header");
+        $(".toggleQuickTipsButton", $tipUi).attr("href", "#");
+        $(".rddQuickTip", $tipUi).addClass("chrome flat");
+        $(".rddQuickTip", $tipUi).attr("href", "#");
         $("#reddAlertContainer", $tipUi).addClass();
 
         return $tipUi;
     };
 
     pub.addButtons = function () {
-        $(".replaceSelector").after(pri.buttonHtml);
-
-        $("body").on("click", ".tip", this.showTipUi);
+        $(".post_controls_inner").not(".hasTip").addClass("hasTip").prepend(pri.buttonHtml);
     };
 
     pub.initialize = function (snippets) {
-        pri.buttonHtml = snippets["button"];
+        var that = this,
+            bgimg = exports.helpers.url("img/icon16.png");
 
-        this.addButtons();
+        pri.contentArea = $("#posts");
+        pri.buttonHtml = snippets["button"].replace('{bgimg}', bgimg);
+
+        this.pollElementSize(pri.contentArea, function(){
+            that.addButtons();
+        });
+
+        $("body").on("click", ".tip", function(){
+            that.showTipUi($(this));
+        });
     };
 
     exports.sites.tumblr = inherit(exports.sites.interface, pub);
