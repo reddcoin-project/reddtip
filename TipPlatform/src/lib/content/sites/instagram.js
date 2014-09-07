@@ -13,46 +13,68 @@
     ];
 
     pri.buttonHtml = '';
+    pri.userName = '';
+    pri.commentBox = {};
 
     pri.prepareComment = function (message) {
-
+        exports.helpers.typeValue(pri.commentBox, message);
     };
 
     pub.getTippedUser = function () {
-        var userLink = $(".yt-user-info:first a").html();
-
-        return userLink;
+        return pri.userName;
     };
 
     pub.hookTipDone = function (value, message) {
         return pri.prepareComment(message);
     };
 
-    pub.showTipUi = function () {
-        var $container = $('<div></div>');
-        this.addTipUi($container);
+    pub.showTipUi = function ($tipLink) {
+        var $container = $('<div class="newReddTip"></div>'),
+            $timelineItem = $tipLink.closest('.timelineItem'),
+            $userNameLink = $(".timelineBookmarkInfoUsername", $timelineItem);
+
+        this.closeIfExists("slow", function(){ });
+
+        if($("#reddTipUi", $tipLink.parent().parent()).length > 0){
+            return;
+        }
+
+        pri.commentBox = $('.timelineCommentTextField', $timelineItem);
+        pri.userName = $.trim($userNameLink.text());
+
+        $tipLink.parent().after($container);
+        $container.hide();
+
+        this.addTipUi($container, function(){
+            $container.show("slow");
+        });
     };
 
     pub.adjustTipUi = function ($tipUi) {
-        $("#reddTipAmount", $tipUi).addClass();
-        $("#reddTipButton", $tipUi).addClass();
-        $(".toggleQuickTipsButton", $tipUi).addClass();
-        $(".rddQuickTip", $tipUi).addClass();
-        $("#reddAlertContainer", $tipUi).addClass();
+        $("#reddTipButton", $tipUi).addClass("button");
+        $(".rddQuickTip", $tipUi).addClass("button");
 
         return $tipUi;
     };
 
     pub.addButtons = function () {
-        $(".replaceSelector").after(pri.buttonHtml);
-
-        $("body").on("click", ".tip", this.showTipUi);
+        $(".timelineLikes").not(".tipAdded").addClass("tipAdded").prepend(pri.buttonHtml);
     };
 
     pub.initialize = function (snippets) {
-        pri.buttonHtml = snippets["button"];
+        var that = this,
+            bgimg = exports.helpers.url("img/icon16.png");
 
-        this.addButtons();
+        pri.contentArea = $(".timelineContainer:first");
+        pri.buttonHtml = snippets["button"].replace('{bgimg}', bgimg);
+
+        this.pollElementSize(pri.contentArea, function(){
+            that.addButtons();
+        });
+
+        $("body").on("click", ".tip", function(e){
+            that.showTipUi($(this));
+        });
     };
 
     exports.sites.instagram = inherit(exports.sites.interface, pub);
