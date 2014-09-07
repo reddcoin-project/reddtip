@@ -196,6 +196,60 @@
 }
 
 /**********************************************************
+ * STACKOVERFLOW STYLES
+ **********************************************************/
+.reddTipUi.stackoverflow{
+    padding: 15px;
+    border-bottom: dotted 1px #aaa;
+    margin-bottom:10px;
+}
+.reddTipUi.stackoverflow #reddTipAmount{
+    margin: 2px 0px;
+    height:18px;
+    border: 1px solid #999;
+    font-size: 90%;
+}
+.reddTipUi.stackoverflow #reddCoinInputContainer{
+    width: 80%;
+}
+.reddTipUi.stackoverflow #reddTipButtonContainer{
+    width: 20%;
+}
+.reddTipUi.stackoverflow #reddTipButton{
+    width: 100%;
+}
+.reddTipUi.stackoverflow .rddQuickTip{
+    width: 23%;
+    padding:3px 0;
+    text-decoration: none;
+    background-color: #eee;
+    color: #444;
+}
+.reddTipUi.stackoverflow .rddQuickTip:hover{
+    background-color: #777;
+    color: #fff;
+}
+.reddTipUi.stackoverflow #reddCoinTipContainer{
+    margin: 0 -7px;
+}
+.reddTipUi.stackoverflow #reddAlertMessage{
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #eee;
+}
+
+
+/**********************************************************
+ * STYLES
+ **********************************************************/
+/**********************************************************
+ * STYLES
+ **********************************************************/
+/**********************************************************
+ * STYLES
+ **********************************************************/
+/**********************************************************
  * STYLES
  **********************************************************/
 

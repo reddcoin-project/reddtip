@@ -18,6 +18,14 @@ RDD.helpers = {
         return m_names[curr_month] + " " + curr_date;
     },
 
+    injectFunction : function(theFunction, params){
+        var actualCode = '(' + theFunction + ')('+JSON.stringify(params)+');';
+        var script = document.createElement('script');
+        script.textContent = actualCode;
+        (document.head||document.documentElement).appendChild(script);
+        script.parentNode.removeChild(script);
+    },
+
 
     getLocalHtml: function(name, callback){
 

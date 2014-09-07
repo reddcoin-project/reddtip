@@ -36,6 +36,17 @@
             }
         },
 
+        closeIfExists: function(speed, callback){
+            var $existingTipUi = $("#reddTipUi"),
+                callback = callback || function(){},
+                speed = speed || "slow";
+
+            $existingTipUi.hide("slow", function(){
+                $existingTipUi.parent().empty().remove();
+                callback();
+            });
+        },
+
         /**
          * Handles the actual tip processing.
          */
