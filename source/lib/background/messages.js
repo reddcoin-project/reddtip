@@ -5,10 +5,10 @@ RDD.messages = (function(){
         messageType = RDD.settings.messageType;
 
     pri.parseReceivedTip = function(message){
-        var amountMatch = /(\d+(?:\.\d+)?)\s*Reddcoin/.exec(message.body)        || ["?", "?"],
-            fromMatch   = /(\/u\/[^\s]+)./.exec(message.body)                        || ["?", "?"],
-            toMatch     = /Hey\s*([^\s]+),/.exec(message.body)     || ["?", "?"],
-            usdMatch    = /\(\$(\d+(?:\.\d+)?)\)/.exec(message.body)                  || ["?", "?"],
+        var amountMatch = /(\d+(?:\.\d+)?)\s*Reddcoin/.exec(message.body)          || ["?", "?"],
+            fromMatch   = /(\/u\/[^\s]+)./.exec(message.body)                      || ["?", "?"],
+            toMatch     = /Hey\s*([^\s]+),/.exec(message.body)                     || ["?", "?"],
+            usdMatch    = /\(\$(\d+(?:\.\d+)?)\)/.exec(message.body)               || ["?", "?"],
             balance     = RDD.data.get("currentBalance"),
             transaction = {
                 type   : "received_tip",
@@ -30,7 +30,7 @@ RDD.messages = (function(){
     };
 
     pri.parseSentTip= function(message){
-        var amountMatch = /\^(\d+(?:\.\d+)?)\s*\^Reddcoins/.exec(message.body)        || ["?", "?"],
+        var amountMatch = /\^.?(\d+(?:\.\d+)?)\s*\^Reddcoins/.exec(message.body)        || ["?", "?"],
             fromMatch   = /\^(\/u\/[^\s]+)/.exec(message.body)                        || ["?", "?"],
             toMatch     = /(?:\^\/u\/[^\s]+).+\^(\/u\/[^\s]+)/.exec(message.body)     || ["?", "?"],
             usdMatch    = /\(\$(\d+(?:\.\d+)?)\)/.exec(message.body)                  || ["?", "?"],
@@ -56,11 +56,12 @@ RDD.messages = (function(){
 
     pri.fixBotTransaction = function(botTransaction){
         var type    = '?',
+            userName = RDD.bg.getUserName(),
             botType = botTransaction.type,
-            address = /=(.+)\)$/.exec(botTransaction.to_addr)                       || ["", ""],
+            address = /^\s*(.+)\s*$/.exec(botTransaction.to_addr)                       || ["", ""],
             amount  = /(\d+(?:\.\d+)?(?:e\+\d+)?)/.exec(botTransaction.coin_val)    || ["0.0", "0.0"],
-            from    = /^(?:\*\*)?([^\*]+)(?:\*\*)?$/.exec(botTransaction.from_user) || ["?", "?"],
-            to      = /^(?:\*\*)?([^\*]+)(?:\*\*)?$/.exec(botTransaction.to_user)   || ["?", "?"],
+            from    = /^(?:\*\*)?@?([^\*]+)(?:\*\*)?$/.exec(botTransaction.from_user) || ["?", "?"],
+            to      = /^(?:\*\*)?@?([^\*]+)(?:\*\*)?$/.exec(botTransaction.to_user)   || ["?", "?"],
             usd     = /(\d+(?:\.\d+)?)/.exec(botTransaction.fiat_val)               || ["0.0", "0.0"],
             timeAr  = botTransaction.created_utc.split("-"),
             time    = Math.floor((new Date(timeAr[0],timeAr[1] - 1, timeAr[2]).getTime() / 1000));
@@ -76,7 +77,7 @@ RDD.messages = (function(){
         }
         if(botType === 'tip'){
             type = "sent_tip";
-            if(botTransaction.to_user.charAt(0) === "*"){
+            if(to === userName.toLowerCase()){
                 type = "received_tip";
             }
         }
@@ -97,7 +98,7 @@ RDD.messages = (function(){
     };
 
     pri.parseTransactionHistory= function(message){
-        var tableBody = /(?=type)([\s\S]+)\n\n\*\*\*\*/.exec(message.body)[1] || "?",
+        var tableBody = /(?=created)([\s\S]+)\n\n\*\*\*\*/.exec(message.body)[1] || "?",
             tableLines = tableBody.split("\n"),
             key = tableLines.shift().split("|");
 
@@ -114,8 +115,10 @@ RDD.messages = (function(){
                 transaction[key[index]] = column;
             });
 
+            dbg(transaction);
             if(transaction.state === "✓"){
                 transaction = pri.fixBotTransaction(transaction);
+                dbg(transaction);
                 RDD.data.addTransaction(transaction);
             }
         });
@@ -142,7 +145,7 @@ RDD.messages = (function(){
 
     pri.parseWithdrawal = function(message){
         var balance = RDD.data.get("currentBalance"),
-            amount  = /\^(\d+(?:\.\d+)?)\s*\^Reddcoins/.exec(message.body)  || ["?", "?"],
+            amount  = /\^.?(\d+(?:\.\d+)?)\s*\^Reddcoins/.exec(message.body)  || ["?", "?"],
             address = /([Rr][a-zA-Z0-9]{26,34})/.exec(message.body)         || ["?", "?"],
             usd     = /\(\$(\d+(?:\.\d+)?)\)/.exec(message.body)            || ["?", "?"],
             transaction = {
@@ -190,6 +193,11 @@ RDD.messages = (function(){
     pri.getMessageType = function(message){
         var body = message.body;
 
+        //new +tip messages should be ignored.
+        if(message.was_comment === false && message.subject.indexOf("+tip") !== -1){
+            return "N/A";
+        }
+
         if(message.was_comment === false && body.indexOf("Verified") > 0){
             return messageType.WITHDRAWAL;
         }
@@ -198,7 +206,7 @@ RDD.messages = (function(){
             return messageType.ACCOUNT_INFO;
         }
 
-        if(body.indexOf("here are your last 75 transactions") > 0){
+        if(body.indexOf("here are your last ") > 0){
             return messageType.TRANSACTION_HISTORY;
         }
 
@@ -227,7 +235,7 @@ RDD.messages = (function(){
 
         //if the message has been parsed, return early
         if($.inArray(message.id, parsedMessages) !== -1){
-            return 0;
+            //return 0;
         }
 
         type = pri.getMessageType(message);

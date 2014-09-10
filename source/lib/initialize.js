@@ -11,6 +11,7 @@
  */
 function dbg(variable)
 {
+    return;
     console.log(variable);
 }
 

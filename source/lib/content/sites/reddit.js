@@ -12,6 +12,11 @@
         operationList         : {}
     };
 
+    pub.britishUsers = [
+        "hoppipoppipolla",
+        "laudney"
+    ];
+
     pub.tabs = [
         "tip",
         "transactions",
@@ -21,7 +26,7 @@
     ];
 
     pub.buttonHtml = '<button class="tip" type="button">tip</button>';
-    pub.command    = '+/u/reddtipbot {AMOUNT} RDD';
+    pub.command    = '+/u/reddtipbot {AMOUNT}';
 
     pub.tipClicked = function(){
 
@@ -29,9 +34,14 @@
         var input = $(this).closest('.usertext-edit').find('textarea');
 
         RDD.modal.open(function(tipAmount){
-            var value = input.val() + '\n\n';
+            var value = input.val() + '\n\n',
+                username = RDD.site.user.toLowerCase();
 
-            value += RDD.helpers.getCommand(RDD.site.command, tipAmount)
+            value += RDD.helpers.getCommand(RDD.site.command, tipAmount);
+
+            if($.inArray(username, pub.britishUsers) > -1){
+                value += " quid";
+            }
 
             input.val(value);
 
@@ -63,6 +73,7 @@
             'ReddcoinRewards'
         ];
 
+        return;
         $(".noncollapsed .author").each(function(){
             //we only want to lookup $(this) once, for better performance.
             // Also, labeling it helps with readability
@@ -184,5 +195,5 @@
         RDD.site.initializeMessaging();
     };
 
-    exports.sites.reddit = inherit(exports.sites.interface, pub);;
+    exports.sites.reddit = inherit(exports.sites.interface, pub);
 })(RDD);

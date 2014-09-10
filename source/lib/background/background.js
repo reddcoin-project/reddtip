@@ -96,7 +96,8 @@
  */
 RDD.bg = (function(){
     var pri = {
-            user: false
+            user: false,
+            userName: false
         },
 
         pub = {};
@@ -144,10 +145,14 @@ RDD.bg = (function(){
             RDD.data.unloadData();
         }
         pri.user = newUser;
+        pri.userName = data.user;
     };
 
     pub.getUser = function(){
         return pri.user;
+    };
+    pub.getUserName = function(){
+        return pri.userName;
     };
 
     pub.messageCheckNeeded = function(){
