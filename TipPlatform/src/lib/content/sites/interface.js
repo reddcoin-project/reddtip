@@ -47,6 +47,10 @@
             });
         },
 
+        externalDoTip:function(e){
+            exports.tipInterface.doTip(e)
+        },
+
         /**
          * Handles the actual tip processing.
          */
@@ -165,13 +169,37 @@
             var that = this,
                 height = $element.height();
 
-            if(height > pri.lastHeight){
+            if(height != pri.lastHeight){
                 callback();
                 pri.lastHeight = height;
             }
 
             setTimeout(function(){
                 that.pollElementSize($element, callback);
+            }, 2000);
+        },
+
+        /**
+         * Repeatedly checks an element's children count and calls the callback when it grows. This is useful
+         * for augmenting the UI whenever new tipable content is appended to an element.
+         * @param $element
+         * @param callback
+         * @param previousChildrenCount
+         */
+        pollElementChildren : function($element, callback, previousChildrenCount){
+            var that = this,
+                currentChildrenCount = $element.children().length;
+
+            if(previousChildrenCount === undefined){
+                previousChildrenCount = currentChildrenCount;
+            }
+
+            if(currentChildrenCount > previousChildrenCount){
+                callback();
+            }
+
+            setTimeout(function(){
+                that.pollElementChildren($element, callback, currentChildrenCount);
             }, 2000);
         },
 

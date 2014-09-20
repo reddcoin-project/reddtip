@@ -43,6 +43,21 @@
         return false;
     };
 
+    pub.doTip =  function(e){
+        e.preventDefault();
+        var value = pub.getValue();
+
+        $("#reddTipAmount").removeClass("error");
+
+        if(pri.isValidTip(value)){
+            exports.site.doTip();
+            return;
+        }
+
+        $("#reddTipAmount").addClass("error");
+
+    };
+
     pri.bind = function($tipUi){
         if(pri.bindingsDone === true){
             return true;
@@ -52,20 +67,7 @@
         $("body").on("click", ".toggleQuickTipsButton", pri.toggleQuickTips);
 
 
-        $("body").on("click", "#reddTipButton", function(e){
-            e.preventDefault();
-            var value = pub.getValue();
-
-            $("#reddTipAmount").removeClass("error");
-
-            if(pri.isValidTip(value)){
-                exports.site.doTip();
-                return;
-            }
-
-            $("#reddTipAmount").addClass("error");
-
-        });
+        $("body").on("click", "#reddTipButton", pub.doTip);
 
         pri.bindingsDone = true;
     };

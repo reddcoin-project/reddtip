@@ -2,117 +2,161 @@
  * DEFAULT STYLES
  **********************************************************/
 #reddTipButtonContainer,
-#reddCoinInputContainer{
-    float:left;
-}
-#reddTipButtonContainer{
-    width:30%;
-}
-#reddCoinInputContainer{
-    width:68%;
-}
-#reddCoinQuickTips{
-    clear: both;
-    position: relative;
-    width:100%;
-}
-#reddTipAmount{
-    width:95%;
-}
-.rddQuickTip{
-    cursor: pointer;
-    width: 20%;
-    margin:1%;
-    display:block;
-    float:left;
-    text-align: center;
+#reddCoinInputContainer
+{
+    float : left;
 }
 
-.extraQuickTips{
-    clear: both;
-    height:0px;
-    overflow:hidden;
+#reddTipButtonContainer
+{
+    width : 30%;
 }
-#reddCoinQuickTips{
-    margin-top:10px;
+
+#reddCoinInputContainer
+{
+    width : 68%;
 }
-.reddTipUiState{
-    display: none;
+
+#reddCoinQuickTips
+{
+    clear    : both;
+    position : relative;
+    width    : 100%;
+}
+
+#reddTipAmount
+{
+    width : 95%;
+}
+
+.rddQuickTip
+{
+    cursor     : pointer;
+    width      : 20%;
+    margin     : 1%;
+    display    : block;
+    float      : left;
+    text-align : center;
+}
+
+.extraQuickTips
+{
+    clear    : both;
+    height   : 0px;
+    overflow : hidden;
+}
+
+#reddCoinQuickTips
+{
+    margin-top : 10px;
+}
+
+.reddTipUiState
+{
+    display : none;
 }
 
 .reddTipUi .error,
-#reddCoinInputContainer .error{
-    border:1px solid #F00;
+#reddCoinInputContainer .error
+{
+    border : 1px solid #F00;
 }
 
-.reddTipUiState.tipState{
-    display: block;
+.reddTipUiState.tipState
+{
+    display : block;
 }
 
-.reddTipUi #reddCoinQuickTips h4{
-    visibility: hidden;
+.reddTipUi #reddCoinQuickTips h4
+{
+    visibility : hidden;
 }
 
 /* New Redd Tip applies some styles which should have been default without risk of messing up previous implementations  */
-.newReddTip .reddTipUi{
-    margin:10px;
-}
-.newReddTip .reddTipUi #reddTipButton{
-    width: 100%;
-}
-.newReddTip .reddTipUi #reddTipButtonContainer{
-    margin-bottom: 10px;
-     width: 32%;
- }
-.newReddTip .reddTipUi .rddQuickTip{
-    line-height: 20px;
-    width: 23%;
-}
-.newReddTip .reddTipUi #reddCoinTipContainer{
-    margin: 5px -7px;
-}
-.newReddTip .reddTipUi #reddCoinQuickTips{
-    text-align: center;
-}
-.newReddTip .reddTipUi #reddCoinQuickTips h4{
-    display: none;
-}
-.newReddTip .reddTipUi #reddAlertContainer{
-    text-align: center;
+.newReddTip .reddTipUi
+{
+    margin : 10px;
 }
 
+.newReddTip .reddTipUi #reddTipButton
+{
+    width : 100%;
+}
+
+.newReddTip .reddTipUi #reddTipButtonContainer
+{
+    margin-bottom : 10px;
+    width         : 32%;
+}
+
+.newReddTip .reddTipUi .rddQuickTip
+{
+    line-height : 20px;
+    width       : 23%;
+}
+
+.newReddTip .reddTipUi #reddCoinTipContainer
+{
+    margin : 5px -7px;
+}
+
+.newReddTip .reddTipUi #reddCoinQuickTips
+{
+    text-align : center;
+}
+
+.newReddTip .reddTipUi #reddCoinQuickTips h4
+{
+    display : none;
+}
+
+.newReddTip .reddTipUi #reddAlertContainer
+{
+    text-align : center;
+}
 
 /**********************************************************
  * YOUTUBE STYLES
  **********************************************************/
 
-.reddTipUi.youtube #reddCoinQuickTips{
-    width:90%;
+.reddTipUi.youtube #reddCoinQuickTips
+{
+    width : 90%;
 }
-.reddTipUi.youtube .rddQuickTip{
-    border-color: #DFD9D9;
-    background: #FCFCFC;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.10);
-    margin-left: 0;
-    margin-right: 2%;
+
+.reddTipUi.youtube .rddQuickTip
+{
+    border-color : #DFD9D9;
+    background   : #FCFCFC;
+    box-shadow   : 0 1px 0 rgba(0, 0, 0, 0.10);
+    margin-left  : 0;
+    margin-right : 2%;
 }
-.reddTipUi.youtube .rddQuickTip:hover{
-    border-color: #c6c6c6;
-    background: #f0f0f0;
+
+.reddTipUi.youtube .rddQuickTip:hover
+{
+    border-color : #c6c6c6;
+    background   : #f0f0f0;
 }
-.reddTipUi.youtube .toggleQuickTipsButton{
-    height: 16px;
-    padding: 0px 11px;
-    z-index: 20;
-    position: absolute;
-    bottom: -31px;
-    left: 47%;
+
+.reddTipUi.youtube .toggleQuickTipsButton
+{
+    height   : 16px;
+    padding  : 0px 11px;
+    z-index  : 20;
+    position : absolute;
+    bottom   : -31px;
+    left     : 47%;
 }
-.reddTipUi.youtube #reddCoinInputContainer {
-    width: 71%;
+
+.reddTipUi.youtube #reddCoinInputContainer
+{
+    width : 71%;
 }
-.reddTipUi.youtube #reddTipButtonContainer {
-    width: 10%;
+
+.reddTipUi.youtube #reddTipButtonContainer
+{
+    width : 10%;
 }
 
 /**********************************************************
@@ -122,33 +166,47 @@
 /**********************************************************
  * FACEBOOK STYLES
  **********************************************************/
-.reddTipUi.facebook .rddQuickTip{
-    width:19%
-}
-.reddTipUi.facebook #reddTipButton{
-    width:100%;
-}
-.reddTipUi.facebook #reddTipAmount{
-     height: 18px;
-     margin-left: 5px;
-}
-.reddTipUi.facebook #reddCoinInputContainer {
-    width: 64%;
-}
-.reddTipUi.facebook #reddTipAmount {
-    width: 94%;
-}
-.reddTipUi.facebook .toggleQuickTipsButton{
-    displaY: block;
-    padding: 9px 4px 0px;
-}
-.reddTipUi.facebook #reddAlertMessage{
-    padding: 20px;
-}
-#reddTipUi.facebook{
-    margin-bottom: -20px;
+.reddTipUi.facebook .rddQuickTip
+{
+    width : 19%
 }
 
+.reddTipUi.facebook #reddTipButton
+{
+    width : 100%;
+}
+
+.reddTipUi.facebook #reddTipAmount
+{
+    height      : 18px;
+    margin-left : 5px;
+}
+
+.reddTipUi.facebook #reddCoinInputContainer
+{
+    width : 64%;
+}
+
+.reddTipUi.facebook #reddTipAmount
+{
+    width : 94%;
+}
+
+.reddTipUi.facebook .toggleQuickTipsButton
+{
+    displaY : block;
+    padding : 9px 4px 0px;
+}
+
+.reddTipUi.facebook #reddAlertMessage
+{
+    padding : 20px;
+}
+
+#reddTipUi.facebook
+{
+    margin-bottom : -20px;
+}
 
 /**********************************************************
  * TWITTER STYLES
@@ -157,184 +215,314 @@
 /**********************************************************
  * GOOGLE PLUS STYLES
  **********************************************************/
-#reddTipUi.plusgoogle .tip{
-    background:  no-repeat url("") 0 0;
+#reddTipUi.plusgoogle .tip
+{
+    background : no-repeat url("") 0 0;
 }
-#reddTipUi.plusgoogle .reddTipUiState.tipState {
-    padding: 0 20px;
+
+#reddTipUi.plusgoogle .reddTipUiState.tipState
+{
+    padding : 0 20px;
 }
-#reddTipUi.plusgoogle .rddQuickTip {
-    font-size: 10px;
-    width: 17%;
+
+#reddTipUi.plusgoogle .rddQuickTip
+{
+    font-size : 10px;
+    width     : 17%;
 }
-#reddTipUi.plusgoogle #reddTipButton{
-    width: 92%;
+
+#reddTipUi.plusgoogle #reddTipButton
+{
+    width : 92%;
 }
-#reddTipUi.plusgoogle #reddCoinInputContainer{
-    margin-left: 3px;
-    width: 69%;
+
+#reddTipUi.plusgoogle #reddCoinInputContainer
+{
+    margin-left : 3px;
+    width       : 69%;
 }
-#reddTipUi.plusgoogle .toggleQuickTipsButton{
-    float: left;
-    margin-top: 10px;
-    margin-left: 40%;
+
+#reddTipUi.plusgoogle .toggleQuickTipsButton
+{
+    float       : left;
+    margin-top  : 10px;
+    margin-left : 40%;
 }
-#reddTipUi.plusgoogle #reddAlertMessage{
-    padding: 20px;
-    text-align: center;
+
+#reddTipUi.plusgoogle #reddAlertMessage
+{
+    padding    : 20px;
+    text-align : center;
 }
+
 /**********************************************************
  * STEAM STYLES
  **********************************************************/
 .viewport .general_btn.voteDown.tip,
 .viewport .general_btn.voteDown.tip:hover,
 .general_btn.voteDown.tip:hover,
-.general_btn.voteDown.tip{
-    background-position: 8px 7px;
+.general_btn.voteDown.tip
+{
+    background-position : 8px 7px;
 }
-#reddTipUi.steamcommunity{
-    margin-top:7px;
+
+#reddTipUi.steamcommunity
+{
+    margin-top : 7px;
 }
-#reddTipUi.steamcommunity #reddCoinTipContainer {
-    margin: 5px -1%;
+
+#reddTipUi.steamcommunity #reddCoinTipContainer
+{
+    margin : 5px -1%;
 }
-#reddTipUi.steamcommunity .rddQuickTip {
-    font-size: 10px;
-    width: 17.7%;
+
+#reddTipUi.steamcommunity .rddQuickTip
+{
+    font-size : 10px;
+    width     : 17.7%;
 }
-.reddTipUi.steamcommunity  #reddCoinInputContainer {
-    width: 60%;
+
+.reddTipUi.steamcommunity #reddCoinInputContainer
+{
+    width : 60%;
 }
-.reddTipUi.steamcommunity  #reddTipButtonContainer {
-    float: right;
-    width: 30%;
+
+.reddTipUi.steamcommunity #reddTipButtonContainer
+{
+    float : right;
+    width : 30%;
 }
-.reddTipUi.steamcommunity  #reddTipAmount {
-    margin-top: -5px;
-    border: none;
+
+.reddTipUi.steamcommunity #reddTipAmount
+{
+    margin-top : -5px;
+    border     : none;
 }
-.reddTipUi.steamcommunity  #reddTipButton:focus,
-.reddTipUi.steamcommunity  #reddTipButton{
-    height: 32px;
-    border: none;
-    width:100%;
+
+.reddTipUi.steamcommunity #reddTipButton:focus,
+.reddTipUi.steamcommunity #reddTipButton
+{
+    height : 32px;
+    border : none;
+    width  : 100%;
 }
-.reddTipUi.steamcommunity  #reddTipButton:hover{
-    background-color: #97C0E3;
-    color: #3C3D3E;
+
+.reddTipUi.steamcommunity #reddTipButton:hover
+{
+    background-color : #97C0E3;
+    color            : #3C3D3E;
 }
 
 /**********************************************************
  * STACKOVERFLOW STYLES
  **********************************************************/
-.reddTipUi.stackoverflow{
-    padding: 15px;
-    border-bottom: dotted 1px #aaa;
-    margin-bottom:10px;
-}
-.reddTipUi.stackoverflow #reddTipAmount{
-    margin: 2px 0px;
-    height:18px;
-    border: 1px solid #999;
-    font-size: 90%;
-}
-.reddTipUi.stackoverflow #reddCoinInputContainer{
-    width: 80%;
-}
-.reddTipUi.stackoverflow #reddTipButtonContainer{
-    width: 20%;
-}
-.reddTipUi.stackoverflow #reddTipButton{
-    width: 100%;
-}
-.reddTipUi.stackoverflow .rddQuickTip{
-    width: 23%;
-    padding:3px 0;
-    text-decoration: none;
-    background-color: #eee;
-    color: #444;
-}
-.reddTipUi.stackoverflow .rddQuickTip:hover{
-    background-color: #777;
-    color: #fff;
-}
-.reddTipUi.stackoverflow #reddCoinTipContainer{
-    margin: 0 -7px;
-}
-.reddTipUi.stackoverflow #reddAlertMessage{
-    text-align: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #eee;
+.reddTipUi.stackoverflow
+{
+    padding       : 15px;
+    border-bottom : dotted 1px #aaa;
+    margin-bottom : 10px;
 }
 
+.reddTipUi.stackoverflow #reddTipAmount
+{
+    margin    : 2px 0px;
+    height    : 18px;
+    border    : 1px solid #999;
+    font-size : 90%;
+}
+
+.reddTipUi.stackoverflow #reddCoinInputContainer
+{
+    width : 80%;
+}
+
+.reddTipUi.stackoverflow #reddTipButtonContainer
+{
+    width : 20%;
+}
+
+.reddTipUi.stackoverflow #reddTipButton
+{
+    width : 100%;
+}
+
+.reddTipUi.stackoverflow .rddQuickTip
+{
+    width            : 23%;
+    padding          : 3px 0;
+    text-decoration  : none;
+    background-color : #eee;
+    color            : #444;
+}
+
+.reddTipUi.stackoverflow .rddQuickTip:hover
+{
+    background-color : #777;
+    color            : #fff;
+}
+
+.reddTipUi.stackoverflow #reddCoinTipContainer
+{
+    margin : 0 -7px;
+}
+
+.reddTipUi.stackoverflow #reddAlertMessage
+{
+    text-align       : center;
+    margin-bottom    : 10px;
+    padding          : 10px;
+    background-color : #eee;
+}
 
 /**********************************************************
  * TUMBLR STYLES
  **********************************************************/
-.tumblrTipLink, .tumblrTipLink.post_control:after{
-    background: none;
-    background-position: 7px 5px;
-    background-repeat: no-repeat;
-    opacity: 0.7;
+.tumblrTipLink, .tumblrTipLink.post_control:after
+{
+    background          : none;
+    background-position : 7px 5px;
+    background-repeat   : no-repeat;
+    opacity             : 0.7;
 }
-.tumblrTipLink:hover{
+
+.tumblrTipLink:hover
+{
     opacity : 1;
 }
-.reddTipUi.tumblr{
-    margin:20px;
+
+.reddTipUi.tumblr
+{
+    margin : 20px;
 }
-.reddTipUi.tumblr #reddTipAmount{
-    padding-left: 10px;
-    height: 30px;
+
+.reddTipUi.tumblr #reddTipAmount
+{
+    padding-left : 10px;
+    height       : 30px;
 }
-.reddTipUi.tumblr #reddTipButton{
-    width: 100%;
-}.reddTipUi.tumblr #reddTipButtonContainer{
-    width: 32%;
+
+.reddTipUi.tumblr #reddTipButton
+{
+    width : 100%;
 }
-.reddTipUi.tumblr .rddQuickTip{
-    line-height: 20px;
-    width: 23%;
+
+.reddTipUi.tumblr #reddTipButtonContainer
+{
+    width : 32%;
 }
-.reddTipUi.tumblr #reddCoinTipContainer{
-    margin: 0 -7px;
+
+.reddTipUi.tumblr .rddQuickTip
+{
+    line-height : 20px;
+    width       : 23%;
 }
-.reddTipUi.tumblr #reddCoinQuickTips{
-    text-align: center;
+
+.reddTipUi.tumblr #reddCoinTipContainer
+{
+    margin : 0 -7px;
+}
+
+.reddTipUi.tumblr #reddCoinQuickTips
+{
+    text-align : center;
 }
 
 /**********************************************************
  * INSTAGRAM STYLES
  **********************************************************/
-.instagramTip{
-    opacity: 0.7;
+.instagramTip
+{
+    opacity : 0.7;
 }
-.instagramTip:hover{
-    opacity: 1;
+
+.instagramTip:hover
+{
+    opacity : 1;
 }
-.reddTipUi.instagram #reddTipButton{
-    background-color: #6f97b6;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#6f97b6),to(#3f729b));
-    background-image: -webkit-linear-gradient(top,#6f97b6,#3f729b);
-    background-image: -moz-linear-gradient(top,#6f97b6,#3f729b);
-    background-image: -o-linear-gradient(top,#6f97b6,#3f729b);
-    background-image: -ms-linear-gradient(top,#6f97b6,#3f729b);
-    background-image: linear-gradient(top,#6f97b6,#3f729b);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#6f97b6', EndColorStr='#3f729b');
-    background-position: 50% 50%;
-    text-shadow: 0 1px 1px #1c5380;
-    color: #fff;
-    height: 33px;
+
+.reddTipUi.instagram #reddTipButton
+{
+    background-color    : #6f97b6;
+    background-image    : -webkit-gradient(linear, left top, left bottom, from(#6f97b6), to(#3f729b));
+    background-image    : -webkit-linear-gradient(top, #6f97b6, #3f729b);
+    background-image    : -moz-linear-gradient(top, #6f97b6, #3f729b);
+    background-image    : -o-linear-gradient(top, #6f97b6, #3f729b);
+    background-image    : -ms-linear-gradient(top, #6f97b6, #3f729b);
+    background-image    : linear-gradient(top, #6f97b6, #3f729b);
+    filter              : progid:DXImageTransform.Microsoft.gradient(GradientType=0, StartColorStr='#6f97b6', EndColorStr='#3f729b');
+    background-position : 50% 50%;
+    text-shadow         : 0 1px 1px #1c5380;
+    color               : #fff;
+    height              : 33px;
 }
-.reddTipUi.instagram .rddQuickTip{
-    width: 18%;
-    padding: 3px 11px;
+
+.reddTipUi.instagram .rddQuickTip
+{
+    width   : 18%;
+    padding : 3px 11px;
 }
-.reddTipUi.instagram{}
+
+.reddTipUi.instagram
+{
+}
+
 /**********************************************************
- * STYLES
+ * PINTEREST STYLES
  **********************************************************/
+.PinLikeButton.likeSmall.btn.tip,
+.Pin.summary .likeEditButtonWrapper .btn.tip,
+.reddTipUi.pinterest .tip
+{
+    padding : 6px 7px 7px;
+}
+
+.PinLikeButton.likeSmall.btn.tip.bigTip
+{
+    padding : 9px 7px 9px;
+}
+
+.PinLikeButton.likeSmall.btn.tip em,
+.Pin.summary .likeEditButtonWrapper .btn.tip em,
+.reddTipUi.pinterest .tip em
+{
+    background : url("") no-repeat 1px 0px;
+    height     : 16px;
+    width      : 18px;
+}
+
+#reddcoinModalTipPinterest
+{
+    padding : 10px;
+}
+
+#reddcoinModalTipPinterest #reddTipAmount
+{
+    background: #fff;
+}
+
+#reddcoinModalTipPinterest #reddTipButtonContainer
+{
+    display : none;
+}
+
+#reddcoinModalTipPinterest #reddCoinInputContainer,
+#reddcoinModalTipPinterest #reddTipAmount
+{
+    width:100%;
+}
+
+.reddTipUi.pinterest
+{
+}
+
+.reddTipUi.pinterest
+{
+}
+
+.reddTipUi.pinterest
+{
+}
+
 /**********************************************************
  * STYLES
  **********************************************************/
