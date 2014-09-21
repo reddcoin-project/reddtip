@@ -15,4 +15,4 @@ Targets
 | Tumblr               | 41             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |
 | StackOverFlow        | 40             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |
 | Disqus               | 33             | No Progress               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/minus-2x.png)|
-| Flickr               | 32             | No Progress               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/minus-2x.png) |
+| Flickr               | 32             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |
