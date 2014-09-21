@@ -497,7 +497,7 @@
 
 #reddcoinModalTipPinterest #reddTipAmount
 {
-    background: #fff;
+    background : #fff;
 }
 
 #reddcoinModalTipPinterest #reddTipButtonContainer
@@ -508,7 +508,7 @@
 #reddcoinModalTipPinterest #reddCoinInputContainer,
 #reddcoinModalTipPinterest #reddTipAmount
 {
-    width:100%;
+    width : 100%;
 }
 
 .reddTipUi.pinterest
@@ -524,8 +524,31 @@
 }
 
 /**********************************************************
- * STYLES
+ * FLIKR STYLES
  **********************************************************/
+.reddTipUi.flickr .rddQuickTip
+{
+    width : 19%;
+}
+
+.reddTipUi.flickr #reddTipAmount
+{
+    height       : 20px;
+    margin-top   : 2px;
+    padding-left : 5px;
+}
+.photo-display-item #reddcoinFlickerPopup{
+    position: absolute;
+    right: 10px;
+    bottom: 37px;
+    width: 562px;
+    background: #FFF;
+    background: rgba(255,255,255,0.93);
+    text-align: left;
+    box-shadow: 0 0 10px 3px rgba(0,0,0,0.3);
+    z-index: 999;
+    font-size: 120%;
+}
 
 /**********************************************************
  * STYLES
