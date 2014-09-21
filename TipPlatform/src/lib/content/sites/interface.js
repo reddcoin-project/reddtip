@@ -41,7 +41,7 @@
                 callback = callback || function(){},
                 speed = speed || "slow";
 
-            $existingTipUi.hide("slow", function(){
+            $existingTipUi.hide(speed, function(){
                 $existingTipUi.parent().empty().remove();
                 callback();
             });

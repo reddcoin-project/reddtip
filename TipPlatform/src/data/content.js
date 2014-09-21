@@ -12,6 +12,7 @@ $(function(){
         isIframe = RDD.helpers.isIframe(),
         allowIframes = [
             'apisgoogle',
+            'disqus',
             'steamcommunity'
         ],
         iFramesAllowed = $.inArray(site, allowIframes) !== -1;

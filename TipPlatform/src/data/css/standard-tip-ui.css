@@ -551,8 +551,26 @@
 }
 
 /**********************************************************
- * STYLES
+ * DISQUS STYLES
  **********************************************************/
+
+.reddTipUi.disqus{
+    margin-left: 10%;
+}
+.reddTipUi.disqus .rddQuickTip.btn{
+    padding: 5px;
+    background-color: #A8A8A8;
+    font-size: 90%;
+    line-height: 14px;
+}
+.reddTipUi.disqus .rddQuickTip.btn:hover{
+    background-color: #969696;
+}
+.reddTipUi.disqus #reddTipAmount{
+    padding-left:10px;
+    margin: 0;
+    height: 35px;
+}
 /**********************************************************
  * STYLES
  **********************************************************/
