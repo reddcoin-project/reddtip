@@ -10,7 +10,7 @@ Targets
 | Twitter              | 117            | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png)|
 | Google+              | 80             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png)|
 | Instagram            | 74             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png)|
-| Twitch.tv, Justin.tv | 71             | Legacy Code               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/link-broken-2x.png)|
+| Twitch.tv            | 71             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png)|
 | Pinterest            | 46             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |
 | Tumblr               | 41             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |
 | StackOverFlow        | 40             | Implemented               | ![alt tag](https://raw.githubusercontent.com/iconic/open-iconic/master/png/circle-check-2x.png) |

@@ -634,9 +634,32 @@
     padding: 2px 0px 0px 8px;
 }
 /**********************************************************
- * STYLES
+ * TWITCH STYLES
  **********************************************************/
-
+.ember-chat .moderation-card .interface.newReddTip,
+.newReddTip.interface{
+    border-top: 0px;
+}
+.reddTipUi.twitch{
+    padding:5px;
+}
+.reddTipUi.twitch #reddTipAmount{
+    height : 26px;
+}
+.reddTipUi.twitch .rddQuickTip{
+    background-color: #969696;
+    color: #fff;
+}
+.reddTipUi.twitch .rddQuickTip:hover{
+    background-color: #808080;
+    color: #fff;
+}
+.newReddTip .reddTipUi.twitch #reddCoinTipContainer {
+    margin: 5px -3px;
+}
+.newReddTip .reddTipUi.twitch {
+    margin: 0px;
+}
 
 
 
