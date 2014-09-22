@@ -8,47 +8,87 @@
         "button"
     ];
 
+    pri.commentLink = false;
+    pri.userName = '?';
     pri.buttonHtml = '';
 
     pri.prepareComment = function (message) {
-
+        var $textArea = $("#tweet-box-template");
+        $textArea.html('<div>@'+pri.userName+' '+message+'</div>');
     };
 
     pub.getTippedUser = function () {
-        var userLink = $(".yt-user-info:first a").html();
-
-        return userLink;
+        return pri.userName;
     };
 
     pub.hookTipDone = function (value, message) {
+        exports.helpers.clickElementNatively(pri.commentLink);
         return pri.prepareComment(message);
     };
 
-    pub.showTipUi = function () {
-        var $container = $('<div></div>');
-        this.addTipUi($container);
+    pub.showTipUi = function ($link) {
+        var $sibling = $link.closest(".stream-item-footer"),
+            $container = $('<div class="newReddTip"></div>'),
+            $tweetContent = $sibling.closest(".tweet"),
+            thisOneOpen = $("#reddTipUi", $tweetContent).length > 0;
+
+
+        this.closeIfExists("fast",function(){})
+
+        if(thisOneOpen){
+            return;
+        }
+
+        pri.commentLink = $(".js-action-reply", $tweetContent);
+        pri.userName = $(".js-user-profile-link", $tweetContent).attr("href");
+        pri.userName = pri.userName.substr(1,pri.userName.length);
+
+        $sibling.after($container);
+        $container.hide();
+        this.addTipUi($container, function(){
+            $container.show("fast");
+        });
+
     };
 
     pub.adjustTipUi = function ($tipUi) {
         $("#reddTipAmount", $tipUi).addClass();
-        $("#reddTipButton", $tipUi).addClass();
+        $("#reddTipButton", $tipUi).addClass("primary-btn btn");
         $(".toggleQuickTipsButton", $tipUi).addClass();
-        $(".rddQuickTip", $tipUi).addClass();
+        $(".rddQuickTip", $tipUi).addClass("btn");
         $("#reddAlertContainer", $tipUi).addClass();
 
         return $tipUi;
     };
 
     pub.addButtons = function () {
-        $(".replaceSelector").after(pri.buttonHtml);
+        $(".tweet-actions.js-actions").not(".tipAdded").addClass("tipAdded").prepend(pri.buttonHtml);
 
-        $("body").on("click", ".tip", this.showTipUi);
+
     };
 
     pub.initialize = function (snippets) {
-        pri.buttonHtml = snippets["button"];
+        var that = this,
+            bgimg = exports.helpers.url("img/icon16.png");
 
-        this.addButtons();
+
+        pri.buttonHtml = snippets["button"].replace('{bgimg}', bgimg);
+
+        this.pollElementSize($('.home-stream'), function(){
+            that.addButtons();
+        });
+
+        $(".stream-container").on("click", ".reddTipUi", function(e){
+            var node = e.target.nodeName;
+            if(node !== "A" && node !== "BUTTON"){
+                e.stopPropagation();
+            }
+        });
+
+        $("body").on("click", ".tip", function(e){
+            e.preventDefault();
+            that.showTipUi($(this));
+        });
     };
 
     exports.sites.twitter = inherit(exports.sites.interface, pub);
