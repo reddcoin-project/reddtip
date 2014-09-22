@@ -2,30 +2,51 @@
     var pri = {},
         pub = {};
 
-    pub.name = "$NAME";
+    pub.name = "reddit";
 
     pub.requiredHtmlSnippets = [
         "button"
     ];
 
+    pri.commentLink = false;
+
+    pri.userName = '';
+
     pri.buttonHtml = '';
 
     pri.prepareComment = function(message){
-        exports.messenger.setYoutubeComment(message);
+        $("textarea", pri.commentLink.closest(".thing")).val(message);
     };
 
     pub.getTippedUser = function(){
-        var  userLink = $(".yt-user-info:first a").html();
-
-        return userLink;
+        return pri.userName;
     };
 
     pub.hookTipDone = function(value, message){
+
+        exports.helpers.clickElementNatively(pri.commentLink);
+
         return pri.prepareComment(message);
     };
 
-    pub.showTipUi = function(){
-        var $container = $('<div></div>');
+    pub.showTipUi = function($link){
+        var $container = $('<div class="newReddTip"></div>'),
+            $sibling = $link.closest(".entry"),
+            //dont judge me, reddit labels it a "thing"
+            $thing = $sibling.parent(),
+            thisOneOpen = $("#reddTipUi", $thing).length > 0;
+
+        this.closeIfExists("fast",function(){})
+
+        if(thisOneOpen){
+            return;
+        }
+
+        pri.commentLink = $('li a[onclick="return reply(this)"]', $sibling);
+
+        pri.userName = $(".author", $thing).text();
+
+        $sibling.after($container);
         this.addTipUi($container);
     };
 
@@ -34,22 +55,32 @@
         $("#reddTipButton", $tipUi).addClass();
         $(".toggleQuickTipsButton", $tipUi).addClass();
         $(".rddQuickTip", $tipUi).addClass();
+        $(".rddQuickTip", $tipUi).each(function(){
+            var html = $(this).html();
+            $(this).html("<button type='button'>"+html+"</button>");
+        });
         $("#reddAlertContainer", $tipUi).addClass();
 
         return $tipUi;
     };
 
     pub.addButtons = function(){
-        $(".replaceSelector").after(pri.buttonHtml);
-
-        $("body").on("click", ".tip", this.showTipUi);
+        $(".flat-list.buttons li.report-button").not(".tipAdded").addClass("tipAdded").next().after(pri.buttonHtml);
     };
 
     pub.initialize = function(snippets){
+        var that = this;
         pri.buttonHtml    = snippets["button"];
 
-        this.addButtons();
+        this.pollElementSize($(".commentarea"), function(){
+            that.addButtons();
+        });
+
+        $("body").on("click", ".tip", function(e){
+            that.showTipUi($(this));
+        });
+
     };
 
-    exports.sites.$NAME = inherit(exports.sites.interface, pub);
+    exports.sites.reddit = inherit(exports.sites.interface, pub);
 })(RDD);

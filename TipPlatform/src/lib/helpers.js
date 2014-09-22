@@ -26,6 +26,19 @@ RDD.helpers = {
         script.parentNode.removeChild(script);
     },
 
+    clickElementNatively : function($element){
+        var id = "element" + Math.random();
+
+        $element.attr("id", id);
+
+        exports.helpers.injectFunction(function(innerId){
+            document.getElementById(innerId).click();
+        }, [id]);
+
+        $element.removeAttr("id");
+
+    },
+
 
     getLocalHtml: function(name, callback){
 
