@@ -36,18 +36,17 @@
     };
 
     pub.adjustTipUi  = function($tipUi){
-        var $message = $("#reddAlertMessage", $tipUi);
+//        var $message = $("#reddAlertMessage", $tipUi);
 
         $("#reddTipAmount", $tipUi).addClass("yt-uix-form-input-text share-panel-url");
         $("#reddTipButton", $tipUi).addClass("yt-uix-button yt-uix-button-size-large yt-uix-button-primary");
         $(".toggleQuickTipsButton", $tipUi).addClass("yt-uix-button yt-uix-button-size-default yt-uix-button-text toggle-button");
         $(".rddQuickTip", $tipUi).addClass("yt-uix-button yt-uix-button-size-default yt-uix-button-text");
-        $("#reddAlertContainer", $tipUi).addClass('yt-alert yt-alert-actionable yt-alert-success');
-        $("#reddAlertContainer", $tipUi).prepend(pri.alertIconHtml);
+        $("#reddAlertContainer", $tipUi).html(pri.alertIconHtml);
 
-        $message.html($message.html() + " Comment below to share it!");
-        $message.prepend('<span class="yt-alert-vertical-trick"></span>');
-        $message.addClass("yt-alert-content yt-alert-message");
+//        $message.html($message.html() + " Comment below to share it!");
+//        $message.prepend('<span class="yt-alert-vertical-trick"></span>');
+//        $message.addClass("yt-alert-content yt-alert-message");
         return $tipUi;
     };
 
@@ -55,7 +54,7 @@
         var $panel = $(pri.panelHtml),
             $container = $(".tip-panel", $panel);
 
-        $("#watch7-secondary-actions span:nth-child(2)").after(pri.buttonHtml);
+        $(".yt-uix-button-group div:first").after(pri.buttonHtml);
 
         $("#action-panel-share").after($panel);
 
@@ -66,7 +65,9 @@
     };
 
     pub.initialize = function(snippets){
-        pri.buttonHtml    = snippets["button"];
+        var bgimg = exports.helpers.url("img/icon16.png");
+
+        pri.buttonHtml    = snippets["button"].replace('{bgimg}', bgimg);
         pri.panelHtml     = snippets["panel"];
         pri.alertIconHtml = snippets["alertIcon"];
 

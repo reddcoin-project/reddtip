@@ -139,14 +139,20 @@
     background   : #f0f0f0;
 }
 
+.reddTipUi.youtube .toggleQuickTipsButton:hover{
+     border: none;
+     background: none;
+     box-shadow: none;
+    color:#222;
+}
 .reddTipUi.youtube .toggleQuickTipsButton
 {
-    height   : 16px;
-    padding  : 0px 11px;
-    z-index  : 20;
-    position : absolute;
-    bottom   : -31px;
-    left     : 47%;
+    width: 86%;
+    border-top: 1px solid #e2e2e2;
+    text-align: center;
+    text-transform: uppercase;
+    color: #999;
+    margin-top: 10px;
 }
 
 .reddTipUi.youtube #reddCoinInputContainer
