@@ -1,0 +1,25 @@
+body.full
+{
+    width:100%;
+    height : auto;
+}
+
+label{
+    display:block;
+    font-weight: bold;
+    color:#444;
+}
+
+div.row{
+    max-width:1000px;
+    margin:auto;
+}
+
+.underline{
+    border-bottom: 1px solid #c5c5c5;
+}
+
+textarea.seed{
+    width:400px;
+    height:100px;
+}

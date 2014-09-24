@@ -4,8 +4,6 @@
     "manifest_version": 2,
     "description": "Adds a tip button everywhere.",
     "permissions": [
-        "https://api.reddapi.com/*",
-        "http://noproject.com/*"
     ],
     "icons": {
         "16": "data/img/icon16.png",
