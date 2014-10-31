@@ -4,14 +4,42 @@
  */
 (function(exports){
     var pri = {
+            isFullPageMode : false,
             transactionsRendered : false
         },
+        bitcore = require('bitcore'),
         pub = {};
 
+    pri.notification = function(message, seconds, speed){
+        var $div = $("#popupNotificationDiv"),
+            s = speed || 'slow',
+            waitTime = seconds || 1;
 
-    pri.withdrawGui = function(){
-        var $address       = $("#reddWithdrawalAddress"),
-            $amount        = $("#reddWithdrawalAmount"),
+        $div.text(message);
+
+        $div.fadeIn(s, function(){
+            setTimeout(function(){
+                $div.fadeOut(s);
+            }, waitTime * 1000);
+
+        })
+    };
+
+    pri.doQuickPay = function(query){
+        $("body").addClass("quickpay");
+        $(".reddSettingsTab").hide();
+        $("#reddTab_withdrawal").show();
+
+        $("#sendAddress").val(query.address);
+        $("#sendAmount").val(query.amount);
+        $("#sendLabel").val(query.label);
+
+        pri.isFullPageMode = true;
+    };
+
+    pri.sendGui = function(){
+        var $address       = $("#sendAddress"),
+            $amount        = $("#sendAmount"),
             toAddress      = $.trim($address.val()),
             amount         = $.trim($amount.val()),
             addressIsValid = /^[Rr][a-zA-Z0-9]{26,34}$/.test(toAddress),
@@ -33,23 +61,51 @@
             return;
         }
 
-        $("#rddDoWithdrawalButton").hide();
-        $(".withdrawalInProgress").show();
-        $("#reddWithdrawalAmount").val("");
 
-        exports.messenger.addWithdrawal(amount, toAddress, function(){
-            $(".withdrawalInProgress").hide();
-            $("#rddDoWithdrawalButton").show();
+
+        exports.messenger.sendTransaction(amount, toAddress, function(){
+            $("#sendAmount").val("");
+            $("#sendLabel").val("");
+            $("#sendAddress").val("");
+
+            pri.notification("Transaction is being broadcast.");
+
+            if(pri.isFullPageMode){
+                setTimeout(function(){
+                    window.close();
+                }, 4000);
+            }
         });
+    };
 
-        exports.messenger.withdrawalSent(toAddress);
-    }
+    pri.checkTipableSite = function(){
+        var tabQuery = {currentWindow : true, active : true},
+            method = {method : "hasTip"},
+            setTip = function(data){
+                pri.openTab($(".reddSettingsTabLink.send"));
+                $("#sendLabel").val(data.address);
+                $("#sendAddress").val(data.domain);
+
+                pri.notification("`" + data.domain + "` Accepts Reddcoin Donations.", 3);
+            };
+
+        chrome.tabs.query(tabQuery, function (tabs) {
+            var tabId = tabs[0].id;
+
+            chrome.tabs.sendMessage(tabId, method, function (response) {
+                if (response && response.hasTip) {
+                    setTip(response);
+                }
+            });
+        });
+    };
 
 
     pri.renderTransactions = function(transactions){
         //define the function to do the rendering
         var render = function(transactions){
             var html = exports.transactionsView.getView(transactions);
+            console.log(transactions);
             $("#rddTransactionsTable").html(html);
         };
 
@@ -63,7 +119,7 @@
         }
 
         //transactions not provided. Fetch then render.
-        exports.messenger.getDataAttribute("recordedTransactions", function(transactions){
+        exports.messenger.getWalletTransactions(function(transactions){
             render(transactions);
         });
     };
@@ -86,18 +142,81 @@
         $tabLink.addClass("selected")
     };
 
-    pri.renderAccountData = function(data){
-        var balance = Math.round(data.currentBalance);
-            balance = exports.helpers.numberWithCommas(balance);
+    pri.copyAddress = function($row){
+        var addr = $row.attr("data-address"),
+            oldOncopy = document.oncopy;
+        document.oncopy = function(event) {
+            event.clipboardData.setData('text/plain', addr);
+            event.preventDefault();
+        };
+        document.execCommand("Copy", false, null);
 
-        $("#reddDepositAddress").val(data.depositAddress);
-        $("#reddWithdrawalAddress").val(data.lastWithdrawalAddress);
-        $("#reddCoinBalanceLink").html(balance + " RDD");
-        $("#rddFullBalance").html(data.currentBalance);
+        document.oncopy = oldOncopy;
+        pri.notification("Address Copied to Clipboard.");
     };
 
-    pri.accountDataLoaded = function(data){
-        pri.renderAccountData(data);
+    pri.renderAddresses = function(addresses, containerSelector){
+        var $container = $(containerSelector),
+            header = '';
+
+        header += '<div class="row header">';
+        header += '<div class="grid_15">---</div>';
+        header += '<div class="grid_60">Address</div>';
+        header += '<div class="grid_25">RDD</div>';
+        header += '</div>';
+
+        $container.empty();
+        $container.append(header);
+        addresses.forEach(function(address){
+            var html = '',
+                val = bitcore.util.formatValue(address.confirmed);
+
+            val = exports.helpers.htmlRound(val);
+
+            html += '<div class="row" data-name="'+address.name+'" data-address="'+address.address+'">';
+
+            html += '<div class="grid_15">';
+            html += '<i class="fa fa-files-o fa-lg" title="Copy Address"></i>&nbsp;&nbsp;';
+            html += '<i class="fa fa-edit fa-lg" title="Rename"></i>';
+            html += '</div>';
+
+
+            html += '<div class="grid_60 addressContainer">';
+            html += address.name;
+            html += '</div>';
+
+            html += '<div class="grid_25 align-right">';
+            html += val;
+            html += '</div>';
+
+            html += '</div>';
+
+            $container.append(html);
+        });
+    };
+
+    pri.renderWalletData = function(data){
+        var balance = Math.floor(data.totalBalance);
+            balance = exports.helpers.numberWithCommas(balance);
+
+        pri.renderAddresses(data.addresses, '#myAddressList');
+        $("#reddCoinBalanceLink").html(balance + " RDD");
+        $("#rddFullBalance").html(data.totalBalance);
+        $("#rddConfirmedBalance").html(data.confirmedBalance);
+        $("#rddUnconfirmedBalance").html(data.unconfirmedBalance);
+    };
+
+    pri.setState = function(current){
+        $(".reddState").hide();
+        $(".redd" + current + "State").show();
+    };
+
+    pri.walletDataLoaded = function(data){
+        if(data.addresses.length > 0){
+            pri.setState("Settings");
+            pri.renderWalletData(data);
+            pri.checkTipableSite();
+        }
     };
 
     pri.bindDev = function(){
@@ -111,34 +230,49 @@
         });
     };
 
-    pub.dataSaved = function(data){
-        //dbg(data);
-        pri.renderAccountData(data);
+    pub.updateInterface = function(data){
+        pri.renderWalletData(data.interfaceData);
 
         if(pri.transactionsRendered){
-            pri.renderTransactions(data.recordedTransactions);
+            pri.renderTransactions(data.transactions);
         }
     };
 
     pub.bind = function(){
-        var tabSelector = ".reddSettingsTabLink";
+        var tabSelector = ".reddSettingsTabLink",
+            query = exports.helpers.getQueryVariables();
+
+        if(query.hasOwnProperty("address")){
+            pri.doQuickPay(query);
+        }
 
         $("#reddCoinPopupImage").attr("src", exports.helpers.url('img/reddcoin_header_logo.png'));
 
-        $(tabSelector).click(function(){
-            pri.openTab($(this));
-        });
+        if(!pri.isFullPageMode){
 
-        pri.openTab($(tabSelector + ":last"));
+            $(tabSelector).click(function(){
+                pri.openTab($(this));
+            });
+
+            pri.openTab($(tabSelector + ":last"));
+        }
 
         pri.bindDev();
 
-        $("#rddDoWithdrawalButton").click(pri.withdrawGui);
+        $("#doSendButton").click(pri.sendGui);
         $("#reddTipCancel").click(function(){
             window.close();
         });
 
-        exports.messenger.getAccountData(pri.accountDataLoaded);
+        $("#myAddressList").on("click", '.fa-files-o', function(){
+            pri.copyAddress($(this).closest(".row"));
+        });
+
+        pri.setState("Setup");
+
+
+
+        exports.messenger.getWalletData(pri.walletDataLoaded);
     };
 
     //publish this module.

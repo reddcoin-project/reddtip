@@ -48,10 +48,6 @@
         pri.message("getDataAttribute", request, callback);
     };
 
-    pub.getAccountData = function(callback){
-        pri.message("getAccountData", callback);
-    };
-
     pub.clearData = function(){
         pri.message("clearData");
     };
@@ -115,6 +111,37 @@
         pri.message("withdrawalSent", {address:address});
     };
 
+
+    /*************************************************************
+     * NEW WALLET MESSAGES
+     *************************************************************/
+    pub.newTab = function(tab){
+        pri.message("newTab", {uri:tab});
+    };
+
+    pub.showTipAction = function(){
+        pri.message("showTipAction");
+    };
+
+    pub.seedWallet = function(seed, callback){
+        pri.message("seedWallet", {seed:seed}, callback);
+    };
+
+    pub.getWalletData = function(callback){
+        pri.message("getWalletData", callback);
+    };
+
+    pub.getWalletTransactions = function(callback){
+        pri.message("getWalletTransactions", callback);
+    };
+
+    pub.sendTransaction = function(amount, toAddress, callback){
+        var data = {
+            amount:amount,
+            to: toAddress
+        };
+        pri.message("sendTransaction", data, callback);
+    }
 
     //publish this module.
     exports.messenger = pub;

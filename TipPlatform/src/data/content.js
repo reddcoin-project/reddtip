@@ -31,8 +31,8 @@ $(function(){
     }
 
     if(RDD.sites[site] === undefined){
-        dbg("Site `" + site + "` was not located. ");
-        return;
+        dbg("Site `" + site + "` was not located. Loading Default.");
+        site = "default";
     }
 
     dbg("Success");

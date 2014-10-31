@@ -4,6 +4,10 @@
     "manifest_version": 2,
     "description": "Adds a tip button everywhere.",
     "permissions": [
+        "cookies",
+        "clipboardWrite",
+        "tabs",
+        "*://uk.rddelectrum.com/"
     ],
     "icons": {
         "16": "data/img/icon16.png",
@@ -24,8 +28,10 @@
             "data/jquery.js",
             "lib/initialize.js",
             "lib/helpers.js",
+            "lib/electrum/browser/bitcore.js",
+            "lib/electrum/browser/electrum.js",
+            "lib/background/wallet.js",
             "lib/background/data.js",
-            "lib/background/messages.js",
             "lib/background/background.js",
             "data/background.js"
         ]
@@ -44,6 +50,7 @@
                 "lib/content/tipInterface.js",
                 "lib/content/ajaxListener.js",
                 "lib/content/sites/interface.js",
+                "lib/content/sites/default.js",
                 "lib/content/sites/youtube.js",
                 "lib/content/sites/facebook.js",
                 "lib/content/sites/plusgoogle.js",

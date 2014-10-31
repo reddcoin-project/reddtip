@@ -5,9 +5,11 @@
     <title>Reddcoin Tip Platform</title>
 
     <link href="/data/css/styles.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/data/css/font-awesome/css/font-awesome.css">
     <script type="text/javascript" src="/data/jquery.js"></script>
     <script type="text/javascript" src="/lib/initialize.js"></script>
     <script type="text/javascript" src="/lib/helpers.js"></script>
+    <script type="text/javascript" src="/lib/electrum/browser/bitcore.js"></script>
     <script type="text/javascript" src="/lib/popup/transactionsView.js"></script>
     <script type="text/javascript" src="/lib/popup/popup.js"></script>
     <script type="text/javascript" src="/lib/messenger.js"></script>
@@ -25,7 +27,7 @@
         </div>
 
         <a target="_blank" href="/data/html/wallet.html">
-            <img id="reddCoinPopupImage" src="data/img/reddcoin_header_logo.png">
+            <img id="reddCoinPopupImage" src="/data/img/reddcoin_header_logo.png">
         </a>
 
 
@@ -33,15 +35,32 @@
     <div id="reddCoinPopupBody">
 
 
+        <div class="reddSetupState reddState">
+
+            <h2>
+                Your Wallet Isn't Ready Yet.
+            </h2>
+
+            <p>
+                Please take a moment to set it up.
+            </p>
+
+            <br class="spacer">
+            <a id="setupWallet" target="_blank"  class="button big" href="/data/html/setup.html">Get Started</a>
+        </div>
+
         <div class="reddSettingsState reddState">
 
-
-            <a href="#" class="reddSettingsTabLink" data-tab="withdrawal">
-                Withdraw
+            <a href="#" class="reddSettingsTabLink" data-tab="addresses">
+                Addresses
             </a>
 
             <a href="#" class="reddSettingsTabLink" data-tab="transactions">
                 History
+            </a>
+
+            <a href="#" class="reddSettingsTabLink send" data-tab="withdrawal">
+                Send
             </a>
 
             <a href="#" class="reddSettingsTabLink" data-tab="balance">
@@ -50,28 +69,20 @@
 
             <div class="reddSettingsTab" id="reddTab_balance">
                 <h4>
-                    Estimated Balance: <span id="rddFullBalance"></span>
-                    <small>RDD</small>
-                    .
+                    Total Balance: <span id="rddFullBalance"></span>
+                    <small>RDD.</small>
                 </h4>
                 <p>
-                    Balances are provided as a convenience and may not always be accurate. To update your balance with
-                    the newest data, use the button below.
+                    Confirmed:
+                    <span id="rddConfirmedBalance"></span>
+                    <small>RDD.</small>
                 </p>
-
                 <p>
-                    You can deposit Reddcoins by sending them to the following address:
+                    Unconfirmed:
+                    <span id="rddUnconfirmedBalance"></span>
+                    <small>RDD.</small>
                 </p>
 
-                <input type="text" id="reddDepositAddress" class="rddInput" placeholder="...">
-
-                <button id="rddUpdateBalanceButton" class="reddHide">Update Balance</button>
-
-                <p class="balanceUpdateInProgress reddHide">
-                    Request to update balance has been sent.
-                    <br>
-                    Once the bot replies we'll get it updated for you.
-                </p>
             </div>
 
 
@@ -82,12 +93,6 @@
                 <h4>
                     Transaction History
                 </h4>
-
-                <p class="historyUpdateInProgress reddHide">
-                    Request to update history has been sent.
-                    <br>
-                    Once the bot replies we'll get it updated for you.
-                </p>
 
                 <div id="rddTransactionsTable">
                     <p>
@@ -100,44 +105,67 @@
 
             <div class="reddSettingsTab" id="reddTab_withdrawal">
                 <h4>
-                    Withdraw Coins
+                    Send Coins
                 </h4>
 
                 <p>
-                    Enter the amount to withdraw and the address to send them to.
+                    Enter the amount of coins and the address to send them to.
                 </p>
-                <input type="text" id="reddWithdrawalAddress" class="rddInput" placeholder="Widthraw Address">
-                <input type="text" id="reddWithdrawalAmount" class="rddInput" placeholder="Amount RDD">
+                <input type="text" id="sendAddress" class="rddInput" placeholder="Reddcoin Address">
+                <input type="text" id="sendLabel" class="rddInput" placeholder="Address Label (Optional)">
+                <input type="text" id="sendAmount" class="rddInput" placeholder="Amount RDD">
 
-                <p class="withdrawalInProgress reddHide">
-                    Request to withdraw RDD sent.
-                    <br>
-                    Once the bot replies we'll update your balance.
-                </p>
+                <button id="doSendButton">Send</button>
+            </div>
 
-                <button id="rddDoWithdrawalButton">Process Withdrawal</button>
+            <div class="reddSettingsTab" id="reddTab_addresses">
+                <h4>
+                    Addresses
+                    <select class="right" id="addressSwitcher">
+                        <option>
+                            Mine
+                        </option>
+                        <option>
+                            Contacts
+                        </option>
+                    </select>
+                </h4>
+
+                <div id="myAddressList">
+
+                </div>
+                <div id="contactList" class="reddHide">
+
+                </div>
             </div>
         </div>
 
 
         <div id="reddCoinButtonContainer">
 
-            <button id="reddTipCancel" class="reddMainState reddState">
+            <button id="reddTipCancel" class="reddMainState">
                 Cancel
             </button>
 
-
+<!--
             <a id="devDeposit" href="#">
                 Deposit 5,000
             </a>
+
             <a id="clearData" href="#">
                 Clear Data
             </a>
+            -->
         </div>
 
     </div>
 
+    <div id="popupNotificationDiv">
+
+    </div>
+
 </div>
+
 
 
 </body>

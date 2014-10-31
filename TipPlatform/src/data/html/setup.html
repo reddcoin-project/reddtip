@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Reddcoin Wallet</title>
+    <link href="/data/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="/data/css/wallet.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/data/jquery.js"></script>
+    <script type="text/javascript" src="/lib/initialize.js"></script>
+    <script type="text/javascript" src="/lib/messenger.js"></script>
+    <script type="text/javascript" src="/lib/interfaces/setup.js"></script>
+</head>
+
+
+<body class="full">
+
+
+<div id="reddCoinPopupHeader">
+
+    <div class="row">
+
+
+        <div id="reddCoinBalanceContainer">
+            <a id="reddCoinBalanceLink" href="javascript:void(0);" title="Your Current Balance."> </a>
+        </div>
+
+        <a target="_blank" href="#">
+            <img id="reddCoinPopupImage" src="/data/img/reddcoin_header_logo.png">
+        </a>
+
+
+
+    </div>
+
+</div>
+
+<div class="row" id="gettingStarted">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Getting Started
+        </h1>
+
+        <p>
+            If you already have an electrum wallet you want to import, click "Import Wallet."
+            Otherwise, click "Create New Wallet"
+        </p>
+
+        <a class="button" id="createNewWallet">
+            Create New Wallet
+        </a>
+
+        <a class="button" id="importWallet">
+            Import Wallet
+        </a>
+    </div>
+
+</div>
+
+<div class="row reddHide"  id="importingWallet">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Import Your Wallet
+        </h1>
+
+        <label>
+            Enter your mnemonic seed to import your wallet.
+        </label>
+
+        <textarea class="seed" id="walletSeed">travel nowhere air position hill peace suffer parent beautiful rise blood power home crumble teach</textarea>
+
+        <a class="button" id="importButton">Import Wallet</a>
+    </div>
+
+</div>
+
+<div class="row reddHide"  id="finished">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Good to Go!
+        </h1>
+
+        <p>
+            Your key has been imported and we are importing your wallet.
+        </p>
+
+        <p>
+            You can close this tab and start using Reddcoin.
+        </p>
+
+        <a class="button" id="closeTab">Close</a>
+    </div>
+
+</div>
+
+
+</body>
+</html>

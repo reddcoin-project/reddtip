@@ -1,69 +1,137 @@
 /**
- * Provides an interface between the content script and packground processes.
+ * Provides an interface between the content script and background processes.
  * Essentially, all the public methods here can be called from the content script.
  */
-RDD.bg = (function(){
+RDD.bg = (function () {
     var pri = {
-            user: false
+            user : false
         },
 
         pub = {};
 
+    pri.tabsChanged = function (data) {
 
-    pub.setUser = function(data){
+        dbg(data);
+
+        chrome.tabs.sendMessage(data.tabId, {method : "hasTip"}, function (response) {
+
+            if (response && response.hasTip) {
+                chrome.browserAction.setBadgeText({ text  : 'Tip'});
+            }
+            else {
+                chrome.browserAction.setBadgeText({ text  : ''});
+            }
+        });
+
+        //        chrome.tabs.query({currentWindow : true, active : true}, function (tabs) {
+        //            var tabId = tabs[0].id,
+        //                info = {
+        //                    text : 'Tip',
+        //                    tabId : tabId
+        //                };
+        //            console.log(tabs);
+        //            chrome.browserAction.setBadgeText(info);
+        //        });
+    };
+
+    pub.setUser = function (data) {
         var newUser = "my_test_user";
-        if(newUser != pri.user){
+        if (newUser != pri.user) {
             dbg("User changed from `" + pri.user + "` to `" + newUser + "`");
             RDD.data.unloadData();
         }
         pri.user = newUser;
     };
 
-    pub.getUser = function(){
+    pub.getUser = function () {
         return pri.user;
     };
 
-    pub.getAccountData = function(){
-        return {
-            "currentBalance"        : RDD.data.get("currentBalance"),
-            "depositAddress"        : RDD.data.get("depositAddress"),
-            "operationList"         : RDD.data.get("operationList"),
-            "lastWithdrawalAddress" : RDD.data.get("lastWithdrawalAddress")
-        }
-    };
+    //    pub.getWalletData = function(){
+    //        return {
+    //            "currentBalance"        : RDD.data.get("currentBalance"),
+    //            "depositAddress"        : RDD.data.get("depositAddress"),
+    //            "operationList"         : RDD.data.get("operationList"),
+    //            "lastWithdrawalAddress" : RDD.data.get("lastWithdrawalAddress")
+    //        }
+    //    };
 
-    pub.getDataAttribute = function(data){
+    pub.getDataAttribute = function (data) {
         return RDD.data.get(data.attribute);
     };
 
-    pub.addTransaction = function(data){
+    pub.addTransaction = function (data) {
         var result = RDD.data.addTransaction(data.transaction);
         RDD.data.save();
         return result;
     };
 
-    pub.clearData = function(){
+    pub.clearData = function () {
         RDD.data.clear();
     };
 
-    pub.updateYoutubeComment = function(data){
+    pub.updateYoutubeComment = function (data) {
 
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.query({active : true, currentWindow : true}, function (tabs) {
             var request = {
-                action : "updateGoogleComment",
+                action  : "updateGoogleComment",
                 message : data.message
             };
-            for (var i=0; i<tabs.length; ++i) {
+            for (var i = 0; i < tabs.length; ++i) {
                 dbg(tabs[i]);
                 chrome.tabs.sendMessage(tabs[i].id, request);
             }
         });
     };
 
-    pub.withdrawalSent = function(data){
+    pub.withdrawalSent = function (data) {
         RDD.data.setAttribute("lastWithdrawalAddress", data.address);
-        return RDD.data.save();;
+        return RDD.data.save();
     };
+
+    /*************************************************************
+     * NEW WALLET MESSAGES
+     *************************************************************/
+    pub.newTab = function (data) {
+
+        chrome.tabs.query({currentWindow : true, active : true}, function (tabs) {
+            var newIndex = tabs[0].index,
+                url = {
+                    index : newIndex,
+                    'url' : chrome.extension.getURL(data.uri)
+                };
+            chrome.tabs.create(url);
+        });
+
+    };
+
+    pub.showTipAction = function (data) {
+
+    };
+
+    pub.getWalletData = function () {
+        return RDD.wallet.getInterfaceData();
+    };
+
+    pub.getWalletTransactions = function () {
+        return RDD.wallet.getTransactions();
+    };
+
+    pub.seedWallet = function (data) {
+        return RDD.wallet.seed(data.seed)
+    };
+
+    pub.sendTransaction = function (data) {
+        return RDD.wallet.send(data.amount, data.to);
+    };
+
+    chrome.tabs.onActivated.addListener(pri.tabsChanged)
+    chrome.tabs.onUpdated.addListener(function (tabId) {
+        pri.tabsChanged({
+            tabId    : tabId,
+            windowId : -1
+        });
+    })
 
     return pub;
 })();

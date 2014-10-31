@@ -1,3 +1,7 @@
+String.prototype.padLeft = function (length, character) {
+    return new Array(length - this.length + 1).join(character || ' ') + this;
+};
+
 RDD.helpers = {
 
     isChrome: function(){
@@ -11,11 +15,18 @@ RDD.helpers = {
     },
 
     formatDay: function(d){
-        var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oc", "Nov", "Dec");
+        var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 
         var curr_date = d.getDate();
         var curr_month = d.getMonth();
         return m_names[curr_month] + " " + curr_date;
+    },
+
+    formatTime: function(d){
+        var ret = this.formatDay(d) + ' ';
+        ret += d.getHours().toString().padLeft(2, '0') + ':'
+        ret += d.getMinutes().toString().padLeft(2, '0');
+        return ret;
     },
 
     injectFunction : function(theFunction, params){
@@ -39,6 +50,19 @@ RDD.helpers = {
 
     },
 
+    getQueryVariables : function(){
+        var match,
+            pl     = /\+/g,  // Regex for replacing addition symbol with a space
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+            query  = window.location.search.substring(1),
+            urlParams = {};
+
+        while (match = search.exec(query)){
+            urlParams[decode(match[1])] = decode(match[2]);
+        }
+        return urlParams;
+    },
 
     getLocalHtml: function(name, callback){
 
@@ -76,6 +100,23 @@ RDD.helpers = {
 
     numberWithCommas: function(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+
+    /**
+     * Takes a value and floors it, formats it, and returns it inside an element with a title indicating the actual value.
+     * @param val - the value
+     * @param element - the element to wrap with. Must be element with closing tag.
+     * @param inside - arbitrary html for inside the element. title is added separately
+     * @returns {string}
+     */
+    htmlRound: function(val, element, inside){
+        var newVal = Math.floor(val),
+            e = element || 'span',
+            i = inside || '';
+
+        newVal = this.numberWithCommas(newVal)
+
+        return '<'+e+' '+i+' title="'+val+'">'+newVal+'</'+e+'>';
     },
 
     prependArticle : function(word){
@@ -134,16 +175,25 @@ RDD.helpers = {
     },
 
 
-    getCurrentSite: function(){
-        var domain = document.domain;
+    getCurrentSite: function(includeTld){
+        var domain = document.domain,
+            withTld = false;
+
+        if(includeTld != undefined){
+            withTld = includeTld;
+        }
 
         //remove www
         domain = domain.replace('www.', '');
         //make array of segments
         domain = domain.split('.');
-        //pop off the tld
-        domain.pop();
-        return domain.join("");
+
+        if(!withTld){
+            //pop off the tld
+            domain.pop();
+            return domain.join("");
+        }
+        return domain.join(".");
 
         switch (domain){
             case 'www.youtube.com':
