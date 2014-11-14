@@ -1,5 +1,6 @@
 exports.wallet = (function () {
     var pri = {
+            walletStorageKey : 'reddcoinWallet',
             wallet  : false,
             monitor : false
         },
@@ -8,7 +9,19 @@ exports.wallet = (function () {
         electrum = require('electrum'),
         bitcore = require('bitcore');
 
+    listener.idle = function(data){
+        pri.saveWallet();
+    };
+
     listener.dataReceived = function(data){
+        if(data.request.method === 'blockchain.address.subscribe'){
+            return;
+        }
+
+        pri.updateInterface();
+    };
+
+    pri.updateInterface = function(){
         var popupWindow = chrome.extension.getViews({type:'popup'})[0];
 
         if(popupWindow){
@@ -19,17 +32,60 @@ exports.wallet = (function () {
         }
     };
 
-    pri.create = function () {
-        pri.wallet = electrum.WalletFactory.standardWallet();
-    };
-
-    pub.seed = function (seed) {
-        seed = $.trim(seed);
-
-        pri.wallet.buildFromMnemonic(seed);
+    pri.startWallet = function () {
         pri.monitor = electrum.NetworkMonitor.start(pri.wallet);
 
-        pri.monitor.addListener(listener);
+        pri.monitor.addListener('idle', listener.idle);
+        pri.monitor.addListener('dataReceived', listener.dataReceived);
+    };
+
+    pri.saveWallet = function () {
+        console.log("Saving Wallet: ");
+        console.log(pri.wallet.toObject());
+        localStorage.setItem(pri.walletStorageKey, JSON.stringify(pri.wallet.toObject()))
+    };
+
+    pri.loadWallet = function (walletObject) {
+        console.log("Loading Wallet: ");
+        console.log(JSON.parse(walletObject));
+        pri.wallet.fromObject(JSON.parse(walletObject));
+        pri.startWallet();
+    };
+
+    pri.create = function () {
+        var walletObject = localStorage.getItem(pri.walletStorageKey);
+        pri.wallet = electrum.WalletFactory.standardWallet();
+
+        if(walletObject !== null){
+            pri.loadWallet(walletObject);
+        }
+    };
+
+    pub.updateName = function(address, name){
+        var res = pri.wallet.updateName(address, name);
+        pri.saveWallet();
+        return res;
+    };
+
+    pub.updateContact = function(address, name){
+        var res = pri.wallet.updateContact(address, name);
+        pri.saveWallet();
+        return res;
+    };
+
+    pub.getNewSeed = function () {
+        return pri.wallet.getNewSeed();
+    };
+
+    pub.seed = function (seed, password) {
+        seed = $.trim(seed);
+
+        pri.wallet.buildFromMnemonic(seed, password);
+        pri.wallet.activateAccount(0, 'Social Funds', 'encrypted', password);
+        //pri.wallet.activateAccount(1, 'Savings', 'watch', password);
+        //pri.wallet.activateAccount(2, 'Cash', 'encrypted', password);
+
+        pri.startWallet();
 
         return {error : false};
     };
@@ -44,21 +100,24 @@ exports.wallet = (function () {
 
     pub.getInterfaceData = function () {
         var format = bitcore.util.formatValue,
-            addresses = pri.wallet.getAddresses(),
+            addresses = pri.wallet.getAddresses('all'),
+            accounts  = pri.wallet.getAccountInfo(),
+            contacts = pri.wallet.getContacts(),
             confirmed = 0,
             unconfirmed = 0,
             total = 0,
             data = {
-                addresses    : addresses
+                accounts  : accounts,
+                addresses : addresses,
+                contacts  : contacts
             };
 
-        addresses.forEach(function(address){
-            confirmed += address.confirmed;
-            unconfirmed += address.unconfirmed;
+        accounts.forEach(function(account){
+            confirmed += account.confirmed;
+            unconfirmed += account.unconfirmed;
         });
 
         total = confirmed + unconfirmed;
-
 
         data.totalBalance = format(total);
         data.confirmedBalance = format(confirmed);

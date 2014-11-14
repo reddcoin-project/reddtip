@@ -38,9 +38,30 @@ div.centered,
     float: none;
     margin: auto;
 }
+img.centered{
+    display:block;
+}
 
 #gettingStarted a.button{
     margin:20px auto;
     width:80%;
     max-width: none;
+}
+.grid_50.centered p{
+    text-align: justify;
+}
+#gettingStarted a.button{
+    margin:20px auto;
+    width:80%;
+    max-width: none;
+}
+
+.pulse {
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.9, 0.9);}
+    50% {-webkit-transform: scale(1.0, 1.0); }
+    100% {-webkit-transform: scale(0.9, 0.9); }
 }

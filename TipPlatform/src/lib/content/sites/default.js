@@ -30,7 +30,16 @@
 
         query = '?address=' + query.replace('?', '&');
 
-        exports.messenger.newTab('/data/html/popup.html' + query);
+        //exports.messenger.newTab('/data/html/popup.html' + query);
+        var url = chrome.extension.getURL('/data/html/popup.html' + query);
+
+        var $popup = $('<div id="reddcoinPaymentPopup"><iframe src="'+url+'"></iframe></div>');
+
+        $popup.hide();
+        $("body").append($popup);
+        setTimeout(function(){
+            $popup.fadeIn("slow");
+        }, 50);
 
     };
 
@@ -54,6 +63,13 @@
                 address: pri.tipAddress,
                 domain : exports.helpers.getCurrentSite(true)
             });
+        }
+        if (request.method && request.method == "closePaymentPopup") {
+            var $popup = $("#reddcoinPaymentPopup");
+            $popup.fadeOut("slow", function(){
+                $popup.empty().remove();
+            });
+
         }
     });
 

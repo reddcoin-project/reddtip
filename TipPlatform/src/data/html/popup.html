@@ -10,6 +10,7 @@
     <script type="text/javascript" src="/lib/initialize.js"></script>
     <script type="text/javascript" src="/lib/helpers.js"></script>
     <script type="text/javascript" src="/lib/electrum/browser/bitcore.js"></script>
+    <script type="text/javascript" src="/lib/electrum/browser/electrum.js"></script>
     <script type="text/javascript" src="/lib/popup/transactionsView.js"></script>
     <script type="text/javascript" src="/lib/popup/popup.js"></script>
     <script type="text/javascript" src="/lib/messenger.js"></script>
@@ -51,37 +52,74 @@
 
         <div class="reddSettingsState reddState">
 
-            <a href="#" class="reddSettingsTabLink" data-tab="addresses">
-                Addresses
+            <a href="#" class="reddSettingsTabLink pillButton" data-tab="addresses">
+                Receive
             </a>
 
-            <a href="#" class="reddSettingsTabLink" data-tab="transactions">
-                History
-            </a>
-
-            <a href="#" class="reddSettingsTabLink send" data-tab="withdrawal">
+            <a href="#" class="reddSettingsTabLink pillButton send" data-tab="withdrawal">
                 Send
             </a>
 
-            <a href="#" class="reddSettingsTabLink" data-tab="balance">
+            <a href="#" class="reddSettingsTabLink pillButton" data-tab="transactions">
+                History
+            </a>
+
+            <a href="#" class="reddSettingsTabLink pillButton" data-tab="balance">
                 Balance
             </a>
 
             <div class="reddSettingsTab" id="reddTab_balance">
-                <h4>
-                    Total Balance: <span id="rddFullBalance"></span>
-                    <small>RDD.</small>
-                </h4>
-                <p>
-                    Confirmed:
-                    <span id="rddConfirmedBalance"></span>
-                    <small>RDD.</small>
-                </p>
-                <p>
-                    Unconfirmed:
-                    <span id="rddUnconfirmedBalance"></span>
-                    <small>RDD.</small>
-                </p>
+
+                <div class="row">
+
+                    <div class="grid_100">
+
+                        <h4>
+                            <!--<i class="fa fa-pie-chart"></i>-->
+                            All Accounts:
+                            <small>
+                            <span id="rddFullBalance"></span> RDD
+                            </small>
+                        </h4>
+                        <p>
+
+                            Unconfirmed:
+                            <small>
+                                <span id="rddUnconfirmedBalance"></span> RDD
+                            </small>
+                        </p>
+
+                        <hr>
+
+                        <div id="accountsContainer">
+
+                        </div>
+
+
+                    </div>
+                    <div class="grid_30 reddHide actionList">
+
+                        <h4 class="underline">
+                            Tools
+                        </h4>
+
+                        <a class="button">
+                            Contacts
+                        </a>
+                        <a class="button">
+                            Transfers
+                        </a>
+                        <a class="button">
+                            Paper Wallets
+                        </a>
+                        <a class="button">
+                            Settings
+                        </a>
+
+                    </div>
+                </div>
+
+
 
             </div>
 
@@ -103,16 +141,35 @@
             </div>
 
 
+            <div class="reddSettingsTab" id="reddTab_contacts">
+                <h4>
+                    Your Contacts
+                    <a href="#" class="right tiny button reddSettingsTabLink" data-tab="withdrawal">&lt; Back</a>
+                </h4>
+
+                <div class="row header">
+                    <div class="grid_10">---</div>
+                    <div class="grid_30">Name</div>
+                    <div class="grid_60">Address</div>
+                </div>
+
+                <div id="myContacts">
+
+                </div>
+
+            </div>
+
             <div class="reddSettingsTab" id="reddTab_withdrawal">
                 <h4>
                     Send Coins
+                    <a href="#" class="right tiny button reddSettingsTabLink" data-tab="contacts">Contacts</a>
                 </h4>
 
                 <p>
                     Enter the amount of coins and the address to send them to.
                 </p>
                 <input type="text" id="sendAddress" class="rddInput" placeholder="Reddcoin Address">
-                <input type="text" id="sendLabel" class="rddInput" placeholder="Address Label (Optional)">
+                <input type="text" id="sendLabel" class="rddInput" placeholder="Contact Name (Optional)">
                 <input type="text" id="sendAmount" class="rddInput" placeholder="Amount RDD">
 
                 <button id="doSendButton">Send</button>
@@ -121,20 +178,25 @@
             <div class="reddSettingsTab" id="reddTab_addresses">
                 <h4>
                     Addresses
-                    <select class="right" id="addressSwitcher">
-                        <option>
-                            Mine
-                        </option>
-                        <option>
-                            Contacts
-                        </option>
+
+                    <select class="right" id="addressSelect">
+                    </select>
+
+                    <select class="right" id="addressView">
+                        <option value="default">Normal View</option>
+                        <option value="nonEmpty">Has Balance</option>
+                        <option value="all">View All</option>
                     </select>
                 </h4>
 
                 <div id="myAddressList">
 
                 </div>
-                <div id="contactList" class="reddHide">
+
+                <h4>
+                    Change Addresses
+                </h4>
+                <div id="myChangeList">
 
                 </div>
             </div>

@@ -115,6 +115,9 @@
     /*************************************************************
      * NEW WALLET MESSAGES
      *************************************************************/
+    pub.closePaymentPopup= function(){
+        pri.message("closePaymentPopup");
+    };
     pub.newTab = function(tab){
         pri.message("newTab", {uri:tab});
     };
@@ -123,8 +126,20 @@
         pri.message("showTipAction");
     };
 
-    pub.seedWallet = function(seed, callback){
-        pri.message("seedWallet", {seed:seed}, callback);
+    pub.updateName = function(address, name){
+        pri.message("updateName", {address:address, name:name});
+    };
+
+    pub.updateContact = function(address, name){
+        pri.message("updateContact", {address:address, name:name});
+    };
+
+    pub.seedWallet = function(seed, password, callback){
+        pri.message("seedWallet", {seed:seed, password:password}, callback);
+    };
+
+    pub.getNewSeed = function(callback){
+        pri.message("getNewSeed", callback);
     };
 
     pub.getWalletData = function(callback){

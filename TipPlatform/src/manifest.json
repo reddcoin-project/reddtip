@@ -33,7 +33,7 @@
             "lib/background/wallet.js",
             "lib/background/data.js",
             "lib/background/background.js",
-            "data/background.js"
+            "lib/background/main.js"
         ]
     },
     "content_scripts": [
@@ -65,7 +65,7 @@
                 "lib/content/sites/tumblr.js",
                 "lib/content/sites/twitch.js",
                 "lib/content/sites/twitter.js",
-                "data/content.js"
+                "lib/content/content.js"
             ]
         }
     ]

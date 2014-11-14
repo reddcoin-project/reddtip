@@ -92,6 +92,17 @@ RDD.bg = (function () {
     /*************************************************************
      * NEW WALLET MESSAGES
      *************************************************************/
+    pub.closePaymentPopup = function(){
+        chrome.tabs.query({active : true, currentWindow : true}, function (tabs) {
+            var request = {
+                method : "closePaymentPopup"
+            };
+            for (var i = 0; i < tabs.length; ++i) {
+                chrome.tabs.sendMessage(tabs[i].id, request);
+            }
+        });
+    };
+
     pub.newTab = function (data) {
 
         chrome.tabs.query({currentWindow : true, active : true}, function (tabs) {
@@ -117,8 +128,20 @@ RDD.bg = (function () {
         return RDD.wallet.getTransactions();
     };
 
+    pub.updateName = function(data){
+        return RDD.wallet.updateName(data.address, data.name);
+    };
+
+    pub.updateContact = function(data){
+        return RDD.wallet.updateContact(data.address, data.name);
+    };
+
     pub.seedWallet = function (data) {
-        return RDD.wallet.seed(data.seed)
+        return RDD.wallet.seed(data.seed, data.password)
+    };
+
+    pub.getNewSeed = function () {
+        return RDD.wallet.getNewSeed()
     };
 
     pub.sendTransaction = function (data) {
@@ -131,7 +154,7 @@ RDD.bg = (function () {
             tabId    : tabId,
             windowId : -1
         });
-    })
+    });
 
     return pub;
 })();

@@ -17,7 +17,7 @@ body.quickpay
 {
     width  : auto;
     height : auto;
-    background-color: #ccc;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 body.quickpay #reddCoinPopup
@@ -30,10 +30,11 @@ body.quickpay #reddCoinPopup
 }
 
 
-body.quickpay .reddSettingsTabLink{
+body.quickpay .pillButton{
     display: none;
 }
 
+a,
 div
 {
     -webkit-box-sizing : border-box; /* Safari/Chrome, other WebKit */
@@ -110,8 +111,11 @@ div.row
     width : 45%;
 }
 
+a.button.grid_100,
+a.grid_100,
 .grid_100
 {
+    max-width:none;
     width : 100%;
 }
 
@@ -168,7 +172,18 @@ div.row
 
 a
 {
-    color : #ed1c24;
+    color: #3A3A3A;
+}
+a:hover{
+    color:#222;
+}
+a.light{
+    color: #999;
+    font-size:13px;
+}
+a.light:hover{
+    color:#444;
+    font-size:13px;
 }
 
 .right
@@ -238,7 +253,7 @@ select
 
 a.button,
 #reddCoinPopupBody button,
-.reddSettingsTabLink,
+.pillButton,
 .reddSettingsTab button,
 #reddCoinButtonContainer button
 {
@@ -264,6 +279,12 @@ a.button
     max-width   : 250px;
     font-weight : normal;
     text-align  : center;
+}
+
+a.button.tiny {
+    padding: 1px 10px;
+    font-size: 11px;
+    margin: 0;
 }
 
 #reddCoinPopupBody a.button.big,
@@ -293,7 +314,7 @@ a.button:hover,
     color              : #EEE !important;
 }
 
-.reddSettingsTabLink
+.pillButton
 {
     display          : block;
     text-decoration  : none;
@@ -303,14 +324,14 @@ a.button:hover,
     text-align       : center;
     margin-top       : 0px;
     margin-right     : 10px;
-    width            : 16.5%;
+    width            : 22.4%;
     margin-bottom    : 0px;
     background-color : #666;
     border-color     : #666;
     border-radius    : 10px;
 }
 
-.reddSettingsTabLink:hover
+.pillButton:hover
 {
     text-decoration : underline;
 }
@@ -344,13 +365,13 @@ div.reddSettingsState
     text-decoration : underline;
 }
 
-.reddSettingsTabLink:first-child
+.pillButton:first-child
 {
     margin-right : 10px;
 }
 
-a.reddSettingsTabLink.selected,
-.reddSettingsTabLink.selected
+a.pillButton.selected,
+.pillButton.selected
 {
     background-color : #ed1c24;
     border-color     : #ed1c24;
@@ -478,6 +499,32 @@ a.reddSettingsTabLink.selected,
     text-align       : right;
 }
 
+.actionList a.button{
+    font-size: 10px;
+    padding: 3px;
+    width: 100%;
+}
+
+hr,
+.underline{
+    border: none;
+    border-bottom: 1px solid #eee;
+}
+
+#reddTab_balance a.right{
+    margin-left:10px;
+}
+#reddTab_balance a.right:hover{
+    margin-left:10px;
+}
+#reddTab_balance small{
+    color: #3b3b3b;
+    float:right;
+}
+#reddTab_balance h4{
+    margin-right:0px;
+}
+
 #reddCoinInputContainer
 {
     padding : 0px;
@@ -504,26 +551,37 @@ a.reddSettingsTabLink.selected,
     padding          : 5px;
 }
 
+#reddTab_contacts .row,
 #rddTransactionsTable,
-#myAddressList .row
+#myAddressList .row,
+#myChangeList .row
 {
     font-family : monospace;
 }
 
+#reddTab_contacts .row,
+#myChangeList .row,
 #myAddressList .row
 {
     padding : 6px 0px;
 
 }
 
+#myChangeList .fa,
 #myAddressList .fa
 {
     cursor : pointer;
 }
 
+#myChangeList .fa:hover,
 #myAddressList .fa:hover
 {
     color : #000;
+}
+
+#myContacts .nameContainer,
+#myContacts .grid_60{
+    cursor:pointer;
 }
 
 #popupNotificationDiv
@@ -532,11 +590,15 @@ a.reddSettingsTabLink.selected,
     background-color : #0066bb;
     position         : absolute;
     max-width        : 300px;
-    bottom           : 10px;
+    bottom           : 15px;
     max-height       : 45px;
     left             : 10px;
     border-radius    : 5px;
     color            : #FFF;
     display          : none;
     font-size        : 12px;
+}
+#changeAddressName{
+    margin: -4px 0px;
+    width:100%;
 }

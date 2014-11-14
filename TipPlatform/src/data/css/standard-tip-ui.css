@@ -661,8 +661,19 @@
     margin: 0px;
 }
 
-
-
+/*************************************************
+ * Payment Link Processor
+ *************************************************/
+#reddcoinPaymentPopup{
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 999563;
+}
+#reddcoinPaymentPopup iframe{
+    width: 100%;
+    height: 1600px;
+}
 
 
 

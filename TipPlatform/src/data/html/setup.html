@@ -14,6 +14,7 @@
 <body class="full">
 
 
+
 <div id="reddCoinPopupHeader">
 
     <div class="row">
@@ -32,6 +33,19 @@
     </div>
 
 </div>
+
+<div class="row reddHide" id="loading">
+
+    <div class="grid_50 centered">
+        <br>
+        <br>
+        <br>
+        <br>
+        <img src="/data/img/icon128.png" class="centered pulse">
+    </div>
+
+</div>
+
 
 <div class="row" id="gettingStarted">
 
@@ -57,6 +71,73 @@
 
 </div>
 
+<div class="row reddHide" id="walletCreated">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Wallet Seed Created
+        </h1>
+
+        <p>
+            Below is your "Wallet Seed." This is a unique password that keeps track of all of your Reddcoin. If you
+            loose your seed, you will lose all of your coins. If someone else gets your seed, they can steal all of
+            your Reddcoins
+        </p>
+
+        <p>
+            <strong>
+                Please write down this seed and put it somewhere you will never lose it.
+            </strong>
+        </p>
+
+        <textarea class="seed" id="createdWalletSeed"></textarea>
+
+        <a class="button grid_100" id="seedSaved">My seed is safe and I will never lose it.</a>
+        <a class="button grid_100" id="seedNotSaved">I'll save it somewhere later.</a>
+
+    </div>
+
+</div>
+<div class="row reddHide" id="pleaseSaveSeed">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Don't Be Lazy
+        </h1>
+
+        <p>
+            It's really important that you save your seed. Please go back and do it now.
+        </p>
+
+
+        <a class="button" id="backToSeedCreated">Go Back</a>
+
+    </div>
+
+</div>
+
+<div class="row reddHide" id="confirmSeed">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Confirm Your Seed
+        </h1>
+
+        <p>
+            To make sure you haven't already lost your seed, please enter it below:
+        </p>
+
+        <textarea class="seed" id="seedConfirmation"></textarea>
+
+        <a class="button" id="doSeedConfirmation">Confirm Seed</a>
+
+    </div>
+
+</div>
+
 <div class="row reddHide"  id="importingWallet">
 
     <div class="grid_50 centered">
@@ -65,9 +146,11 @@
             Import Your Wallet
         </h1>
 
-        <label>
-            Enter your mnemonic seed to import your wallet.
-        </label>
+        <p>
+        <strong>
+            Enter your "Wallet Seed" to import your wallet.
+        </strong>
+        </p>
 
         <textarea class="seed" id="walletSeed">travel nowhere air position hill peace suffer parent beautiful rise blood power home crumble teach</textarea>
 
@@ -86,6 +169,10 @@
 
         <p>
             Your key has been imported and we are importing your wallet.
+        </p>
+
+        <p>
+            If you have many transactions with this wallet, it may take a few more minutes for all of them to load.
         </p>
 
         <p>
