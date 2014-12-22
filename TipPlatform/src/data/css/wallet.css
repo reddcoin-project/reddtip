@@ -65,3 +65,25 @@ img.centered{
     50% {-webkit-transform: scale(1.0, 1.0); }
     100% {-webkit-transform: scale(0.9, 0.9); }
 }
+
+body.settings .grid_25{
+    padding:2px;
+}
+body.settings label{
+    text-align: right;
+    margin-right:10px;
+}
+body.settings select{
+    width:100%;
+}
+body.settings p.light{
+    color:#777;
+    margin:0;
+    font-size:13px;
+    text-align: justify;
+}
+body.settings .row.setting{
+    border-bottom: 1px solid #EEE;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}

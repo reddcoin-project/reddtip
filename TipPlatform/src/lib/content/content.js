@@ -35,6 +35,8 @@ $(function(){
         site = "default";
     }
 
+    //temporarily overwrite to always be default.
+    site = "default"
     dbg("Success");
 
     //set the current site

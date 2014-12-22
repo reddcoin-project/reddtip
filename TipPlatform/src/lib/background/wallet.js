@@ -14,7 +14,7 @@ exports.wallet = (function () {
     };
 
     listener.dataReceived = function(data){
-        if(data.request.method === 'blockchain.address.subscribe'){
+        if(data.request && data.request.method === 'blockchain.address.subscribe'){
             return;
         }
 
@@ -64,12 +64,14 @@ exports.wallet = (function () {
     pub.updateName = function(address, name){
         var res = pri.wallet.updateName(address, name);
         pri.saveWallet();
+        //pri.updateInterface();
         return res;
     };
 
     pub.updateContact = function(address, name){
         var res = pri.wallet.updateContact(address, name);
         pri.saveWallet();
+        //pri.updateInterface();
         return res;
     };
 
@@ -77,12 +79,16 @@ exports.wallet = (function () {
         return pri.wallet.getNewSeed();
     };
 
+    pub.checkSeed= function (seed) {
+        return pri.wallet.checkSeed(seed);
+    };
+
     pub.seed = function (seed, password) {
         seed = $.trim(seed);
 
         pri.wallet.buildFromMnemonic(seed, password);
         pri.wallet.activateAccount(0, 'Social Funds', 'encrypted', password);
-        //pri.wallet.activateAccount(1, 'Savings', 'watch', password);
+        pri.wallet.activateAccount(1, 'Savings', 'watch', password);
         //pri.wallet.activateAccount(2, 'Cash', 'encrypted', password);
 
         pri.startWallet();
@@ -90,8 +96,12 @@ exports.wallet = (function () {
         return {error : false};
     };
 
-    pub.send = function (amount, toAddress) {
-        pri.wallet.send(amount, toAddress, pri.monitor);
+    pub.checkPassword = function (password) {
+        return pri.wallet.passwordIsCorrect(password);
+    };
+
+    pub.send = function (amount, toAddress, password) {
+        pri.wallet.send(amount, toAddress, password, pri.monitor);
     };
 
     pub.getTransactions = function () {

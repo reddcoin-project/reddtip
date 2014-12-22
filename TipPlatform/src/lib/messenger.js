@@ -122,8 +122,13 @@
         pri.message("newTab", {uri:tab});
     };
 
-    pub.showTipAction = function(){
-        pri.message("showTipAction");
+//    pub.showTipAction = function(){
+//        pri.message("showTipAction");
+//    };
+
+    pub.checkPassword = function(password, callback){
+//        callback(false);
+        pri.message("checkPassword", {password:password}, callback);
     };
 
     pub.updateName = function(address, name){
@@ -138,6 +143,10 @@
         pri.message("seedWallet", {seed:seed, password:password}, callback);
     };
 
+    pub.checkSeed = function(seed, callback){
+        pri.message("checkSeed", {seed:seed}, callback);
+    };
+
     pub.getNewSeed = function(callback){
         pri.message("getNewSeed", callback);
     };
@@ -146,13 +155,22 @@
         pri.message("getWalletData", callback);
     };
 
+    pub.getSettings = function(callback){
+        pri.message("getSettings", callback);
+    };
+
+    pub.setSettings = function(settings, callback){
+        pri.message("setSettings", {settings:settings}, callback);
+    };
+
     pub.getWalletTransactions = function(callback){
         pri.message("getWalletTransactions", callback);
     };
 
-    pub.sendTransaction = function(amount, toAddress, callback){
+    pub.sendTransaction = function(amount, toAddress, password, callback){
         var data = {
             amount:amount,
+            password:password,
             to: toAddress
         };
         pri.message("sendTransaction", data, callback);

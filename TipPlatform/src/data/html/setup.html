@@ -130,6 +130,10 @@
             To make sure you haven't already lost your seed, please enter it below:
         </p>
 
+        <div class="error reddHide" id="confirmError">
+            Your seeds do not match. Try again or <a href="#" class="startOver">Start Over</a>.
+        </div>
+
         <textarea class="seed" id="seedConfirmation"></textarea>
 
         <a class="button" id="doSeedConfirmation">Confirm Seed</a>
@@ -146,15 +150,87 @@
             Import Your Wallet
         </h1>
 
+
+        <div class="error reddHide" id="validSeedError">
+            Your seed is not valid. Please fix any mistakes or <a href="#" class="startOver">Start Over</a>.
+        </div>
+
         <p>
         <strong>
             Enter your "Wallet Seed" to import your wallet.
         </strong>
         </p>
 
-        <textarea class="seed" id="walletSeed">travel nowhere air position hill peace suffer parent beautiful rise blood power home crumble teach</textarea>
+        <textarea class="seed" id="walletSeed"></textarea>
 
         <a class="button" id="importButton">Import Wallet</a>
+    </div>
+
+</div>
+
+<div class="row reddHide" id="createPassword">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Create Your Password
+        </h1>
+
+        <p>
+            Make sure it's at least 8 characters long.
+        </p>
+
+        <div class="error reddHide" id="passwordError">
+            Your password is too short.
+        </div>
+
+        <input type="password" class="rddInput" id="password" />
+
+        <a class="button" id="doCreatePassword">Create Password</a>
+
+    </div>
+
+</div>
+
+<div class="row reddHide" id="confirmPassword">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Confirm Your Password
+        </h1>
+
+        <p>
+            Enter your password again to make sure you didn't make a mistake.
+        </p>
+
+        <div class="error reddHide" id="passwordConfirmError">
+            Your passwords do not match. Try again or <a href="#" class="startOver">Start Over</a>.
+        </div>
+
+        <input type="password" class="rddInput" id="passwordAgain" />
+
+        <a class="button" id="doConfirmPassword">Confirm Password</a>
+
+    </div>
+
+</div>
+
+<div class="row reddHide" id="readyToCreate">
+
+    <div class="grid_50 centered">
+
+        <h1 class="underline">
+            Almost Done!
+        </h1>
+
+        <p>
+            Now we'll create your wallet for you. You'll be ready to go in a few seconds.
+        </p>
+
+
+        <a class="button" id="doCreateWallet">Create Wallet</a>
+
     </div>
 
 </div>

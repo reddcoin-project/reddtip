@@ -23,9 +23,9 @@
                 '</small>',
                 '</h4>',
                 '<p>',
-                '    <i class="fa ' + icon + '"></i>',
+                '    <i class="fa ' + icon + '"></i>&nbsp;&nbsp;',
                 accountInfo.typeName,
-                '    <a href="#" class="right light viewHistory">View History</a>',
+                //'    <a href="#" class="right light viewHistory">View History</a>',
                 '    <a href="#" class="right light transfer">Transfer</a>',
                 '</p>',
                 '<hr>'
@@ -40,14 +40,13 @@
 
         html = [
             '<div class="row" data-name="' + address.name + '" data-address="' + address.address + '">',
-            '    <div class="grid_15">',
+            '    <div class="grid_10">',
             '        <i class="fa fa-files-o fa-lg" title="Copy Address"></i>&nbsp;',
-            '        <i class="fa fa-edit fa-lg" title="Rename"></i>',
             '    </div>',
-            '    <div class="grid_60 nameContainer" data-for="address">',
+            '    <div class="grid_70 nameContainer" data-for="address" title="Click to Rename">',
             address.name,
             '    </div>',
-            '    <div class="grid_25 align-right">',
+            '    <div class="grid_20 align-right">',
             val,
             '    </div>',
             '</div>'
@@ -61,10 +60,10 @@
 
         html = [
             '<div class="row" data-name="' + name + '" data-address="' + address + '">',
-            '    <div class="grid_10">',
-            '        <i class="fa fa-edit fa-lg" title="Rename"></i>',
+            '    <div class="grid_5">',
+            '        <i class="fa fa-arrow-circle-left fa-lg" title="Select this Contact"></i>',
             '    </div>',
-            '    <div class="grid_30 nameContainer" data-for="contact">',
+            '    <div class="grid_35 nameContainer" data-for="contact">',
             name,
             '    </div>',
             '    <div class="grid_60">',
@@ -82,6 +81,14 @@
         }
 
         window.close();
+    };
+
+    pri.catchEnter = function(inputSelector, buttonSelector){
+        $(inputSelector).keyup(function(e){
+            if(e.which === 13){
+                $(buttonSelector).trigger('click');
+            }
+        });
     };
 
     pri.notification = function (message, seconds, speed) {
@@ -103,7 +110,7 @@
         $("#sendAddress").val(address || '');
         $("#sendAmount").val(amount || '');
         $("#sendLabel").val(label || '');
-    }
+    };
 
     pri.doQuickPay = function (query) {
         $("body").addClass("quickpay");
@@ -115,13 +122,65 @@
         pri.isFullPageMode = true;
     };
 
+    pri.withPassword = function(callback, message){
+        var checkPassword = function(){
+            var val = $('#password').val();
+
+            $("#passwordError").hide();
+            $("#password").hide();
+            $("#pwLoading").show();
+
+
+            setTimeout(function(){
+                //we're doing this with a timeout as the password check does a bunch of hashes which
+                //may cause some browser lockup
+                exports.messenger.checkPassword(val, function(isValid){
+                    var $pw = $("#password");
+                    $pw.val("");
+                    if(isValid){
+                        setTimeout(function(){
+                            callback(val);
+                            $pw.show();
+                            $("#pwLoading").hide();
+                        }, 1000)
+
+                        return;
+                    }
+                    $("#passwordError").slideDown("slow");
+                    $("#pwLoading").hide();
+                    $pw.show();
+                    $pw.focus();
+                });
+            }, 100);
+        };
+
+
+
+        if(message){
+            $("#passwordMessage").html(message).show();
+        }
+
+        var cancel = function(){
+            pri.openTab("withdrawal");
+        };
+
+        pri.openTab('password');
+
+        $("#passwordCancel").click(cancel);
+        $("#passwordOkay").click(checkPassword);
+
+        $("#password").focus();
+    };
+
     pri.sendGui = function () {
         var $address = $("#sendAddress"),
             $amount = $("#sendAmount"),
+            name =  $("#sendLabel").val(),
             toAddress = $.trim($address.val()),
             amount = $.trim($amount.val()),
             addressIsValid = /^[Rr][a-zA-Z0-9]{26,34}$/.test(toAddress),
-            amountIsValid = !isNaN(parseFloat(amount));
+            amountIsValid = !isNaN(parseFloat(amount)),
+            sendFunction;
 
         $address.removeClass("error");
 
@@ -135,24 +194,35 @@
             $amount.addClass("error");
         }
 
+        exports.messenger.updateContact(toAddress, name);
+
         if (!amountIsValid || !addressIsValid) {
             return;
         }
 
-        exports.messenger.sendTransaction(amount, toAddress, function () {
-//            $("#sendAmount").val("");
-//            $("#sendLabel").val("");
-//            $("#sendAddress").val("");
-            pri.updateSendForm();
+        sendFunction = function(password){
 
-            pri.notification("Transaction is being broadcast.");
 
-            if (pri.isFullPageMode) {
-                setTimeout(function () {
-                    pri.closePopup();
-                }, 4000);
-            }
-        });
+            exports.messenger.sendTransaction(amount, toAddress, password, function () {
+                pri.updateSendForm();
+
+                pri.notification("Transaction is being broadcast.");
+
+                pri.openTab("withdrawal");
+
+                var closePopup = function () { pri.closePopup(); };
+                if (pri.isFullPageMode) {
+                    setTimeout(closePopup, 4000);
+                }
+            });
+        };
+
+        var msg = "You are about to send <strong>18 RDD</strong> to <strong>John Smith</strong>";
+        msg += '<br/>';
+        msg += '<br/>';
+        msg += 'This will debit the following account: ';
+        msg += '<select><option>Tip Jar</option><option>Social Funds</option></select>';
+        pri.withPassword(sendFunction, msg);
     };
 
     pri.checkTipableSite = function () {
@@ -176,15 +246,24 @@
         });
     };
 
+    pri.getAddressNames = function(){
+        var names = {};
+        _.forIn(pri.walletData.contacts, function(name, address){
+            names[address] = name;
+        });
+        _.each(pri.walletData.addresses, function(address){
+            names[address.address] = address.name;
+        });
+
+        return names;
+    };
+
     pri.renderTransactions = function (transactions) {
         //define the function to do the rendering
         var render = function (transactions) {
-            var html = exports.transactionsView.getView(transactions);
-            console.log(transactions);
+            var html = exports.transactionsView.getView(transactions, pri.getAddressNames());
             $("#rddTransactionsTable").html(html);
         };
-
-        console.log(transactions);
 
         // set transactions equal to false if not provided
         transactions = transactions || false;
@@ -197,7 +276,6 @@
 
         //transactions not provided. Fetch then render.
         exports.messenger.getWalletTransactions(function (transactions) {
-            console.log(transactions);
             render(transactions);
         });
     };
@@ -213,7 +291,10 @@
             tab = $tabLink.attr("data-tab");
         }
 
-        localStorage["rddLastTab"] = tab;
+        if(tab !== 'password'){
+            localStorage["rddLastTab"] = tab;
+        }
+
 
         $tab = $("#reddTab_" + tab);
 
@@ -245,6 +326,7 @@
             exports.messenger.updateName(address, newName);
         }
 
+        //location.reload();
     };
 
     pri.editName = function ($row) {
@@ -293,7 +375,7 @@
         var contacts = pri.walletData.contacts,
             $container = $(containerSelector);
 
-        dbg(pri.walletData);
+        $container.empty();
         _.forIn(contacts, function(address, name){
             $container.append(pri.getContactRow(address, name));
         });
@@ -301,11 +383,13 @@
     };
 
     pri.renderAddresses = function (containerSelector) {
-        var addresses = pri.walletData.addresses,
+        var account = _.parseInt($('#addressSelect').val()),
+            where = {accountIndex : account},
+            addresses = _.where(pri.walletData.addresses, where),
             $container = $(containerSelector),
             $change = $("#myChangeList"),
+            changeCount = 0,
             view = $('#addressView').val(),
-            account = $('#addressSelect').val(),
             lastIndex = _.findLastIndex(addresses, function (addr) {
                 return addr.confirmed > 0 && !addr.isChange;
             }),
@@ -319,9 +403,9 @@
         }
 
         header += '<div class="row header">';
-        header += '<div class="grid_15">---</div>';
-        header += '<div class="grid_60">Address</div>';
-        header += '<div class="grid_25">RDD</div>';
+        header += '<div class="grid_10">&nbsp;</div>';
+        header += '<div class="grid_70">Address</div>';
+        header += '<div class="grid_20">RDD</div>';
         header += '</div>';
 
         $container.empty();
@@ -349,6 +433,7 @@
             html += pri.getAddressRow(address, val);
 
             if (address.isChange) {
+                changeCount++;
                 $change.append(html);
             }
             else {
@@ -356,13 +441,19 @@
             }
 
         });
+
+        if(changeCount === 0){
+            $("#changeLabel").hide();
+        }
+        else {
+            $("#changeLabel").show();
+        }
     };
 
     pri.renderWalletData = function (data) {
         var balance = Math.floor(data.totalBalance);
         balance = exports.helpers.numberWithCommas(balance);
 
-        pri.walletData = data;
         pri.renderAccounts(data.accounts, '#accountsContainer');
         pri.renderAddresses('#myAddressList');
         pri.renderContacts('#myContacts');
@@ -378,6 +469,7 @@
     };
 
     pri.walletDataLoaded = function (data) {
+        pri.walletData = data;
         if (data.addresses.length > 0) {
             pri.setState("Settings");
             pri.renderWalletData(data);
@@ -399,7 +491,7 @@
     pub.updateInterface = function (data) {
         pri.renderWalletData(data.interfaceData);
 
-        if (pri.transactionsRendered) {
+        if (pri.transactionsRendered || true) {
             pri.renderTransactions(data.transactions);
         }
     };
@@ -408,6 +500,9 @@
         var tabSelector = ".reddSettingsTabLink",
             $addressTab = $("#reddTab_addresses"),
             query = exports.helpers.getQueryVariables();
+
+
+        exports.messenger.getWalletData(pri.walletDataLoaded);
 
         pri.isIframe = exports.helpers.isIframe();
 
@@ -453,8 +548,8 @@
             pri.editName($(this).closest(".row"));
         };
 
-        $("#reddTab_contacts").on("click", '.fa-edit', editNameFunction);
-        $addressTab.on("click", '.fa-edit', editNameFunction);
+        $("#reddTab_contacts").on("click", '.nameContainer', editNameFunction);
+        $addressTab.on("click", '.nameContainer', editNameFunction);
 
         $("#reddCoinPopupBody").on("blur", '#changeAddressName', pri.updateName);
         $("#reddCoinPopupBody").on("keydown", '#changeAddressName', function(e){
@@ -463,7 +558,7 @@
             }
         });
 
-        $("#myContacts").on("click", '.grid_60, .nameContainer', function(){
+        $("#myContacts").on("click", '.fa-arrow-circle-left, .grid_60', function(){
             if($('input', $(this)).length > 0){
                 return;
             }
@@ -472,9 +567,14 @@
             pri.openTab('withdrawal');
         });
 
+        pri.catchEnter("#sendAddress", "#doSendButton");
+        pri.catchEnter("#sendLabel", "#doSendButton");
+        pri.catchEnter("#sendAmount", "#doSendButton");
+
+        pri.catchEnter("#password", "#passwordOkay");
+
         pri.setState("Setup");
 
-        exports.messenger.getWalletData(pri.walletDataLoaded);
     };
 
     //publish this module.

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Reddcoin Wallet - help</title>
+    <link href="/data/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="/data/css/wallet.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/data/jquery.js"></script>
+    <script type="text/javascript" src="/lib/initialize.js"></script>
+    <script type="text/javascript" src="/lib/messenger.js"></script>
+    <script type="text/javascript" src="/lib/interfaces/settings.js"></script>
+</head>
+
+
+<body class="full settings">
+
+
+<div id="reddCoinPopupHeader">
+
+    <div class="row">
+
+
+        <div id="reddCoinBalanceContainer">
+            <a id="reddCoinBalanceLink" href="javascript:void(0);" title="Your Current Balance."> </a>
+        </div>
+
+        <a target="_blank" href="/data/html/wallet.html">
+            <img id="reddCoinPopupImage" src="/data/img/reddcoin_header_logo.png">
+        </a>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <h2>
+        Reddcoin Settings
+    </h2>
+</div>
+
+
+<div class="row">
+
+    <div class="grid_10 reddHide">
+        <h2>
+            Settings
+        </h2>
+
+        <ul>
+            <li>
+                <a href="#" class="settingsSection" data-section="security">
+                    Security
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="grid_100">
+
+        <br>
+
+        <div class="row setting">
+            <div class="grid_25">
+                <label>
+                    Use Tip Jar
+                </label>
+            </div>
+            <div class="grid_25">
+                <select name="tipJarEnabled" class="setting">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <div class="grid_50">
+                <p class="light">
+                    A Tip jar is a special address that's not protected by your password. This lets you tip easier but
+                    increases your security risk. If you use the Tip Jar you should only keep an amount you're willing
+                    to lose in it.
+                </p>
+            </div>
+        </div>
+
+        <div class="row setting">
+            <div class="grid_25">
+                <label>
+                    Tip Jar Max Balance %
+                </label>
+            </div>
+            <div class="grid_25">
+                <select name="maxBalancePercent" class="setting">
+                    <option value="1">1%</option>
+                    <option value="3">3%</option>
+                    <option value="5">5%</option>
+                    <option value="10">10%</option>
+                    <option value="20">20%</option>
+                    <option value="30">30%</option>
+                    <option value="40">40%</option>
+                    <option value="50">50%</option>
+                </select>
+            </div>
+            <div class="grid_50">
+                <p class="light">
+                    We'll generate a warning when your Tip Jar balance gets too high. Here you can set the maximum
+                    percent of your total wallet balance you Tip Jar should contain. For instance, if you choose 10%
+                    and you have a total balance of 20,000, we'll warn you when your tip jar contains more than 2,000.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row setting">
+            <div class="grid_25">
+                <label>
+                    Tip Jar Max Balance
+                </label>
+            </div>
+            <div class="grid_25">
+                <select name="maxBalance" class="setting">
+                    <option value="500">500 RDD</option>
+                    <option value="1000">1,000 RDD</option>
+                    <option value="3000">3,000 RDD</option>
+                    <option value="5000">5,000 RDD</option>
+                    <option value="10000">10,000 RDD</option>
+                    <option value="50000">50,000 RDD</option>
+                    <option value="75000">75,000 RDD</option>
+                    <option value="100000">100,000 RDD</option>
+                    <option value="150000">150,000 RDD</option>
+                    <option value="200000">200,000 RDD</option>
+                    <option value="250000">250,000 RDD</option>
+                    <option value="500000">500,000 RDD</option>
+                    <option value="1000000">1 Million RDD</option>
+                    <option value="2000000">2 Million RDD</option>
+                </select>
+            </div>
+            <div class="grid_50">
+                <p class="light">
+                    This works like 'Tip Jar Max Balance %'. Use this setting to ensure that even as your wallet grows,
+                    you don't end up with too high of a balance in your unprotected Tip Jar.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row setting">
+            <div class="grid_25">
+                <label>
+                    Disable Payment Prompt
+                </label>
+            </div>
+            <div class="grid_25">
+                <select  name="hidePromptThreshold" class="setting">
+                    <option value="-1">Never. Always Prompt Me</option>
+                    <option value="25">Under 25 RDD</option>
+                    <option value="50">Under 50 RDD</option>
+                    <option value="100">Under 100 RDD</option>
+                    <option value="250">Under 250 RDD</option>
+                    <option value="500">Under 500 RDD</option>
+                    <option value="1000">Under 1,000 RDD</option>
+                    <option value="5000">Under 5,000 RDD</option>
+                    <option value="10000">Under 10,000 RDD</option>
+                    <option value="25000">Under 25,000 RDD</option>
+                    <option value="50000">Under 50,000 RDD</option>
+                    <option value="75000">Under 75,000 RDD</option>
+                    <option value="100000">Under 100,000 RDD</option>
+                </select>
+            </div>
+            <div class="grid_50">
+                <p class="light">
+                    If you're making a small payment from your Tip Jar, we can send it without showing a confirmation
+                    prompt. The prompt can be annoying when you're in a hurry, but helpful to prevent mistakes. Set a
+                    limit here to control when you get a prompt.
+                </p>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+<div class="row" id="deleteInitial">
+
+    <h2>
+        Delete Wallet
+    </h2>
+
+    <p>
+        If you want to delete all of your data from this extension forever, click the Redd Button.
+    </p>
+    <p>
+        <strong>
+            ALERT: You will lose all of your money if you don't have your seed backed up.
+        </strong>
+    </p>
+
+    <a class="button" id="deleteForever" style="background-color: #74070f; border:none;">
+        Delete Wallet Forever
+    </a>
+</div>
+
+<div class="row reddHide" id="deleteFinal">
+
+    <h2>
+        Really Delete Wallet?!
+    </h2>
+
+    <p>
+        Are you sure about this?!
+    </p>
+
+    <p>
+        <strong>
+            ALERT: You will lose all of your money if you don't have your seed backed up.
+        </strong>
+    </p>
+
+    <a class="button grid_100" id="dontDelete">
+        Nevermind - I don't want to delete my wallet.
+    </a>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <a class="button" id="finallyDeleteForever" style="background-color: #74070f; border:none;">
+        Delete Wallet Forever
+    </a>
+
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+</div>
+
+
+</body>
+</html>

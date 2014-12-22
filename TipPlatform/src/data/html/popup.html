@@ -27,7 +27,7 @@
             <a id="reddCoinBalanceLink" href="javascript:void(0);" title="Your Current Balance."> </a>
         </div>
 
-        <a target="_blank" href="/data/html/wallet.html">
+        <a target="_blank" href="http://reddcoin.com">
             <img id="reddCoinPopupImage" src="/data/img/reddcoin_header_logo.png">
         </a>
 
@@ -81,6 +81,13 @@
                             <span id="rddFullBalance"></span> RDD
                             </small>
                         </h4>
+                        <p>
+
+                            Tip Jar:
+                            <small>
+                                <span id="rddTipJarBalance">35.00</span> RDD
+                            </small>
+                        </p>
                         <p>
 
                             Unconfirmed:
@@ -148,8 +155,8 @@
                 </h4>
 
                 <div class="row header">
-                    <div class="grid_10">---</div>
-                    <div class="grid_30">Name</div>
+                    <div class="grid_5">&nbsp;</div>
+                    <div class="grid_35">Name</div>
                     <div class="grid_60">Address</div>
                 </div>
 
@@ -159,20 +166,50 @@
 
             </div>
 
+            <div class="reddSettingsTab" id="reddTab_password">
+
+
+                <p id="passwordMessage" class="reddHide"></p>
+
+                <label>
+                    Please Enter Your Password
+                </label>
+
+                <p id="passwordError" class="reddHide">
+                    Your Password Was Incorrect.
+                </p>
+
+                <div>
+                    <input id="password" type="password" name="rddPassword" class="rddInput" value="">
+                </div>
+                <div id="pwLoading" class="reddHide" style="text-align:center;">
+                    <i class="fa fa-refresh fa-spin fa-3x"></i>
+                </div>
+
+
+                <br>
+                <br>
+                <button id="passwordOkay" class="leftButton">Send</button>
+                <button id="passwordCancel"  class="rightButton">Cancel</button>
+
+            </div>
+
             <div class="reddSettingsTab" id="reddTab_withdrawal">
                 <h4>
-                    Send Coins
+                    Send Coins To:
                     <a href="#" class="right tiny button reddSettingsTabLink" data-tab="contacts">Contacts</a>
                 </h4>
 
-                <p>
-                    Enter the amount of coins and the address to send them to.
-                </p>
                 <input type="text" id="sendAddress" class="rddInput" placeholder="Reddcoin Address">
                 <input type="text" id="sendLabel" class="rddInput" placeholder="Contact Name (Optional)">
-                <input type="text" id="sendAmount" class="rddInput" placeholder="Amount RDD">
+
+                <br>
+                <br class="clear">
 
                 <button id="doSendButton">Send</button>
+
+                <input type="text" id="sendAmount" class="rddInput" placeholder="Amount RDD">
+
             </div>
 
             <div class="reddSettingsTab" id="reddTab_addresses">
@@ -193,7 +230,7 @@
 
                 </div>
 
-                <h4>
+                <h4 id="changeLabel">
                     Change Addresses
                 </h4>
                 <div id="myChangeList">
@@ -206,8 +243,14 @@
         <div id="reddCoinButtonContainer">
 
             <button id="reddTipCancel" class="reddMainState">
-                Cancel
+                Close
             </button>
+
+            <p class="light" id="footerLinks">
+                <a href="/data/html/settings.html" target="_blank">settings</a>
+                |
+                <a href="/data/html/help.html" target="_blank">help</a>
+            </p>
 
 <!--
             <a id="devDeposit" href="#">

@@ -18,6 +18,8 @@
     "rimraf": "^2.2.8"
   },
   "dependencies": {
-    "jquery-browserify": "^1.8.1"
+    "jquery-browserify": "^1.8.1",
+    "uglify": "^0.1.0",
+    "uglify-js": "^2.4.15"
   }
 }

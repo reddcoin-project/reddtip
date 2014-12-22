@@ -6,7 +6,7 @@
 body
 {
     width       : 500px;
-    height      : 380px;
+    min-height  : 330px;
     margin      : 0px;
     padding     : 0px;
     color       : #3b3b3b;
@@ -29,6 +29,14 @@ body.quickpay #reddCoinPopup
     box-shadow: #444 1px 1px 10px;
 }
 
+body.quickpay .reddSettingsTabLink{
+    display:none;
+}
+
+label{
+    font-weight: bold;
+    font-size: 14px;
+}
 
 body.quickpay .pillButton{
     display: none;
@@ -62,6 +70,7 @@ div.row
 
 .grid_75,
 .grid_66,
+.grid_35,
 .grid_33,
 .grid_25,
 .grid_45,
@@ -75,7 +84,8 @@ div.row
 .grid_40,
 .grid_30,
 .grid_20,
-.grid_10
+.grid_10,
+.grid_5
 {
     float   : left;
     padding : 0 10px;
@@ -91,6 +101,10 @@ div.row
     width : 66%;
 }
 
+.grid_35
+{
+    width : 35%;
+}
 .grid_33
 {
     width : 33%;
@@ -163,6 +177,10 @@ a.grid_100,
 {
     width : 10%;
 }
+.grid_5
+{
+    width : 5%;
+}
 
 .row.header
 {
@@ -209,7 +227,7 @@ select
     background-color : #FCFCFC;
     z-index          : 2147483649;
     margin           : 0;
-    min-height       : 385px;
+    min-height       : 330px;
     position         : relative;
     /*border           : 1px solid #999;*/
 }
@@ -264,7 +282,7 @@ a.button,
     width            : 80px;
     border-radius    : 2px;
     padding          : 5px;
-    margin-top       : 15px;
+    margin-top       : 10px;
     margin-right     : 15px;
     text-transform   : uppercase;
     cursor           : pointer;
@@ -339,7 +357,7 @@ a.button:hover,
 div.reddState,
 div.reddSettingsState
 {
-    min-height : 300px;
+    min-height : 275px;
     padding    : 10px;
 }
 
@@ -433,13 +451,14 @@ a.pillButton.selected,
 {
     clear : both;
     width : 100%;
+    border-spacing: 0;
 }
 
 .transactionTable tr th,
 .transactionTable tr td
 {
     border-right : 1px solid #f6f6f6;
-    padding      : 2px 2px 2px 4px;
+    padding      : 2px 0px;
 }
 
 .transactionTable tr th
@@ -472,6 +491,23 @@ a.pillButton.selected,
  * END NEW STYLES
  ************************************************************/
 
+#reddTipCancel{
+    float:right;
+}
+#footerLinks a{
+    color:#7A7A7A;
+}
+#footerLinks a:hover{
+    color:#333333;
+}
+#footerLinks{
+    margin: auto;
+    padding: 15px;
+    width: 80px;
+    font-size: 12px;
+    color: #CCC;
+}
+
 #reddTipUser
 {
     margin-bottom : 10px;
@@ -493,7 +529,7 @@ a.pillButton.selected,
     position         : absolute;
     bottom           : 0px;
     width            : 100%;
-    height           : 65px;
+    height           : 50px;
     background-color : #eee;
     border-top       : 1px solid #ccc;
     text-align       : right;
@@ -556,7 +592,7 @@ hr,
 #myAddressList .row,
 #myChangeList .row
 {
-    font-family : monospace;
+    font-family : sans-serif;
 }
 
 #reddTab_contacts .row,
@@ -579,9 +615,23 @@ hr,
     color : #000;
 }
 
+#myContacts .fa-arrow-circle-left,
 #myContacts .nameContainer,
+.nameContainer,
 #myContacts .grid_60{
     cursor:pointer;
+}
+
+.error,
+#passwordError{
+    border: 1px solid #F00;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background-color: #FFF9D7;
+}
+
+.error{
+    margin:15px 0px;
 }
 
 #popupNotificationDiv
@@ -590,7 +640,7 @@ hr,
     background-color : #0066bb;
     position         : absolute;
     max-width        : 300px;
-    bottom           : 15px;
+    bottom           : 7px;
     max-height       : 45px;
     left             : 10px;
     border-radius    : 5px;
@@ -601,4 +651,29 @@ hr,
 #changeAddressName{
     margin: -4px 0px;
     width:100%;
+}
+#sendAmount{
+    width:75%;
+}
+
+button#doSendButton,
+#doSendButton{
+    display:block;
+    float:right;
+    margin:2px;
+    line-height: 23px;
+    width: 20%;
+}
+
+.leftButton,
+.rightButton{
+    position: absolute;
+    bottom: 6px;
+    z-index: 3;
+}
+.leftButton{
+    left: 15px;
+}
+.rightButton{
+    right: 0px;
 }

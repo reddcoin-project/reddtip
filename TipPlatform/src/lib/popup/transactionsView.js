@@ -9,22 +9,29 @@
     pri.getTransactionHeader = function(){
         return '' +
             '<tr>' +
+            '<th>Tx</th>'+
             '<th colspan="2">Details</th>'+
             '<th>Amount</th>'+
             '<th>Date</th>'+
             '</tr>';
     };
 
-    pri.getAddressLink = function(address, length){
-        var length = length || 12,
-            shortened = address.substr(0,length) + '[...]',
+    pri.getAddressLink = function(address, length, addressNames){
+        var length = length || 15,
+            name = addressNames[address] || address,
+            shortened = name.substr(0,length),
             link = 'http://live.reddcoin.com/address/'+address;
-        return '<a target="_blank" title="RDD Address: '+address+'" href="'+link+'">'+
+
+        if(name.length > shortened.length){
+            shortened += '..'
+        }
+
+        return '<a target="_blank" title="View Address" href="'+link+'">'+
             shortened
             +'</a>';
     };
 
-    pri.getTransactionRow = function(transaction){
+    pri.getTransactionRow = function(transaction, addressNames){
         var info,
             isPositive = transaction.total >= 0,
             amount = exports.helpers.htmlRound(transaction.total / 100000000),
@@ -54,14 +61,15 @@
 //        }
 
         if(transaction.address[0] === "R"){
-            user = pri.getAddressLink(transaction.address);
+            user = pri.getAddressLink(transaction.address, 22,  addressNames);
         }
         else {
             user = transaction.address;
         }
 
-        info = transaction.type
-        dbg(transaction);
+        info = transaction.type;
+        if(info == 'Received') info += ' with';
+        if(info == 'Sent') info += ' To';
 
         if(transaction.site != "?"){
             title = ' title="' + transaction.site + '" ';
@@ -74,15 +82,17 @@
         }
 
         amountTitle = '';
+        var txlink = 'http://live.reddcoin.com/tx/' + transaction.id;
         return '<tr>' +
+            '<td><a href="'+txlink+'" target="rddTransaction"><i class="fa fa-link fa-lg" title="View Transaction"></i></a></td>'+
             '<td>' + info + '</td>'+
-            '<td '+title+'>' + user + '</td>'+
+            '<td>' + user + '</td>'+
             '<td '+amountTitle+' class="'+clss+' align-right">' + amount + '</td>'+
             '<td class="align-right">' + date + '</th>'+
             '</tr>';
     };
 
-    pub.getView = function(transactions){
+    pub.getView = function(transactions, addressNames){
         var html = '<table class="transactionTable">';
 
 
@@ -90,7 +100,7 @@
 
 
         $.each(transactions, function(i, transaction){
-            html += pri.getTransactionRow(transaction);
+            html += pri.getTransactionRow(transaction, addressNames);
         });
 
 

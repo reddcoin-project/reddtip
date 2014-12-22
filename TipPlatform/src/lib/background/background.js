@@ -116,8 +116,8 @@ RDD.bg = (function () {
 
     };
 
-    pub.showTipAction = function (data) {
-
+    pub.checkPassword = function (data) {
+        return RDD.wallet.checkPassword(data.password);
     };
 
     pub.getWalletData = function () {
@@ -144,8 +144,50 @@ RDD.bg = (function () {
         return RDD.wallet.getNewSeed()
     };
 
+    pub.checkSeed = function (data) {
+        return RDD.wallet.checkSeed(data.seed);
+    };
+
+    pub.deleteWallet = function(){
+        localStorage.clear();
+    };
+
+    pri.getDefaultData = function(){
+        return {
+            tipJarEnabled: "true",
+            maxBalancePercent: "10",
+            maxBalance: "10000",
+            hidePromptThreshold: "1000"
+        };
+    };
+
+    pub.getSettings = function () {
+        //get data
+        var settingsKey = 'rdd_settings',
+            data = localStorage.getItem(settingsKey);
+
+        //if null, create new data
+        if (data === null) {
+            data = pri.getDefaultData();
+        }
+        //data is stored as a JSON string. Make it an object
+        else {
+            data = JSON.parse(data);
+        }
+
+        dbg("Settings: ");
+        dbg(data);
+
+        return data;
+    };
+
+    pub.setSettings = function () {
+
+        localStorage.setItem('rdd_settings', JSON.stringify(pri.mainData));
+    };
+
     pub.sendTransaction = function (data) {
-        return RDD.wallet.send(data.amount, data.to);
+        return RDD.wallet.send(data.amount, data.to, data.password);
     };
 
     chrome.tabs.onActivated.addListener(pri.tabsChanged)

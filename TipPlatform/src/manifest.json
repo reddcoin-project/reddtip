@@ -1,8 +1,8 @@
 {
-    "name": "Reddcoin Actual Tip Platform",
+    "name": "Reddcoin",
     "version": "0.0.1",
     "manifest_version": 2,
-    "description": "Adds a tip button everywhere.",
+    "description": "A state of the art browser based wallet for Reddcoin.",
     "permissions": [
         "cookies",
         "clipboardWrite",
