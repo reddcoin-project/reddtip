@@ -25,10 +25,12 @@ var settings = {
 
             settings[name] = value;
         });
+
+        RDD.messenger.setSettings(settings, function(){});
     },
 
-    deleteWallet : function(){
-
+    deleteWallet : function(callback){
+        RDD.messenger.deleteWallet(callback);
     }
 };
 
@@ -45,5 +47,17 @@ $(function(){
     $("#deleteForever").click(function(){
         $("#deleteInitial").hide('slow');
         $("#deleteFinal").show('slow');
+    });
+
+    $("#dontDelete").click(function(){
+        $("#deleteInitial").show('slow');
+        $("#deleteFinal").hide('slow');
+    });
+
+    $("#finallyDeleteForever").click(function(){
+        $("#deleteFinal").hide('slow');
+        settings.deleteWallet(function(){
+            window.close();
+        });
     });
 });

@@ -140,16 +140,18 @@ RDD.bg = (function () {
         return RDD.wallet.seed(data.seed, data.password)
     };
 
+    pub.deleteWallet = function(){
+        localStorage.clear();
+        RDD.wallet.deleteWallet();
+        return true;
+    };
+
     pub.getNewSeed = function () {
         return RDD.wallet.getNewSeed()
     };
 
     pub.checkSeed = function (data) {
         return RDD.wallet.checkSeed(data.seed);
-    };
-
-    pub.deleteWallet = function(){
-        localStorage.clear();
     };
 
     pri.getDefaultData = function(){
@@ -181,9 +183,13 @@ RDD.bg = (function () {
         return data;
     };
 
-    pub.setSettings = function () {
+    pub.setSettings = function (data) {
 
-        localStorage.setItem('rdd_settings', JSON.stringify(pri.mainData));
+        localStorage.setItem('rdd_settings', JSON.stringify(data.settings));
+    };
+
+    pub.checkTransaction = function (data) {
+        return RDD.wallet.checkTransaction(data.amount);
     };
 
     pub.sendTransaction = function (data) {

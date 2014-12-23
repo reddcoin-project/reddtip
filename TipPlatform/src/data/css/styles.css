@@ -515,8 +515,8 @@ a.pillButton.selected,
 
 #reddCoinPopup .error
 {
-    border     : 2px solid #F00;
-    transition : 2s;
+    border     : 1px solid #F00;
+    /*transition : 2s;*/
 }
 
 #reddCoinPopupImage

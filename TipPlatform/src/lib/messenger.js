@@ -143,6 +143,10 @@
         pri.message("seedWallet", {seed:seed, password:password}, callback);
     };
 
+    pub.deleteWallet = function(callback){
+        pri.message("deleteWallet", callback);
+    };
+
     pub.checkSeed = function(seed, callback){
         pri.message("checkSeed", {seed:seed}, callback);
     };
@@ -165,6 +169,10 @@
 
     pub.getWalletTransactions = function(callback){
         pri.message("getWalletTransactions", callback);
+    };
+
+    pub.checkTransaction = function(amount, callback){
+        pri.message("checkTransaction", {amount:amount}, callback);
     };
 
     pub.sendTransaction = function(amount, toAddress, password, callback){

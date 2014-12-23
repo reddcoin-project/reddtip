@@ -61,6 +61,10 @@ exports.wallet = (function () {
         }
     };
 
+    pub.deleteWallet = function(){
+        pri.create();
+    };
+
     pub.updateName = function(address, name){
         var res = pri.wallet.updateName(address, name);
         pri.saveWallet();
@@ -81,6 +85,10 @@ exports.wallet = (function () {
 
     pub.checkSeed= function (seed) {
         return pri.wallet.checkSeed(seed);
+    };
+
+    pub.checkTransaction = function (amount) {
+        return pri.wallet.checkTransaction(amount);
     };
 
     pub.seed = function (seed, password) {

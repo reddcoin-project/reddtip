@@ -19,7 +19,7 @@
                 '<h4>',
                 accountInfo.name,
                 '<small>',
-                '    <span>' + format(accountInfo.confirmed) + '</span> RDD',
+                '    <span>' + format(accountInfo.confirmed + accountInfo.unconfirmed) + '</span> RDD',
                 '</small>',
                 '</h4>',
                 '<p>',
@@ -172,7 +172,7 @@
         $("#password").focus();
     };
 
-    pri.sendGui = function () {
+    pri.sendGui = function (details) {
         var $address = $("#sendAddress"),
             $amount = $("#sendAmount"),
             name =  $("#sendLabel").val(),
@@ -217,7 +217,7 @@
             });
         };
 
-        var msg = "You are about to send <strong>18 RDD</strong> to <strong>John Smith</strong>";
+        var msg = "You are about to send <strong>"+details.amount+" RDD</strong> to <strong>"+details.to+"</strong>";
         msg += '<br/>';
         msg += '<br/>';
         msg += 'This will debit the following account: ';
@@ -450,16 +450,46 @@
         }
     };
 
+    pri.checkTipJar = function(totalBalance, tipJarBalance){
+        var showError = false,
+            num = parseFloat,
+            maxBalance = num(pri.settings.maxBalance),
+            maxBalancePercent = num(pri.settings.maxBalancePercent),
+            percent = (tipJarBalance / totalBalance) * 100,
+            maxAllowed = Math.floor(Math.min(maxBalance, (maxBalancePercent / 100) * totalBalance));
+
+        if(pri.settings.tipJarEnabled === 'false'){
+            $("#tipJarRow").hide();
+            return;
+        }
+        if(tipJarBalance > maxBalance){
+            showError = true;
+        }
+
+        if(percent > maxBalancePercent){
+            showError = true;
+        }
+
+        if(showError){
+            $('#tipJarError').append('Max Allowed: ' + maxAllowed);
+            $('#tipJarError').show('slow');
+        }
+    };
+
     pri.renderWalletData = function (data) {
-        var balance = Math.floor(data.totalBalance);
+        var format = bitcore.util.formatValue,
+            tipJarBalance = format(data.addresses[0].confirmed),
+            balance = Math.floor(data.totalBalance);
         balance = exports.helpers.numberWithCommas(balance);
 
+        pri.checkTipJar(data.totalBalance, tipJarBalance);
         pri.renderAccounts(data.accounts, '#accountsContainer');
         pri.renderAddresses('#myAddressList');
         pri.renderContacts('#myContacts');
         $("#reddCoinBalanceLink").html(balance + " RDD");
         $("#rddFullBalance").html(data.totalBalance);
         //$("#rddConfirmedBalance").html(data.confirmedBalance);
+        $("#rddTipJarBalance").html(tipJarBalance);
         $("#rddUnconfirmedBalance").html(data.unconfirmedBalance);
     };
 
@@ -502,7 +532,11 @@
             query = exports.helpers.getQueryVariables();
 
 
-        exports.messenger.getWalletData(pri.walletDataLoaded);
+        exports.messenger.getSettings(function(settings){
+            pri.settings = settings;
+            exports.messenger.getWalletData(pri.walletDataLoaded);
+        });
+
 
         pri.isIframe = exports.helpers.isIframe();
 
@@ -535,7 +569,15 @@
             pri.renderAddresses('#myAddressList');
         });
 
-        $("#doSendButton").click(pri.sendGui);
+        $("#doSendButton").click(function(){
+            var amount = $("#sendAmount").val();
+            var to = $("#sendLabel").val() || $("#sendAddress").val();
+            RDD.messenger.checkTransaction(amount, function(details){
+                dbg(details);
+                details.to = to;
+                pri.sendGui(details);
+            });
+        });
         $("#reddTipCancel").click(function () {
             pri.closePopup();
         });
