@@ -137,7 +137,7 @@ RDD.bg = (function () {
     };
 
     pub.seedWallet = function (data) {
-        return RDD.wallet.seed(data.seed, data.password)
+        return RDD.wallet.seed(data.seed, data.password, data.savingsAccountType);
     };
 
     pub.deleteWallet = function(){
@@ -158,8 +158,8 @@ RDD.bg = (function () {
         return {
             tipJarEnabled: "true",
             maxBalancePercent: "10",
-            maxBalance: "10000",
-            hidePromptThreshold: "1000"
+            maxBalance: "5000",
+            hidePromptThreshold: "500"
         };
     };
 
@@ -189,11 +189,19 @@ RDD.bg = (function () {
     };
 
     pub.checkTransaction = function (data) {
-        return RDD.wallet.checkTransaction(data.amount);
+        return RDD.wallet.checkTransaction(data.amount, data.tipJarEnabled);
+    };
+
+    pub.unlockTipJar = function (data) {
+        return RDD.wallet.unlockTipJar(data.password);
+    };
+
+    pub.lockTipJar = function () {
+        return RDD.wallet.lockTipJar();
     };
 
     pub.sendTransaction = function (data) {
-        return RDD.wallet.send(data.amount, data.to, data.password);
+        return RDD.wallet.send(data.amount, data.account, data.requirePw, data.to, data.password);
     };
 
     chrome.tabs.onActivated.addListener(pri.tabsChanged)

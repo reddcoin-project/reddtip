@@ -1,13 +1,14 @@
 {
-    "name": "Reddcoin",
-    "version": "0.0.1",
+    "name": "Reddcoin Browser Wallet (BETA)",
+    "version": "0.0.3",
     "manifest_version": 2,
-    "description": "A state of the art browser based wallet for Reddcoin.",
+    "description": "A state of the art browser based wallet for Reddcoin. Currently in public beta.",
     "permissions": [
         "cookies",
         "clipboardWrite",
         "tabs",
-        "*://uk.rddelectrum.com/"
+        "*://uk.rddelectrum.com/",
+        "*://reddwallet.org/"
     ],
     "icons": {
         "16": "data/img/icon16.png",

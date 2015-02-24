@@ -26,7 +26,7 @@
     };
 
     pri.doLinkPayment = function (href) {
-        var query = href.replace('reddcoin:', '');
+        var query = href.replace(/.*reddcoin:/, '');
 
         query = '?address=' + query.replace('?', '&');
 
@@ -45,9 +45,10 @@
 
     pub.initialize = function () {
 
-        $("body").on("click", "a", function (e) {
+        $("body").on("click", "a, area", function (e) {
             var href = $(this).attr("href");
-            if (href.indexOf('reddcoin:') === 0) {
+            if (href.indexOf('reddcoin:') >= 0) {
+//            if (href.indexOf('reddcoin:') === 0) {
                 e.preventDefault();
                 pri.doLinkPayment(href);
             }

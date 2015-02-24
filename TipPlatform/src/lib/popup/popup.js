@@ -124,11 +124,18 @@
 
     pri.withPassword = function(callback, message){
         var checkPassword = function(){
-            var val = $('#password').val();
+            var val = $('#password').val(),
+                requirePw = true;
+
+            if($("#sendAccount option:selected").attr("data-with-pass") !== 'yes'){
+                requirePw = false;
+            }
 
             $("#passwordError").hide();
             $("#password").hide();
             $("#pwLoading").show();
+
+
 
 
             setTimeout(function(){
@@ -137,12 +144,12 @@
                 exports.messenger.checkPassword(val, function(isValid){
                     var $pw = $("#password");
                     $pw.val("");
-                    if(isValid){
+                    if(isValid || ! requirePw){
                         setTimeout(function(){
-                            callback(val);
+                            callback(val, requirePw);
                             $pw.show();
                             $("#pwLoading").hide();
-                        }, 1000)
+                        }, 1000);
 
                         return;
                     }
@@ -200,11 +207,17 @@
             return;
         }
 
-        sendFunction = function(password){
+        sendFunction = function(password, requirePw){
 
-
-            exports.messenger.sendTransaction(amount, toAddress, password, function () {
+            var account = $("#sendAccount").val();
+            exports.messenger.sendTransaction(amount, account, requirePw, toAddress, password, function () {
                 pri.updateSendForm();
+
+                if(account === '-1' && requirePw){
+                    exports.messenger.unlockTipJar(password, function(){
+                        dbg('Tip Jar Unlocked!');
+                    });
+                }
 
                 pri.notification("Transaction is being broadcast.");
 
@@ -221,8 +234,45 @@
         msg += '<br/>';
         msg += '<br/>';
         msg += 'This will debit the following account: ';
-        msg += '<select><option>Tip Jar</option><option>Social Funds</option></select>';
+        msg += '<select name="sendAccount" id="sendAccount">';
+        $.each(details.usableAccounts, function(i, account){
+            var requirePw = 'yes';
+            if(!account.requiresPassword){
+                requirePw = 'no';
+            }
+            msg += '<option data-with-pass="'+requirePw+'" value="'+account.index+'">'+account.name+'</option>';
+        });
+
+        msg +=  '</select>';
         pri.withPassword(sendFunction, msg);
+
+        $("#sendAccount").change(function(){
+            var $pwContainer = $('#sendPwContainer'),
+                requiresPw = $('option:selected', $(this)).attr('data-with-pass');
+            if(requiresPw === 'yes'){
+                $pwContainer.show();
+            }
+            else {
+                $pwContainer.hide();
+            }
+
+            amount = amount * 1;
+            var hideThreshold = pri.settings.hidePromptThreshold * 1;
+            dbg(amount, hideThreshold, requiresPw);
+            dbg(amount <= hideThreshold , requiresPw !== 'yes');
+            if(amount <= hideThreshold && requiresPw !== 'yes'){
+                console.log('triggering');
+                $("#passwordOkay").trigger('click');
+                pri.openTab('autoSent');
+                setTimeout(function(){
+                    pri.openTab("withdrawal");
+                }, 3000);
+            }
+        });
+
+        $("#sendAccount").trigger('change');
+
+
     };
 
     pri.checkTipableSite = function () {
@@ -471,7 +521,7 @@
         }
 
         if(showError){
-            $('#tipJarError').append('Max Allowed: ' + maxAllowed);
+            $('#tipJarExtraMessage').html('Max Allowed: ' + maxAllowed);
             $('#tipJarError').show('slow');
         }
     };
@@ -572,10 +622,22 @@
         $("#doSendButton").click(function(){
             var amount = $("#sendAmount").val();
             var to = $("#sendLabel").val() || $("#sendAddress").val();
-            RDD.messenger.checkTransaction(amount, function(details){
+            var $errorElement = $("#transactionError");
+
+            dbg(pri.settings);
+
+            $errorElement.hide();
+            RDD.messenger.checkTransaction(amount, true, function(details){
                 dbg(details);
                 details.to = to;
-                pri.sendGui(details);
+
+                if(details.isPossible){
+                    pri.sendGui(details);
+                }
+                else {
+                    $errorElement.show('slow');
+                }
+
             });
         });
         $("#reddTipCancel").click(function () {

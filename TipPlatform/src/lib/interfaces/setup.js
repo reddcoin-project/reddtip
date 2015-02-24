@@ -38,8 +38,8 @@ var setup = {
             confirm =this.seedFromElement('#seedConfirmation');
         return created === confirm;
     },
-    createWallet : function(seed, password){
-        exports.messenger.seedWallet(seed, password, function(data){
+    createWallet : function(seed, password, savingsAccountType){
+        exports.messenger.seedWallet(seed, password, savingsAccountType, function(data){
             if(data.error == true){
                 alert("something went wrong.");
                 return;
@@ -157,13 +157,18 @@ $(function(){
 
     $("#doCreateWallet").click(function(){
         var pw = setup.seedFromElement('#password'),
-            seed = setup.seedFromElement('#createdWalletSeed');
+            seed = setup.seedFromElement('#createdWalletSeed'),
+            savingsAccountType = 'watch';
+
+        if($("#spendSavings").is(':checked')){
+            savingsAccountType = 'encrypted';
+        }
 
         if(seed === ''){
             seed = setup.seedFromElement('#walletSeed');
         }
         setup.loading("#readyToCreate");
-        setup.createWallet(seed,pw);
+        setup.createWallet(seed, pw, savingsAccountType);
     });
 
     $("#closeTab").click(function(){

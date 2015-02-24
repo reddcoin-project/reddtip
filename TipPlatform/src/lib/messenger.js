@@ -139,8 +139,8 @@
         pri.message("updateContact", {address:address, name:name});
     };
 
-    pub.seedWallet = function(seed, password, callback){
-        pri.message("seedWallet", {seed:seed, password:password}, callback);
+    pub.seedWallet = function(seed, password, savingsAccountType, callback){
+        pri.message("seedWallet", {seed:seed, password:password, savingsAccountType: savingsAccountType}, callback);
     };
 
     pub.deleteWallet = function(callback){
@@ -171,15 +171,29 @@
         pri.message("getWalletTransactions", callback);
     };
 
-    pub.checkTransaction = function(amount, callback){
-        pri.message("checkTransaction", {amount:amount}, callback);
+    pub.checkTransaction = function(amount, tipJarEnabled, callback){
+        pri.message("checkTransaction", {
+            amount:amount,
+            tipJarEnabled : tipJarEnabled
+        }, callback);
     };
 
-    pub.sendTransaction = function(amount, toAddress, password, callback){
+    pub.unlockTipJar = function(password, callback){
+        pri.message("unlockTipJar", {password:password}, callback);
+    };
+
+    pub.lockTipJar = function(callback){
+        pri.message("lockTipJar", {}, callback);
+    };
+
+    //amount, account, requirePw, toAddress, password
+    pub.sendTransaction = function(amount, account, requirePw, toAddress, password, callback){
         var data = {
-            amount:amount,
-            password:password,
-            to: toAddress
+            amount    : amount,
+            account   : account,
+            requirePw : requirePw,
+            password  : password,
+            to        : toAddress
         };
         pri.message("sendTransaction", data, callback);
     }

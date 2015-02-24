@@ -40,14 +40,14 @@ exports.wallet = (function () {
     };
 
     pri.saveWallet = function () {
-        console.log("Saving Wallet: ");
-        console.log(pri.wallet.toObject());
+        dbg("Saving Wallet: ");
+        dbg(pri.wallet.toObject());
         localStorage.setItem(pri.walletStorageKey, JSON.stringify(pri.wallet.toObject()))
     };
 
     pri.loadWallet = function (walletObject) {
-        console.log("Loading Wallet: ");
-        console.log(JSON.parse(walletObject));
+        dbg("Loading Wallet: ");
+        dbg(JSON.parse(walletObject));
         pri.wallet.fromObject(JSON.parse(walletObject));
         pri.startWallet();
     };
@@ -87,16 +87,16 @@ exports.wallet = (function () {
         return pri.wallet.checkSeed(seed);
     };
 
-    pub.checkTransaction = function (amount) {
-        return pri.wallet.checkTransaction(amount);
+    pub.checkTransaction = function (amount, tipJarEnabled) {
+        return pri.wallet.checkTransaction(amount, tipJarEnabled);
     };
 
-    pub.seed = function (seed, password) {
+    pub.seed = function (seed, password, savingsAccountType) {
         seed = $.trim(seed);
 
         pri.wallet.buildFromMnemonic(seed, password);
         pri.wallet.activateAccount(0, 'Social Funds', 'encrypted', password);
-        pri.wallet.activateAccount(1, 'Savings', 'watch', password);
+        pri.wallet.activateAccount(1, 'Savings', savingsAccountType, password);
         //pri.wallet.activateAccount(2, 'Cash', 'encrypted', password);
 
         pri.startWallet();
@@ -108,8 +108,16 @@ exports.wallet = (function () {
         return pri.wallet.passwordIsCorrect(password);
     };
 
-    pub.send = function (amount, toAddress, password) {
-        pri.wallet.send(amount, toAddress, password, pri.monitor);
+    pub.send = function (amount, account, requirePw, toAddress, password) {
+        pri.wallet.send(amount, account, requirePw, toAddress, password, pri.monitor);
+    };
+
+    pub.unlockTipJar = function (password) {
+        pri.wallet.unlockTipJar(password);
+    };
+
+    pub.lockTipJar = function () {
+        pri.wallet.lockTipJar();
     };
 
     pub.getTransactions = function () {

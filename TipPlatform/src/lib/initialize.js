@@ -6,6 +6,7 @@
 
 //global constant. Sue me.
 var RDD_DEBUG_MODE = true;
+var RDD_DEBUG_MODE = false;
 
 /**
  * Prints parameter to console

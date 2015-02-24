@@ -91,7 +91,7 @@
             </strong>
         </p>
 
-        <textarea class="seed" id="createdWalletSeed"></textarea>
+        <textarea class="seed" readonly="readonly" id="createdWalletSeed"></textarea>
 
         <a class="button grid_100" id="seedSaved">My seed is safe and I will never lose it.</a>
         <a class="button grid_100" id="seedNotSaved">I'll save it somewhere later.</a>
@@ -228,6 +228,9 @@
             Now we'll create your wallet for you. You'll be ready to go in a few seconds.
         </p>
 
+        <input type="checkbox" checked="true" id="spendSavings" name="spendSavings">
+        <label style="display: inline">Make Savings Account Spendable</label>
+
 
         <a class="button" id="doCreateWallet">Create Wallet</a>
 
@@ -244,15 +247,11 @@
         </h1>
 
         <p>
-            Your key has been imported and we are importing your wallet.
+            Your wallet has been created!
         </p>
 
         <p>
-            If you have many transactions with this wallet, it may take a few more minutes for all of them to load.
-        </p>
-
-        <p>
-            You can close this tab and start using Reddcoin.
+            If you are importing keys and you have previous transactions, it may take a few more minutes to load.
         </p>
 
         <a class="button" id="closeTab">Close</a>
