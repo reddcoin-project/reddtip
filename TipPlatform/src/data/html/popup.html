@@ -75,7 +75,8 @@
                     <div class="grid_100">
 
                         <p id="tipJarError" class="error reddHide">
-                            Your tip jar has too much money in it. Please move some to a secure address. <span id="tipJarExtraMessage"></span>
+                            Your tip jar has too many Reddcoins in it. Please move some to a secure address. 
+                            <span id="tipJarExtraMessage"></span>
                         </p>
 
                         <h4>
@@ -170,40 +171,21 @@
 
             </div>
 
-            <div class="reddSettingsTab" id="reddTab_autoSent">
-
-                <label>
-                    Transaction is being sent!
-                </label>
-
-                <p>
-                    Since this transaction was lower than your prompt threshold, we sent it with one click.
-                </p>
-
-                <p>
-                    Visit the settings to change this.
-                </p>
-            </div>
-
             <div class="reddSettingsTab" id="reddTab_password">
 
 
                 <p id="passwordMessage" class="reddHide"></p>
 
-                <div id="sendPwContainer">
+                <label>
+                    Please Enter Your Password
+                </label>
 
-                    <label>
-                        Please Enter Your Password
-                    </label>
+                <p id="passwordError" class="reddHide">
+                    Your Password Was Incorrect.
+                </p>
 
-                    <p id="passwordError" class="reddHide">
-                        Your Password Was Incorrect.
-                    </p>
-
-                    <div>
-                        <input id="password" type="password" name="rddPassword" class="rddInput" value="">
-                    </div>
-
+                <div>
+                    <input id="password" type="password" name="rddPassword" class="rddInput" value="">
                 </div>
                 <div id="pwLoading" class="reddHide" style="text-align:center;">
                     <i class="fa fa-refresh fa-spin fa-3x"></i>
@@ -222,10 +204,6 @@
                     Send Coins To:
                     <a href="#" class="right tiny button reddSettingsTabLink" data-tab="contacts">Contacts</a>
                 </h4>
-
-                <p id="transactionError" class="error reddHide">
-                    Cannot send transaction. Make sure you have enough money in a single account.
-                </p>
 
                 <input type="text" id="sendAddress" class="rddInput" placeholder="Reddcoin Address">
                 <input type="text" id="sendLabel" class="rddInput" placeholder="Contact Name (Optional)">
