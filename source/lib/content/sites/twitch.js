@@ -3,7 +3,7 @@
         pub = {};
 
 
-    pub.buttonHtml = '<button class="button primary tip" style="margin-right: 10px;width: 22%;">Tip</button>';
+    pub.buttonHtml = '<button class="button primary tip" style="margin-right: 10px;float: right;">Tip</button>';
     pub.command    = '@tipreddcoin +tip {RECIPIENT} {AMOUNT} RDD';
 
     pub.tipClicked = function(){
@@ -20,14 +20,14 @@
 
     pub.addButtons = function(){
         // Add a button to the Twitch chat
-        $('.send-chat-button').append(RDD.site.buttonHtml);
+        $('.chat-buttons-container').append(RDD.site.buttonHtml);
         //$('.send-chat-button button:first').css("width", "75%");
 
         $("body").on("click", ".tip", RDD.site.tipClicked);
     };
 
     pub.checkWidth = function (waitTime){
-        var $button = $('.send-chat-button button:first'),
+        var $button = $('.qa-chat-buttons__submit'),
             width = $button.width();
 
         // Don't start the script until the page has been loaded correctly
@@ -46,10 +46,7 @@
     };
 
     pub.initialize = function(){
-        if ($('.chat-option-buttons').length != 0)
-        {
-            RDD.site.checkWidth(16);
-        }
+        RDD.site.checkWidth(16);
     };
 
     exports.sites.twitch = inherit(exports.sites.interface, pub);

@@ -32,7 +32,8 @@
       "matches": [
         "http://www.reddit.com/*",
         "https://www.reddit.com/*",
-        "http://www.twitch.tv/*",
+		"http://www.twitch.tv/*",
+        "https://www.twitch.tv/*",
         "https://twitter.com/*",
         "http://twitter.com/*"
       ],
