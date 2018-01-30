@@ -32,7 +32,8 @@
       "matches": [
         "http://www.reddit.com/*",
         "https://www.reddit.com/*",
-        "http://www.twitch.tv/*",
+		"http://www.twitch.tv/*",
+        "https://www.twitch.tv/*",
         "https://twitter.com/*",
         "http://twitter.com/*"
       ],
@@ -44,7 +45,7 @@
           "lib/content/captcha.js",
           "lib/content/modal.js",
           "lib/content/operations.js",
-          "lib/content/settingsGui.js",
+          "lib/content/settings_gui.js",
           "lib/content/sites/interface.js",
           "lib/content/sites/reddit.js",
           "lib/content/sites/twitch.js",

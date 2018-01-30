@@ -2,11 +2,11 @@
     var pri = {},
         pub =  {};
 
-    pub.buttonHtml = '<button class="btn primary-btn tip-action tip-btn js-tip-btn" type="button">\
-	<span class="button-text tip-text">\
-		Tip\
-	</span>\
-</button>';
+    pub.buttonHtml = '<button class="EdgeButton EdgeButton--primary tip-btn" type="button">\
+    <span class="button-text tip-text">\
+    Tip\
+    </span>\
+    </button>';
     pub.command    = ' @tipreddcoin +tip {RECIPIENT} {AMOUNT} RDD';
     pub.commandMsg = '+tip  {AMOUNT} RDD';
     pub.currentUser = false;
@@ -85,7 +85,7 @@
     pub.addButtons = function(){
         // Add buttons to tweets
         $('.tweet-button').append(RDD.site.buttonHtml);
-        $('.tip-btn').css('height', '37px');
+        $('.tip-btn').css('margin-left', '12px');
 
         // Now fix the height of the buttons and fix the onclick function (add tip)
         //twitterFixButtons ();
